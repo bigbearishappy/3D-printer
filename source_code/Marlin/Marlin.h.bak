@@ -1,0 +1,135 @@
+#ifndef MARLIN_H
+#define MARLIN_H
+
+#include "fastio.h"
+#include "Configuration.h"
+#include "pins.h"
+
+//猜测是打印开始和结束时间
+extern unsigned long starttime;
+extern unsigned long stoptime;
+
+// Handling multiple extruders pins  处理多挤出机引脚
+extern uint8_t active_extruder;
+
+//预编译处理X,Y,Z以及E的使能 需要硬件电平部分改进
+#if defined(DUAL_X_CARRIAGE) && defined(X_ENABLE_PIN) && X_ENABLE_PIN > -1 \
+    && defined(X2_ENABLE_PIN) && X2_ENABLE_PIN > -1
+  #define  enable_x() do { WRITE(X_ENABLE_PIN, X_ENABLE_ON); WRITE(X2_ENABLE_PIN, X_ENABLE_ON); } while (0)
+  #define disable_x() do { WRITE(X_ENABLE_PIN,!X_ENABLE_ON); WRITE(X2_ENABLE_PIN,!X_ENABLE_ON); axis_known_position[X_AXIS] = false; } while (0)
+#elif defined(X_ENABLE_PIN) && X_ENABLE_PIN > -1
+  #define  enable_x() WRITE(X_ENABLE_PIN, X_ENABLE_ON)
+  #define disable_x() { WRITE(X_ENABLE_PIN,!X_ENABLE_ON); axis_known_position[X_AXIS] = false; }
+#else
+  #define enable_x() ;
+  #define disable_x() ;
+#endif
+
+#if defined(Y_ENABLE_PIN) && Y_ENABLE_PIN > -1
+  #ifdef Y_DUAL_STEPPER_DRIVERS
+    #define  enable_y() { WRITE(Y_ENABLE_PIN, Y_ENABLE_ON); WRITE(Y2_ENABLE_PIN,  Y_ENABLE_ON); }
+    #define disable_y() { WRITE(Y_ENABLE_PIN,!Y_ENABLE_ON); WRITE(Y2_ENABLE_PIN, !Y_ENABLE_ON); axis_known_position[Y_AXIS] = false; }
+  #else
+    #define  enable_y() WRITE(Y_ENABLE_PIN, Y_ENABLE_ON)
+    #define disable_y() { WRITE(Y_ENABLE_PIN,!Y_ENABLE_ON); axis_known_position[Y_AXIS] = false; }
+  #endif
+#else
+  #define enable_y() ;
+  #define disable_y() ;
+#endif
+
+#if defined(Z_ENABLE_PIN) && Z_ENABLE_PIN > -1
+  #ifdef Z_DUAL_STEPPER_DRIVERS
+    #define  enable_z() { WRITE(Z_ENABLE_PIN, Z_ENABLE_ON); WRITE(Z2_ENABLE_PIN, Z_ENABLE_ON); }
+    #define disable_z() { WRITE(Z_ENABLE_PIN,!Z_ENABLE_ON); WRITE(Z2_ENABLE_PIN,!Z_ENABLE_ON); axis_known_position[Z_AXIS] = false; }
+  #else
+    #define  enable_z() WRITE(Z_ENABLE_PIN, Z_ENABLE_ON)
+    #define disable_z() { WRITE(Z_ENABLE_PIN,!Z_ENABLE_ON); axis_known_position[Z_AXIS] = false; }
+  #endif
+#else
+  #define enable_z() ;
+  #define disable_z() ;
+#endif
+
+#if defined(E0_ENABLE_PIN) && (E0_ENABLE_PIN > -1)
+  #define enable_e0() WRITE(E0_ENABLE_PIN, E_ENABLE_ON)
+  #define disable_e0() WRITE(E0_ENABLE_PIN,!E_ENABLE_ON)
+#else
+  #define enable_e0()  /* nothing */
+  #define disable_e0() /* nothing */
+#endif
+
+#if (EXTRUDERS > 1) && defined(E1_ENABLE_PIN) && (E1_ENABLE_PIN > -1)
+  #define enable_e1() WRITE(E1_ENABLE_PIN, E_ENABLE_ON)
+  #define disable_e1() WRITE(E1_ENABLE_PIN,!E_ENABLE_ON)
+#else
+  #define enable_e1()  /* nothing */
+  #define disable_e1() /* nothing */
+#endif
+
+#if (EXTRUDERS > 2) && defined(E2_ENABLE_PIN) && (E2_ENABLE_PIN > -1)
+  #define enable_e2() WRITE(E2_ENABLE_PIN, E_ENABLE_ON)
+  #define disable_e2() WRITE(E2_ENABLE_PIN,!E_ENABLE_ON)
+#else
+  #define enable_e2()  /* nothing */
+  #define disable_e2() /* nothing */
+#endif
+
+
+//临界点开始
+#ifndef CRITICAL_SECTION_START
+  #define CRITICAL_SECTION_START  unsigned char _sreg = SREG; cli();//清零中断
+  #define CRITICAL_SECTION_END    SREG = _sreg;
+#endif //CRITICAL_SECTION_START
+
+
+void get_command();					//得到命令的函数声明
+void process_commands();			//过程命令的函数声明
+void manage_inactivity();			//管理无动作的操作
+void FlushSerialRequestResend();	//更新串口需要重新发送数据
+void ClearToSend();					//清除后来发送
+void get_coordinates();
+
+void prepare_move();				//准备移动
+void kill();
+void Stop();
+
+bool IsStopped();					//判断是否停止
+
+void enquecommand(const char *cmd); //put an ascii command at the end of the current buffer.
+void enquecommand_P(const char *cmd); //put an ascii command at the end of the current buffer, read from flash
+void prepare_arc_move(char isclockwise);
+void clamp_to_software_endstops(float target[3]);
+
+void enquecommand(const char *cmd);
+void setup_killpin(void);
+void setup_photopin(void);
+void setup_powerhold(void);
+void suicide(void);
+void system_init(void);
+void get_command(void);
+float code_value(void);
+long code_value_long(void);
+bool code_seen(char code);
+static float x_home_pos(int extruder);
+static int x_home_dir(int extruder);
+static void axis_is_at_home(int axis);
+static void do_blocking_move_to(float x, float y, float z);
+static void do_blocking_move_relative(float offset_x, float offset_y, float offset_z);
+static void setup_for_endstop_move(void);
+static void clean_up_after_endstop_move(void);
+static void homeaxis(int axis);
+void process_commands(void);
+void FlushSerialRequestResend(void);
+void ClearToSend(void);
+void get_coordinates(void);
+void get_arc_coordinates(void);
+void clamp_to_software_endstops(float target[3]);
+void prepare_move(void);
+void prepare_arc_move(char isclockwise);
+void handle_status_leds(void);
+void manage_inactivity(void);
+void kill(void);
+void Stop(void);
+
+#endif

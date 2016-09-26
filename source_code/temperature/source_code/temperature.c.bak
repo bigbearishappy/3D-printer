@@ -1,0 +1,628 @@
+#include "Marlin.h"
+#include "ultralcd.h"
+#include "temperature.h"
+#include "watchdog.h"
+
+int target_temperature[EXTRUDERS] = { 0 };
+int target_temperature_bed = 0;
+int current_temperature_raw[EXTRUDERS] = { 0 };
+float current_temperature[EXTRUDERS] = { 0.0 };
+int current_temperature_bed_raw = 0;
+float current_temperature_bed = 0.0;
+
+#ifdef PIDTEMP
+  float Kp = DEFAULT_Kp;
+  float Ki = (DEFAULT_Ki * PID_dT);
+  float Kd = (DEFAULT_Kd / PID_dT);
+  #ifdef PID_ADD_EXTRUSION_RATE
+    float Kc = DEFAULT_Kc;
+  #endif
+#endif //PIDTEMP
+
+static volatile bool temp_meas_ready = false;
+
+#ifdef PIDTEMP
+  //static cannot be external:
+  static float temp_iState[EXTRUDERS] = { 0 };
+  static float temp_dState[EXTRUDERS] = { 0 };
+  static float pTerm[EXTRUDERS];
+  static float iTerm[EXTRUDERS];
+  static float dTerm[EXTRUDERS];
+  //int output;
+  static float pid_error[EXTRUDERS];
+  static float temp_iState_min[EXTRUDERS];
+  static float temp_iState_max[EXTRUDERS];
+  // static float pid_input[EXTRUDERS];
+  // static float pid_output[EXTRUDERS];
+  static bool pid_reset[EXTRUDERS];
+#endif //PIDTEMP
+
+static unsigned long  previous_millis_bed_heater;
+
+static unsigned char soft_pwm[EXTRUDERS];			//喷头加热的pwm值
+
+#ifdef FAN_SOFT_PWM
+  static unsigned char soft_pwm_fan;
+#endif
+
+# define ARRAY_BY_EXTRUDERS(v1, v2, v3) { v1 }
+
+static int minttemp[EXTRUDERS] = ARRAY_BY_EXTRUDERS( 0, 0, 0 );
+static int maxttemp[EXTRUDERS] = ARRAY_BY_EXTRUDERS( 16383, 16383, 16383 );
+
+#ifdef BED_MAXTEMP
+static int bed_maxttemp_raw = HEATER_BED_RAW_HI_TEMP;
+#endif
+
+#ifdef WATCH_TEMP_PERIOD							//定义温度传感器的初始值以及采样的频率
+int watch_start_temp[EXTRUDERS] = ARRAY_BY_EXTRUDERS(0,0,0);
+unsigned long watchmillis[EXTRUDERS] = ARRAY_BY_EXTRUDERS(0,0,0);
+#endif //WATCH_TEMP_PERIOD
+
+#ifndef SOFT_PWM_SCALE
+#define SOFT_PWM_SCALE 0
+#endif
+
+void PID_autotune(float temp, int extruder, int ncycles)
+{
+	float input = 0.0;
+	int cycles=0;
+	bool heating = true;
+	
+	//unsigned long temp_millis = millis();			//millis()是用来记录单片机运行时间的函数，移植时可以使用定时器来解决这个问题
+	//unsigned long t1=temp_millis;
+	//unsigned long t2=temp_millis;
+	long t_high = 0;
+	long t_low = 0;
+
+	long bias, d;
+	float Ku, Tu;
+	float Kp, Ki, Kd;
+	float max = 0, min = 10000;
+
+	if((extruder > EXTRUDERS)
+		#if(TEMP_BED_PIN <= -1)
+		||(extruder < 0)
+		#endif
+		)
+	{
+		printf("PID Autotune failed. Bad extruder number.");
+	}
+
+	printf("PID Autotune start");
+
+	disable_heater(); // switch off all heaters.
+	if (extruder<0)									//extruder小于0时表示当前PID控制的是热床的加热（虽然这里没有用PID热床）
+	{
+		soft_pwm_bed = (MAX_BED_POWER)/2;
+		bias = (MAX_BED_POWER)/2;
+		d = (MAX_BED_POWER)/2;
+	}
+	else
+	{
+		soft_pwm[extruder] = (PID_MAX)/2;
+		bias = PID_MAX)/2;
+		d = (PID_MAX)/2;
+	}
+
+	for( ; ; )
+	{
+		if(temp_meas_ready == true)
+		{
+			updateTemperaturesFromRawValues();
+
+			input = (extruder<0)?current_temperature_bed:current_temperature[extruder];//if the extruder number is less than 0,input = current_temperature_bed
+			
+			max = max>input?max:input;
+			min = min>input?input:min;
+			if(heating == true & input > temp)
+			{
+				if(/*当前系统计时*/ - t2 > 5000)
+				{
+					heating = false;
+					if(extruder < 0)
+						soft_pwm_bed = (bias - d) >> 1;
+					else
+						soft_pwm[extruder] = (bias - d) >> 1;
+					//在这里需要记录下当前系统运行时间
+					t_high = /*当前时间与之前时间的时间差*/
+					max = temp;
+				}
+			}
+			if(heating == false && input < temp)
+			{
+				if(/*当前系统运行时间*/ - t1 > 5000)
+				{
+					heating = true;
+					t2 = /*当前系统运行时间*/
+					t_low = t2 - t1;
+					if(cycles > 0)
+					{
+						bias += (d*(t_high - t_low))/(t_low + t_high);//不懂意思
+						bias = constrain(bias, 20 ,(extruder<0?(MAX_BED_POWER):(PID_MAX))-20);//constrain(amt, low, high),如果amt < low,返回low；如果amt > high，返回high
+						if(bias > (extruder<0?(MAX_BED_POWER):(PID_MAX))/2) 
+							d = (extruder<0?(MAX_BED_POWER):(PID_MAX)) - 1 - bias;
+						else 
+							d = bias;//
+
+						printf(" bias: %d\r\n", bias); 
+						printf(" d: %d\r\n", d);
+						printf(" min: %.2lf\r\n", min);
+						printf(" max: %.2lf\r\n", max);
+						if(cycles > 2)
+						{
+							Ku = (4.0*d)/(3.14159*(max-min)/2.0);//不懂意思
+							Tu = ((float)(t_low + t_high)/1000.0);//不懂意思
+							printf(" Ku: %.2lf\r\n", Ku);
+							printf(" Tu: %.2lf\r\n", Tu);
+							Kp = 0.6 * Ku;
+							Ki = 2 * Kp/Tu;
+							Kd = Kp * Tu / 8;
+							printf(" Clasic PID \r\n");
+							printf(" Kp: %.2lf\r\n", Kp);
+							printf(" Ki: %.2lf\r\n", Ki);
+							printf(" Kd: %.2lf\r\n", Kd);
+						}//end if cycles > 2
+					}//end if cycles > 0
+					if(extruder < 0)
+						soft_pwm_bed = (bias + d) >> 1;
+					else
+						soft_pwm[extruder] = (bias + d) >> 1;
+					cycles++;
+					min = temp;
+				}//end if millis() - t1 > 5000
+			}//end if heating == false && input
+		}//end if temp_meas_ready == true
+		if(input > (temp + 20))
+		{
+			printf("PID Autotune failed! Temperature to high\r\n");
+			//return ;
+		}
+		if (/*当前系统运行时间*/ - temp_millis > 2000)
+		{
+			int p;
+			if (extruder < 0)
+				p = soft_pwm_bed;			printf("ok B\r\n");
+			else
+				p = soft_pwm[extruder];		printf("ok T\r\n");
+		}
+		printf(" %.2lf\r\n", input);
+		printf(" @: \r\n");
+		printf("%d\r\n", p);
+
+		/*记录下当前系统一共运行的时间*/ //temp_millis = millis();
+	}
+	//if(((millis() - t1) + (millis() - t2)) > (10L*60L*1000L*2L)) {
+	//	SERIAL_PROTOCOLLNPGM("PID Autotune failed! timeout");
+	//	return;
+    //}							//这部分代码通过计算系统运行时间判断PID运算是否超时
+	if (cycles > ncycyles)
+	{
+		printf("PID Autotune finished! Put the Kp, Ki and Kd constants into Configuration.h\r\n");
+		//return ;
+	}
+	//lcd_update();
+
+}//这里还差一个中括号
+
+
+/************************************************************************************************
+name:		updatePID()
+function:	update the PID
+			[in]	-	void
+			[out]	-	void
+************************************************************************************************/
+void updatePID(void)
+{
+#ifdef PIDTEMP
+	int e;
+	for(e = 0; e < EXTRUDERS; e++)
+	{
+		temp_iState_max[e] = PID_INTEGRAL_DRIVE_MAX / Ki;
+	}
+#endif
+
+#ifdef PIDTEMPBED
+#endif
+}
+
+/************************************************************************************************
+name:		getHeaterPower()
+function:	get the pwm value of a extruder
+			[in]	-	heater:the target extruder
+			[out]	-	soft_pwm[heater]:the pwm value of the target extruder
+************************************************************************************************/
+int getHeaterPower(int heater)
+{
+	if (heater < 0)
+	{
+		return soft_pwm_bed;
+	}
+	return soft_pwm[heater];
+}
+
+/***********************************************************************************************
+name:		manage_heater()
+function:	use the pid to control the temp of the heater
+			[in]	-	void
+			[out]	-	void
+***********************************************************************************************/
+void manage_heater(void)
+{
+	float pid_input;
+	float pid_output;
+	int e;
+
+	if (temp_meas_ready == true)
+	{
+		updateTemperaturesFromRawValues();
+		for(e = 0; e < EXTRUDERS; e++)
+		{
+			#ifdef PIDTEMP
+				pid_input = current_temperature[e];
+				#ifdef PID_OPENLOOP
+				#else
+				pid_output = constrain(target_temperature[e], 0, PID_MAX);//constrain(x, a, b);将x的值约束到a和b之间
+				#endif
+				#ifdef PID_DEBUG
+					printf(" PIDDEBUG \r\n");
+					printf("e = %d\r\n", e);
+					printf(": Input: %.2lf\r\n", pid_input);
+					printf(": Output: %.2lf\r\n", pid_output);
+					printf(" pTerm: %.2lf\r\n", pTerm[e]);
+					printf(" iTerm: %.2lf\r\n", iTerm[e]);
+					printf(" dTerm: %.2lf\r\n", dTerm[e]);
+				#endif
+			#else
+				pid_output = 0;
+				if(current_temperature[e] < target_temperature[e])
+					pid_output = PID_MAX;
+			#endif
+
+			// Check if temperature is within the correct range
+			if((current_temperature[e] > minttemp[e]) && (current_temperature[e] < maxttemp[e])) 
+				soft_pwm[e] = (int)pid_output >> 1;
+			else 
+				soft_pwm[e] = 0;
+		}//end for(e = 0; e < EXTRUDERS; e++)
+	}
+}//end manage heater
+
+/***************************************************************************************
+name:		analog2temp()
+function:	get the analog data
+			[in]	-	raw:the data from the sensor
+						e:the target extruder
+			[out]	-	float:the temperature which can be used in the calculate
+***************************************************************************************/
+static float analog2temp(int raw, uint8_t e)
+{
+	if (e >= EXTRUDERS)
+	{
+		printf("%d", (int)e);
+		printf(" - Invalid extruder number\r\n");
+		kill();
+	}
+#ifdef HEATER_0_USES_MAX6675
+    if (e == 0)
+      return 0.25 * raw;
+#endif
+
+//温度计算核心代码   不懂意思
+  if(heater_ttbl_map[e] != NULL)
+  {
+    float celsius = 0;
+    uint8_t i;
+    short (*tt)[][2] = (short (*)[][2])(heater_ttbl_map[e]);
+
+    for (i=1; i<heater_ttbllen_map[e]; i++)
+    {
+      if (PGM_RD_W((*tt)[i][0]) > raw)
+      {
+        celsius = PGM_RD_W((*tt)[i-1][1]) + 
+          (raw - PGM_RD_W((*tt)[i-1][0])) * 
+          (float)(PGM_RD_W((*tt)[i][1]) - PGM_RD_W((*tt)[i-1][1])) /
+          (float)(PGM_RD_W((*tt)[i][0]) - PGM_RD_W((*tt)[i-1][0]));
+        break;
+      }
+    }
+
+    // Overflow: Set to last value in the table
+    if (i == heater_ttbllen_map[e]) celsius = PGM_RD_W((*tt)[i-1][1]);
+
+    return celsius;
+  }
+//温度计算核心代码
+
+  return ((raw * ((5.0 * 100.0) / 1024.0) / OVERSAMPLENR) * TEMP_SENSOR_AD595_GAIN) + TEMP_SENSOR_AD595_OFFSET;
+}
+
+/********************************************************************************************
+name:		analog2tempBed()
+function:	calculate the temperature of the bed
+			[in]	-	raw:the data from the sensor
+			[out]	-	float:the temperature which can be used in the calculate
+********************************************************************************************/
+static float analog2tempBed(int raw)
+{
+#ifdef BED_USES_THERMISTOR
+	float celsius = 0;
+	byte i;
+	
+	for(i = 1; i < BEDTEMPTABLE_LEN; i++)
+	{
+		if(read_word(BEDTEMPTABLE[i][0]) > raw)
+		{
+			celsius = read_word(BEDTEMPTABLE[I - 1][1]) + (raw - read_word(BEDTEMPTABLE[I - 1][0])) *
+					  (float)(read_word(BEDTEMPTABLE[i][1]) - read_word(BEDTEMPTABLE[i - 1][1])) /
+					  (float)(read_word(BEDTEMPTABLE[i][0]) - read_word(BEDTEMPTABLE[i - 1][0]));
+			break;
+		}
+	}
+
+    // Overflow: Set to last value in the table
+    if (i == BEDTEMPTABLE_LEN) celsius = PGM_RD_W(BEDTEMPTABLE[i-1][1]);
+
+	return celsius;
+#elif defined BED_USES_AD595
+	return ((raw * ((5.0 * 100.0) / 1024.0) / OVERSAMPLENR) * TEMP_SENSOR_AD595_GAIN) + TEMP_SENSOR_AD595_OFFSET;
+#else
+	return 0;
+#endif
+#endif
+}//end analog2tempBed
+
+/******************************************************************************************************
+name:		updateTemperaturesFromRawValues()
+function:	update the temperatrue from the rawvalues
+			[in]	-	void
+			[out]	-	void
+******************************************************************************************************/
+static void updateTemperatursFromRawValues()
+{
+	uint8_t e;
+	for(e = 0; e < EXTRUDERS; e++)
+		current_temperature[e] = analog2temp(current_temperature_raw[e], e);
+	current_temperature_bed = analog2tempBed(current_temperature_raw, 1);
+
+	watchdog_reset();//feed the dog
+
+	CRITICAL_SECTION_START;//临界区
+    temp_meas_ready = false;
+    CRITICAL_SECTION_END;
+}
+
+/******************************************************************************************************
+name:		tp_init()
+function:	ininialize the temperature of the printer
+			[in]	-	void
+			[out]	-	void
+******************************************************************************************************/
+void tp_init()
+{
+	int e;
+  //Finish init of mult extruder arrays 
+  for(e = 0; e < EXTRUDERS; e++) {
+    // populate with the first value 
+    maxttemp[e] = maxttemp[0];
+#ifdef PIDTEMP
+    temp_iState_min[e] = 0.0;
+    temp_iState_max[e] = PID_INTEGRAL_DRIVE_MAX / Ki;
+#endif //PIDTEMP
+
+  #if defined(HEATER_0_PIN) && (HEATER_0_PIN > -1)						//判断加热头引脚定义
+    SET_OUTPUT(HEATER_0_PIN);
+  #endif
+	  
+#if defined(FAN_PIN) && (FAN_PIN > -1)									//判断风扇引脚定义 
+    SET_OUTPUT(FAN_PIN);
+#endif
+
+#ifdef HEATER_0_USES_MAX6675											//判断加热头使用的加热器    
+    SET_OUTPUT(MAX6675_SS);
+    WRITE(MAX6675_SS,1);
+#endif
+
+  // Set analog inputs
+  //ADCSRA = 1<<ADEN | 1<<ADSC | 1<<ADIF | 0x07;
+  //DIDR0 = 0;
+
+  #if defined(TEMP_0_PIN) && (TEMP_0_PIN > -1)							//判断测量喷头温度的引脚
+    #if TEMP_0_PIN < 8
+       DIDR0 |= 1 << TEMP_0_PIN; 
+    #else
+       DIDR2 |= 1<<(TEMP_0_PIN - 8); 
+    #endif
+  #endif
+
+  #if defined(TEMP_BED_PIN) && (TEMP_BED_PIN > -1)						//判断测量热床温度的引脚
+    #if TEMP_BED_PIN < 8
+       DIDR0 |= 1<<TEMP_BED_PIN; 
+    #else
+       DIDR2 |= 1<<(TEMP_BED_PIN - 8); 
+    #endif
+  #endif
+
+  // Use timer0 for temperature measurement
+  // Interleave temperature interrupt with millies interrupt			//利用定时器0的中断来测量温度
+    OCR0B = 128;
+	TIMSK0 |= (1<<OCIE0B);
+
+	delay(250);															//等待温度测量完成
+
+#ifdef HEATER_0_MINTEMP													//定义最低温度最高温度
+  minttemp[0] = HEATER_0_MINTEMP;
+  while(analog2temp(minttemp_raw[0], 0) < HEATER_0_MINTEMP) {
+#if HEATER_0_RAW_LO_TEMP < HEATER_0_RAW_HI_TEMP
+    minttemp_raw[0] += OVERSAMPLENR;
+#else
+    minttemp_raw[0] -= OVERSAMPLENR;
+#endif
+  }
+#endif //MINTEMP
+#ifdef HEATER_0_MAXTEMP
+  maxttemp[0] = HEATER_0_MAXTEMP;
+  while(analog2temp(maxttemp_raw[0], 0) > HEATER_0_MAXTEMP) {
+#if HEATER_0_RAW_LO_TEMP < HEATER_0_RAW_HI_TEMP
+    maxttemp_raw[0] -= OVERSAMPLENR;
+#else
+    maxttemp_raw[0] += OVERSAMPLENR;
+#endif
+  }
+#endif //MAXTEMP
+
+#ifdef BED_MAXTEMP														//定义热床最高温度，不需要定义最低温度
+  while(analog2tempBed(bed_maxttemp_raw) > BED_MAXTEMP) {
+#if HEATER_BED_RAW_LO_TEMP < HEATER_BED_RAW_HI_TEMP
+    bed_maxttemp_raw -= OVERSAMPLENR;
+#else
+    bed_maxttemp_raw += OVERSAMPLENR;
+#endif
+  }
+#endif //BED_MAXTEMP
+}
+
+/**************************************************************************************
+name:		disable_heater()
+function:	disable the heater
+			[in]	-	void
+			[out]	-	void
+**************************************************************************************/
+void disable_heater()
+{
+	int i;
+	for(i = 0; i < EXTRUDERS; i++)
+		setTargetHotend(0);
+	setTargetBed(0);
+
+  #if defined(TEMP_0_PIN) && TEMP_0_PIN > -1							//失能喷头的加热io口
+  target_temperature[0]=0;
+  soft_pwm[0]=0;
+   #if defined(HEATER_0_PIN) && HEATER_0_PIN > -1  
+     WRITE(HEATER_0_PIN,LOW);							//I/O write low to disable
+   #endif
+  #endif
+
+  #if defined(TEMP_BED_PIN) && TEMP_BED_PIN > -1						//失能热床的加热io口
+    target_temperature_bed=0;
+    soft_pwm_bed=0;
+    #if defined(HEATER_BED_PIN) && HEATER_BED_PIN > -1  
+      WRITE(HEATER_BED_PIN,LOW);
+    #endif
+  #endif 
+}//end disable_heater
+
+/*******************************************************************************************
+name:		max_temp_error()
+function:	stop the printer when the temperature is more than the max temperature
+			[in]	-	e:the target extruder
+			[out]	-	void
+*******************************************************************************************/
+void max_temp_error(uint8_t e)
+{
+	disable_heater();
+	if(IsStopped() == false)
+	{
+		printf("%d", e);
+		printf(": Extruder switched off. MAXTEMP triggered !\r\n");
+		printf("Err: MAXTEMP\r\n");
+	}
+
+#ifdef BOGUS_TEMPERATURE_FAILSAFE_OVERRIDE
+	Stop();
+#endif
+}
+
+/******************************************************************************************
+name:		min_temp_error()
+function:	stop the printer when the temperature is less than the min temperature
+			[in]	-	e:the target extruder
+			[out]	-	void
+******************************************************************************************/
+void min_temp_error(uint8_t e)
+{
+	disable_heater();
+	if(IsStopped() == false)
+	{
+		printf("%d", e);
+		printf(": Extruder switched off. MIXTEMP triggered !\r\n");
+		printf("Err: MIXTEMP\r\n");
+	}
+
+#ifdef BOGUS_TEMPERATURE_FAILSAFE_OVERRIDE
+	Stop();
+#endif
+}
+
+/******************************************************************************************
+name:		bed_max_temp_error()
+function:	stop the printer when the bed's temperature is more than the max temperature
+			[in]	-	void
+			[out]	-	void
+******************************************************************************************/
+void bed_max_temp_error(void)
+{
+#if HEATER_BED_PIN > -1
+  WRITE(HEATER_BED_PIN, 0);
+#endif
+
+	if(IsStopped() == false)
+	{
+		printf("Temperature heated bed switched off. MAXTEMP triggered !\r\n");
+		printf("Err: MAXTEMP\r\n");
+	}
+
+#ifdef BOGUS_TEMPERATURE_FAILSAFE_OVERRIDE
+	Stop();
+#endif
+}
+
+#ifdef HEATER_0_USES_MAX6675
+#define MAX6675_HEAT_INTERVAL 250
+long max6675_previous_millis = -HEAT_INTERVAL;
+int max6675_temp = 2000;
+
+/*******************************************************************************************
+name:		read_max6675
+function:	get the register value from the mcu
+			[in]	-	void
+			[out]	-	int:the register value
+*******************************************************************************************/
+int read_max6675(void)
+{
+	//通过adc读取模拟量
+}
+
+#endif
+
+/************************************************************************************************
+name:		ISR
+function:	interrupt of timer0
+************************************************************************************************/
+
+
+#ifdef PIDTEMP
+// Apply the scale factors to the PID values
+
+
+float scalePID_i(float i)
+{
+	return i*PID_dT;
+}
+
+float unscalePID_i(float i)
+{
+	return i/PID_dT;
+}
+
+float scalePID_d(float d)
+{
+    return d/PID_dT;
+}
+
+float unscalePID_d(float d)
+{
+	return d*PID_dT;
+}
+
+#endif //PIDTEMP
