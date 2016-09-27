@@ -407,7 +407,7 @@ void planner_forward_pass() {
 // updating the blocks.
 /***************************************************************************************************
 name:		planner_recalculate_trapezoids()
-function:	recalculate the trapezoid speed profiles for all blocks
+function:	recalculate the trapezoid speed profiles for all blocks.
 			[in]	-	void
 			[out]	-	void
 ***************************************************************************************************/
