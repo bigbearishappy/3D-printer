@@ -13,6 +13,11 @@
 #define MAX_CMD_SIZE					96
 #define BUFSIZE							4
 
+#define AUTOTEMP
+#ifdef AUTOTEMP
+  #define AUTOTEMP_OLDWEIGHT 0.98
+#endif
+
 #ifdef PIDTEMP
 // this adds an experimental additional term to the heatingpower, proportional to the extrusion speed.
 // if Kc is choosen well, the additional required power due to increased melting should be compensated.

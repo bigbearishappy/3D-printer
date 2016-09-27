@@ -1,6 +1,9 @@
 #include "Marlin.h"
 #include "temperature.h"
 
+//public values
+int target_temperature[EXTRUDERS] = { 0 };
+
 //private value
 #ifdef PIDTEMP
 static float temp_iState_min[EXTRUDERS];
@@ -79,6 +82,10 @@ void tp_init()
   
 }
 
+int isHeatingHotend(uint8_t extruder){  
+  return target_temperature[extruder] > current_temperature[extruder];
+}
+
 /****************************************************************************
 name:		analog2temp
 function:	
@@ -154,3 +161,8 @@ float degHotend(uint8_t extruder)
 {  
   return current_temperature[extruder];
 }
+
+float degTargetHotend(uint8_t extruder) {  
+  return target_temperature[extruder];
+}
+

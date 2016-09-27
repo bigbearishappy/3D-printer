@@ -19,4 +19,7 @@ process_commands()进行到case 29:  					( ok at 20160518)
 prepare_move()完成移植								( ok at 20160518)								
 
 下一步移植任务：
-plan_buffer_line()完成移植							
+plan_buffer_line()完成移植							( ok at 20160925)
+
+下一步移植任务：
+planner_reverse_pass()完成移植						( ok at 20150926)							

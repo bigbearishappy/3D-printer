@@ -7,6 +7,7 @@
 #include"language.h"
 #include"BSP.h"
 
+int target_temperature_bed = 0;
 static int buflen = 0;
 static char serial_char;
 static uint32_t serial_count = 0;
@@ -20,6 +21,8 @@ static long gcode_N, gcode_LastN;
 static char *strchr_pointer; // just a pointer to find chars in the cmd string like X, Y, Z, E, etc
 uint8_t Stopped = false;
 static unsigned long previous_millis_cmd = 0;
+
+const int sensitive_pins[] = 0;//SENSITIVE_PINS; // Sensitive pin list for M42
 
 //public value
 float current_position[NUM_AXIS] = { 0.0, 0.0, 0.0, 0.0 };
@@ -43,6 +46,15 @@ static uint8_t relative_mode = false;  //Determines Absolute or Relative Coordin
 static float offset[3] = {0.0, 0.0, 0.0};
 static uint8_t home_all_axis = true;
 uint8_t axis_known_position[3] = {false, false, false};
+
+unsigned long starttime = 0;
+unsigned long stoptime = 0;
+
+static uint8_t tmp_extruder;
+int CooldownNoWait = true;
+int target_direction;
+
+int8_t i = 0;
 
 /****************************************************************************
 name:		main
@@ -107,6 +119,27 @@ void system_init(void)
   st_init();				// Initialize stepper, this enables interrupts!
   //servo_init();
   //delay(1000);
+}
+
+/*****************************************************************************************
+name:		setTargetHotend()
+function:	set a extruder to a degree
+			[in]	-	celsius:target degree
+						extruder:the target extruder
+			[out]	-	void
+*****************************************************************************************/
+void setTargetHotend(const float celsius, uint8_t extruder) {  
+  target_temperature[extruder] = celsius;
+}
+
+/***************************************************************************************
+name:		setTargetBed()
+function:	set the bed to a degree
+			[in]	-	celsius:target degree
+			[out]	-	void
+***************************************************************************************/
+void setTargetBed(const float celsius) {  
+  target_temperature_bed = celsius;
 }
 
 /****************************************************************************
@@ -257,6 +290,16 @@ void process_command(void)
 	unsigned long codenum; //throw away variable
 	char *starpos = NULL;
 	int8_t i;
+	char time[30];
+    unsigned long t = 0;
+    int sec,min;
+    int pin_status;
+    int pin_number;
+	int8_t cur_extruder;
+	long residencyStart;
+
+	uint32_t current_time = 0;
+
 	if(code_seen('G'))
 	{
 		switch((int)code_value())
@@ -406,6 +449,249 @@ void process_command(void)
       		previous_millis_cmd = tim_millis;//millis();
       		endstops_hit_on_purpose();
       		break;
+    		case 90: // G90					//set to absolute positioning
+     		relative_mode = false;
+			break;
+			case 91: // G91					//set to relative positioning
+  			relative_mode = true;
+  			break;
+			case 92:
+      		if(!code_seen(axis_codes[E_AXIS]))
+        		st_synchronize();
+      		for(i=0; i < NUM_AXIS; i++) {
+        		if(code_seen(axis_codes[i])) {
+           			if(i == E_AXIS) {
+             			current_position[i] = code_value();
+             			plan_set_e_position(current_position[E_AXIS]);
+           			}
+           			else {
+             		current_position[i] = code_value()+add_homeing[i];
+             		plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
+           			}
+        		}
+      		}
+			break;
+		}
+	}
+
+	else if(code_seen('M')){
+	    switch( (int)code_value() ){
+#ifdef ULTIPANEL
+    	case 0: // M0 - 					//Unconditional stop - Wait for user button press on LCD
+    	case 1: // M1 - 					//Conditional stop - Wait for user button press on LCD
+    	{
+      		//LCD_MESSAGEPGM(MSG_USERWAIT);
+      		codenum = 0;
+      		if(code_seen('P')) codenum = code_value(); // milliseconds to wait
+      		if(code_seen('S')) codenum = code_value() * 1000; // seconds to wait
+
+      		st_synchronize();
+      		previous_millis_cmd = tim_millis;//millis();
+      		if (codenum > 0){
+        		codenum += tim_millis;//millis();  // keep track of when we started waiting
+	        	while(tim_millis  < codenum /*&& !lcd_clicked()*/){
+	          	//manage_heater();
+	          	//manage_inactivity();
+	          	//lcd_update();
+	        	}
+      		}
+			/*else{
+	        while(!lcd_clicked()){
+	          manage_heater();
+	          manage_inactivity();
+	          lcd_update();
+	        }
+	      }*/
+      		//LCD_MESSAGEPGM(MSG_RESUMING);
+    	}
+    	break;
+#endif
+    case 17:						//start all the motor
+        //LCD_MESSAGEPGM(MSG_NO_MOVE);
+        /*enable_x();
+        enable_y();
+        enable_z();
+        enable_e0();
+        enable_e1();
+        enable_e2();  */
+      break;
+
+    case 31: //M31 					//take time since the start of the SD print or an M109 command
+      {
+      stoptime = tim_millis;//millis();
+	  t = (stoptime-starttime)/1000;
+      min = t/60;
+      sec = t%60;
+      //sprintf_P(time, PSTR("%i min, %i sec"), min, sec);
+      //SERIAL_ECHO_START;
+      //SERIAL_ECHOLN(time);
+      //lcd_setstatus(time);
+      //autotempShutdown();
+      }
+      break;
+    case 42: //M42 -					//Change pin status via gcode
+      if (code_seen('S'))
+      {
+        pin_status = code_value();
+        pin_number = 0;//LED_PIN;
+        if (code_seen('P') && pin_status >= 0 && pin_status <= 255)
+          pin_number = code_value();
+        for(i = 0; i < (int8_t)sizeof(sensitive_pins); i++)
+        {
+          if (sensitive_pins[i] == pin_number)
+          {
+            pin_number = -1;
+            break;
+          }
+        }
+      #if defined(FAN_PIN) && FAN_PIN > -1
+        if (pin_number == FAN_PIN)
+          fanSpeed = pin_status;
+      #endif
+        if (pin_number > -1)
+        {
+          //pinMode(pin_number, OUTPUT);
+          //digitalWrite(pin_number, pin_status);
+          //analogWrite(pin_number, pin_status);
+        }
+      }
+      break;
+
+    case 104: // M104					//set the extruder temperature
+      if(setTargetedHotend(104)){
+        break;
+      }
+      if (code_seen('S')) 
+	  	setTargetHotend(code_value(), tmp_extruder);
+      //setWatch();
+      break;
+	  case 140: // M140 					//set bed temp
+      if (code_seen('S')) 
+	  	setTargetBed(code_value());
+	  break;
+    case 105: // M105					//get the temperature of extruder
+      if(setTargetedHotend(105)){
+        break;
+        }
+      #if defined(TEMP_0_PIN) && TEMP_0_PIN > -1
+        //SERIAL_PROTOCOLPGM("ok T:");
+        //SERIAL_PROTOCOL_F(degHotend(tmp_extruder),1);
+        //SERIAL_PROTOCOLPGM(" /");
+        //SERIAL_PROTOCOL_F(degTargetHotend(tmp_extruder),1);
+        #if defined(TEMP_BED_PIN) && TEMP_BED_PIN > -1
+          //SERIAL_PROTOCOLPGM(" B:");
+          //SERIAL_PROTOCOL_F(degBed(),1);
+          //SERIAL_PROTOCOLPGM(" /");
+          //SERIAL_PROTOCOL_F(degTargetBed(),1);
+        #endif //TEMP_BED_PIN
+        for(cur_extruder = 0; cur_extruder < EXTRUDERS; ++cur_extruder) {
+          //SERIAL_PROTOCOLPGM(" T");
+          //SERIAL_PROTOCOL(cur_extruder);
+          //SERIAL_PROTOCOLPGM(":");
+          //SERIAL_PROTOCOL_F(degHotend(cur_extruder),1);
+          //SERIAL_PROTOCOLPGM(" /");
+          //SERIAL_PROTOCOL_F(degTargetHotend(cur_extruder),1);
+        }
+      #else
+        //SERIAL_ERROR_START;
+        //SERIAL_ERRORLNPGM(MSG_ERR_NO_THERMISTORS);
+      #endif
+
+        //SERIAL_PROTOCOLPGM(" @:");
+        //SERIAL_PROTOCOL(getHeaterPower(tmp_extruder));
+
+        //SERIAL_PROTOCOLPGM(" B@:");
+        //SERIAL_PROTOCOL(getHeaterPower(-1));
+
+        //SERIAL_PROTOCOLLN("");
+      return;
+	  break;
+
+      case 109:							//set the target temperature and wait to reach it
+      {// M109 - Wait for extruder heater to reach target.
+	  	if(setTargetedHotend(109)){
+      		break;
+      	}
+      //LCD_MESSAGEPGM(MSG_HEATING);
+      #ifdef AUTOTEMP
+        autotemp_enabled=false;
+      #endif
+	      if (code_seen('S')) {
+	        setTargetHotend(code_value(), tmp_extruder);
+	        CooldownNoWait = true;
+	      }else if (code_seen('R')) {
+	        setTargetHotend(code_value(), tmp_extruder);
+	        CooldownNoWait = false;
+	      }
+      #ifdef AUTOTEMP
+        if (code_seen('S')) autotemp_min=code_value();
+        if (code_seen('B')) autotemp_max=code_value();
+        if (code_seen('F'))
+        {
+          autotemp_factor = code_value();
+          autotemp_enabled = true;
+        }
+      #endif
+      //setWatch();
+      codenum = tim_millis;//millis();
+
+      /* See if we are heating up or cooling down */
+      target_direction = isHeatingHotend(tmp_extruder); // true if heating, false if cooling
+
+      #ifdef TEMP_RESIDENCY_TIME
+        //long residencyStart;
+        residencyStart = -1;
+        /* continue to loop until we have reached the target temp
+          _and_ until TEMP_RESIDENCY_TIME hasn't passed since we reached it */
+		current_time = tim_millis;
+        while((residencyStart == -1) ||
+              (residencyStart >= 0 && (((unsigned int) (current_time - residencyStart)) < (TEMP_RESIDENCY_TIME * 1000UL))) ) {
+      #endif //TEMP_RESIDENCY_TIME
+	      current_time = tim_millis;
+          if( (current_time - codenum) > 1000UL )
+          { //Print Temp Reading and remaining time every 1 second while heating up/cooling down
+            //SERIAL_PROTOCOLPGM("T:");
+            //SERIAL_PROTOCOL_F(degHotend(tmp_extruder),1);
+            //SERIAL_PROTOCOLPGM(" E:");
+            //SERIAL_PROTOCOL((int)tmp_extruder);
+            #ifdef TEMP_RESIDENCY_TIME
+              //SERIAL_PROTOCOLPGM(" W:");
+              if(residencyStart > -1)
+              {
+			     current_time = tim_millis;
+                 codenum = ((TEMP_RESIDENCY_TIME * 1000UL) - (current_time - residencyStart)) / 1000UL;
+                 //SERIAL_PROTOCOLLN( codenum );
+              }
+              else
+              {
+                 //SERIAL_PROTOCOLLN( "?" );
+              }
+            #else
+              //SERIAL_PROTOCOLLN("");
+            #endif
+            codenum = tim_millis;
+          }
+          //manage_heater();
+          //manage_inactivity();
+          //lcd_update();
+        #ifdef TEMP_RESIDENCY_TIME
+            /* start/restart the TEMP_RESIDENCY_TIME timer whenever we reach target temp for the first time
+              or when current temp falls outside the hysteresis after target temp was reached */
+          if ((residencyStart == -1 &&  target_direction && (degHotend(tmp_extruder) >= (degTargetHotend(tmp_extruder)-TEMP_WINDOW))) ||
+              (residencyStart == -1 && !target_direction && (degHotend(tmp_extruder) <= (degTargetHotend(tmp_extruder)+TEMP_WINDOW))) ||
+              (residencyStart > -1 && labs(degHotend(tmp_extruder) - degTargetHotend(tmp_extruder)) > TEMP_HYSTERESIS) )
+          {
+            residencyStart = tim_millis;//millis();
+          }
+        #endif //TEMP_RESIDENCY_TIME
+        
+        //LCD_MESSAGEPGM(MSG_HEATING_COMPLETE);
+        starttime = tim_millis;//millis();
+        previous_millis_cmd = tim_millis;//millis();
+      }
+      break;
+
+	  }
 
 		}
 	}
@@ -596,6 +882,39 @@ void get_arc_coordinates(void)
    else {
      offset[1] = 0.0;
    }
+}
+
+/***************************************************************************************
+name:		setTargetedHotend()
+function:	set the target hotend
+			[in]	-	code:the code to chose the hotend
+			[out]	-	void
+***************************************************************************************/
+int setTargetedHotend(int code){
+  tmp_extruder = active_extruder;
+  if(code_seen('T')) {
+    tmp_extruder = code_value();
+    if(tmp_extruder >= EXTRUDERS) {
+      //SERIAL_ECHO_START;
+      switch(code){
+        case 104:
+          //SERIAL_ECHO(MSG_M104_INVALID_EXTRUDER);
+          break;
+        case 105:
+          //SERIAL_ECHO(MSG_M105_INVALID_EXTRUDER);
+          break;
+        case 109:
+          //SERIAL_ECHO(MSG_M109_INVALID_EXTRUDER);
+          break;
+        case 218:
+          //SERIAL_ECHO(MSG_M218_INVALID_EXTRUDER);
+          break;
+      }
+      //SERIAL_ECHOLN(tmp_extruder);
+      return true;
+    }
+  }
+  return false;
 }
 
 // ·¢ËÍÊý¾Ý

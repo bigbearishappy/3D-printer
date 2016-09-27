@@ -452,6 +452,11 @@
               <FilePath>.\source_code\BSP\USART.c</FilePath>
             </File>
             <File>
+              <FileName>TIM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\BSP\TIM.c</FilePath>
+            </File>
+            <File>
               <FileName>BSP.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\source_code\BSP\BSP.c</FilePath>

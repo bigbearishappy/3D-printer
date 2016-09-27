@@ -65,16 +65,28 @@ typedef struct {
   volatile char busy;
 } block_t;
 
+#ifdef AUTOTEMP
+    extern int autotemp_enabled;
+    extern float autotemp_max;
+    extern float autotemp_min;
+    extern float autotemp_factor;
+#endif
+
 void plan_init(void);
 static int8_t prev_block_index(int8_t block_index);
-void st_wake_up(void);
 uint8_t blocks_queued(void);
 float max_allowable_speed(float acceleration, float target_velocity, float distance);
 float estimate_acceleration_distance(float initial_rate, float target_rate, float acceleration);
 float intersection_distance(float initial_rate, float final_rate, float acceleration, float distance);
 void calculate_trapezoid_for_block(block_t *block, float entry_factor, float exit_factor);
 void planner_reverse_pass(void);
+void planner_forward_pass(void);
 void planner_recalculate(void);
+void planner_recalculate_trapezoids(void);
+void planner_reverse_pass_kernel(block_t *previous, block_t *current, block_t *next);
+void planner_forward_pass_kernel(block_t *previous, block_t *current, block_t *next);
 void plan_buffer_line(const float x, const float y, const float z, const float e, float feed_rate, const uint8_t extruder);
+void plan_set_e_position(const float e);
+void plan_set_position(const float x, const float y, const float z, const float e);
 
 #endif

@@ -1,5 +1,6 @@
-#include"planner.h"
 #include"Marlin.h"
+#include"planner.h"
+#include "stepper.h"
 #include"temperature.h"
 #include<string.h>
 
@@ -18,6 +19,13 @@ float mintravelfeedrate;
 float max_xy_jerk;
 float max_z_jerk;
 float max_e_jerk;
+
+#ifdef AUTOTEMP
+float autotemp_max=250;
+float autotemp_min=210;
+float autotemp_factor=0.1;
+int autotemp_enabled=false;
+#endif
 
 //private value
 block_t block_buffer[BLOCK_BUFFER_SIZE];            // A ring buffer for motion instfructions
@@ -68,18 +76,6 @@ static int8_t prev_block_index(int8_t block_index)
   }
   block_index--;
   return(block_index);
-}
-
-/***************************************************************************************************
-name:		st_wake_up()
-function:	wake up the stepper
-			[in]	-	void
-			[out]	-	void
-***************************************************************************************************/
-void st_wake_up(void)
-{
-  //  TCNT1 = 0;
-  //ENABLE_STEPPER_DRIVER_INTERRUPT();
 }
 
 /****************************************************************************
@@ -215,6 +211,41 @@ void calculate_trapezoid_for_block(block_t *block, float entry_factor, float exi
 
 }
 
+// The kernel called by planner_recalculate() when scanning the plan from last to first entry.
+/***************************************************************************************************
+name:		planner_reverse_pass_kernel()
+function:	when the scanning to the last,it helps to go to the first entry
+			[in]	-	*previous
+						*current
+						*next
+			[out]	-	void
+***************************************************************************************************/
+void planner_reverse_pass_kernel(block_t *previous, block_t *current, block_t *next) {
+  if(!current) { 
+    return; 
+  }
+
+  if (next) {
+    // If entry speed is already at the maximum entry speed, no need to recheck. Block is cruising.
+    // If not, block in state of acceleration or deceleration. Reset entry speed to maximum and
+    // check for maximum allowable speed reductions to ensure maximum possible planned speed.
+    if (current->entry_speed != current->max_entry_speed) {
+
+      // If nominal length true, max junction speed is guaranteed to be reached. Only compute
+      // for max allowable speed if block is decelerating and nominal length is false.
+      if ((!current->nominal_length_flag) && (current->max_entry_speed > next->entry_speed)) {
+        current->entry_speed = min( current->max_entry_speed,
+        max_allowable_speed(-current->acceleration,next->entry_speed,current->millimeters));
+      } 
+      else {
+        current->entry_speed = current->max_entry_speed;
+      }
+      current->recalculate_flag = true;
+
+    }
+  } // Skip last block. Already initialized and set for recalculation.
+}
+
 // planner_recalculate() needs to go over the current plan twice. Once in reverse and once forward. This 
 // implements the reverse pass.
 /***************************************************************************************************
@@ -241,8 +272,100 @@ void planner_reverse_pass()
       block[2]= block[1];
       block[1]= block[0];
       block[0] = &block_buffer[block_index];
-      //planner_reverse_pass_kernel(block[0], block[1], block[2]);
+      planner_reverse_pass_kernel(block[0], block[1], block[2]);
     }
+  }
+}
+
+// The kernel called by planner_recalculate() when scanning the plan from first to last entry.
+/***************************************************************************************************
+name:		planner_forward_pass_kernel()
+function:	it helps to go from first to last entry when scanning
+			[in]	-	*previous
+						*current
+						*next
+			[out]	-	void
+***************************************************************************************************/
+void planner_forward_pass_kernel(block_t *previous, block_t *current, block_t *next) {
+  if(!previous) { 
+    return; 
+  }
+
+  // If the previous block is an acceleration block, but it is not long enough to complete the
+  // full speed change within the block, we need to adjust the entry speed accordingly. Entry
+  // speeds have already been reset, maximized, and reverse planned by reverse planner.
+  // If nominal length is true, max junction speed is guaranteed to be reached. No need to recheck.
+  if (!previous->nominal_length_flag) {
+    if (previous->entry_speed < current->entry_speed) {
+      double entry_speed = min( current->entry_speed,
+      max_allowable_speed(-previous->acceleration,previous->entry_speed,previous->millimeters) );
+
+      // Check for junction speed change
+      if (current->entry_speed != entry_speed) {
+        current->entry_speed = entry_speed;
+        current->recalculate_flag = true;
+      }
+    }
+  }
+}
+
+// planner_recalculate() needs to go over the current plan twice. Once in reverse and once forward. This 
+// implements the forward pass.
+/***************************************************************************************************
+name:		planner_forward_pass()
+function:	forward pass
+			[in]	-	void
+			[out]	-	void
+***************************************************************************************************/
+void planner_forward_pass() {
+  uint8_t block_index = block_buffer_tail;
+  block_t *block[3] = { NULL, NULL, NULL};
+
+  while(block_index != block_buffer_head) {
+    block[0] = block[1];
+    block[1] = block[2];
+    block[2] = &block_buffer[block_index];
+    planner_forward_pass_kernel(block[0],block[1],block[2]);
+    block_index = next_block_index(block_index);
+  }
+  planner_forward_pass_kernel(block[1], block[2], NULL);
+}
+
+// Recalculates the trapezoid speed profiles for all blocks in the plan according to the 
+// entry_factor for each junction. Must be called by planner_recalculate() after 
+// updating the blocks.
+/***************************************************************************************************
+name:		planner_recalculate_trapezoids()
+function:	recalculate the trapezoid speed profiles for all blocks.
+			[in]	-	void
+			[out]	-	void
+***************************************************************************************************/
+void planner_recalculate_trapezoids()
+{
+  int8_t block_index = block_buffer_tail;
+  block_t *current;
+  block_t *next = NULL;
+
+  while(block_index != block_buffer_head) {
+    current = next;
+    next = &block_buffer[block_index];
+    if (current) {
+      // Recalculate if current block entry or exit junction speed has changed.
+      if (current->recalculate_flag || next->recalculate_flag) {
+        // NOTE: Entry and exit factors always > 0 by all previous logic operations.
+        calculate_trapezoid_for_block(current, current->entry_speed/current->nominal_speed,
+        next->entry_speed/current->nominal_speed);
+        current->recalculate_flag = false; // Reset current only to ensure next trapezoid is computed
+      }
+    }
+    block_index = next_block_index( block_index );
+  }
+
+  // Last/newest block in buffer. Exit speed is set with MINIMUM_PLANNER_SPEED. Always recalculated.
+  if(next != NULL) {
+    calculate_trapezoid_for_block(next, next->entry_speed/next->nominal_speed,
+    MINIMUM_PLANNER_SPEED/next->nominal_speed);
+    next->recalculate_flag = false;
   }
 }
 
@@ -253,9 +376,9 @@ function:	recalculate the motion plan
 			[out]	-	void
 ***************************************************************************************************/
 void planner_recalculate() {   
-  //planner_reverse_pass();
-  //planner_forward_pass();
-  //planner_recalculate_trapezoids();
+  planner_reverse_pass();
+  planner_forward_pass();
+  planner_recalculate_trapezoids();
 }
 
 /****************************************************************************
@@ -589,6 +712,41 @@ void plan_buffer_line(const float x, const float y, const float z, const float e
 
   st_wake_up();
 
+}
+
+/***************************************************************************************************
+name:		plan_set_a_position()
+function:	set the extruder's position
+			[in]	-	e:extruder
+			[out]	-	void
+***************************************************************************************************/
+void plan_set_e_position(const float e)
+{
+  position[E_AXIS] = lround(e*axis_steps_per_unit[E_AXIS]);  
+  st_set_e_position(position[E_AXIS]);
+}
+
+/***************************************************************************************************
+name:		plan_set_position()
+function:	set a position
+			[in]	-	x:x axis
+						y:y axis
+						z:z axis
+						e:extruder
+			[out]	-	void
+***************************************************************************************************/
+void plan_set_position(const float x, const float y, const float z, const float e)
+{
+  position[X_AXIS] = lround(x*axis_steps_per_unit[X_AXIS]);//lround: four homes five
+  position[Y_AXIS] = lround(y*axis_steps_per_unit[Y_AXIS]);
+  position[Z_AXIS] = lround(z*axis_steps_per_unit[Z_AXIS]);     
+  position[E_AXIS] = lround(e*axis_steps_per_unit[E_AXIS]);  
+  //st_set_position(position[X_AXIS], position[Y_AXIS], position[Z_AXIS], position[E_AXIS]);
+  previous_nominal_speed = 0.0; // Resets planner junction speeds. Assumes start from rest.
+  previous_speed[0] = 0.0;
+  previous_speed[1] = 0.0;
+  previous_speed[2] = 0.0;
+  previous_speed[3] = 0.0;
 }
 
 

@@ -9,6 +9,10 @@ static volatile uint8_t endstop_x_hit=false;
 static volatile uint8_t endstop_y_hit=false;
 static volatile uint8_t endstop_z_hit=false;
 
+volatile long count_position[NUM_AXIS] = { 0, 0, 0, 0};
+
+#define ENABLE_STEPPER_DRIVER_INTERRUPT()  1
+
 /****************************************************************************
 name:		st_init
 function:	
@@ -179,4 +183,28 @@ while(blocks_queued()) {
     //manage_heater();
     //manage_inactivity();
 	}
+}
+
+/***************************************************************************************************
+name:		st_wake_up()
+function:	wake up the stepper
+			[in]	-	void
+			[out]	-	void
+***************************************************************************************************/
+void st_wake_up(void)
+{
+  //  TCNT1 = 0;
+  ENABLE_STEPPER_DRIVER_INTERRUPT();
+}
+
+/**************************************************************************************************
+name:		st_set_e_position()
+function:	set the position of the extruder
+			[in]	-	&e:extruder value
+**************************************************************************************************/
+void st_set_e_position(const long e)
+{
+  CRITICAL_SECTION_START;
+  count_position[E_AXIS] = e;
+  CRITICAL_SECTION_END;
 }

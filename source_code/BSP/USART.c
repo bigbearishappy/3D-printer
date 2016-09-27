@@ -2,7 +2,7 @@
 
 uint8_t USART1_Cache[MAX_CMD_SIZE];
 uint8_t USART1_DATA_OK = UNREADY;
-uint8_t i = 0;
+static uint8_t i = 0;
 uint8_t comment_mode = 0;
 
 /****************************************************************************

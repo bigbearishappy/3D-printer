@@ -36,7 +36,10 @@ extern uint8_t active_extruder;
 
 enum AxisEnum {X_AXIS=0, Y_AXIS=1, Z_AXIS=2, E_AXIS=3};
 
-void system_init(void);								//initialize the system	
+void system_init(void);								//initialize the system
+
+void setTargetHotend(const float celsius, uint8_t extruder);
+void setTargetBed(const float celsius);	
 
 void get_command(void);  							//get the GCODE from the USART
 void FlushSerialRequestResend(void);				//
@@ -52,6 +55,8 @@ void prepare_move(void);
 void clamp_to_software_endstops(float target[3]);
 
 int8_t next_block_index(int8_t block_index);
+
+int setTargetedHotend(int code);
 
 int fputc(int ch, FILE *f);							//it's related with the usart data transmission
 int GetKey (void);

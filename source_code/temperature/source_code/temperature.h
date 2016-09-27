@@ -3,6 +3,8 @@
 
 #include"Marlin.h"
 
+extern int target_temperature[EXTRUDERS];
+
 //FUNCTION
 void tp_init(void);
 
@@ -10,6 +12,8 @@ void updatePID(void);
 static float analog2temp(int raw, uint8_t e);
 static float analog2tempBed(int raw);
 float degHotend(uint8_t extruder);
+float degTargetHotend(uint8_t extruder);
+int isHeatingHotend(uint8_t extruder);
 
 #ifdef PIDTEMP
   extern float Kp,Ki,Kd,Kc;

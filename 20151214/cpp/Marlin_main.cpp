@@ -1865,7 +1865,7 @@ void process_commands()
       if (code_seen('S')) 
 	  	setTargetBed(code_value());
       break;
-    case 105 : // M105					//get the temperature of extruder
+    case 105: // M105					//get the temperature of extruder
       if(setTargetedHotend(105)){
         break;
         }
