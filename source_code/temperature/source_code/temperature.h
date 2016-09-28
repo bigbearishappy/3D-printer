@@ -5,6 +5,9 @@
 
 extern int target_temperature[EXTRUDERS];
 
+extern int target_temperature_bed;
+extern float current_temperature_bed;
+
 //FUNCTION
 void tp_init(void);
 
@@ -14,6 +17,9 @@ static float analog2tempBed(int raw);
 float degHotend(uint8_t extruder);
 float degTargetHotend(uint8_t extruder);
 int isHeatingHotend(uint8_t extruder);
+int isHeatingBed(void);
+int isCoolingBed(void);
+void disable_heater(void);
 
 #ifdef PIDTEMP
   extern float Kp,Ki,Kd,Kc;

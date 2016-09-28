@@ -12,7 +12,8 @@
 #define true	1
 #define false	0
 
-#define round(x)     ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
+#define round(x)     			((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
+#define constrain(amt,low,high)	amt-low<0?low:amt;amt-high>0?high:amt;
 
 //临界断面开始
 #ifndef CRITICAL_SECTION_START

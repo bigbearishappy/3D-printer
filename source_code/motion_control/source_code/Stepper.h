@@ -6,6 +6,7 @@ void digipot_init(void);
 void microstep_init(void);
 void enable_endstops(uint8_t check);
 void endstops_hit_on_purpose(void);
+void finishAndDisableSteppers(void);
 
 void st_synchronize(void);
 void st_wake_up(void);

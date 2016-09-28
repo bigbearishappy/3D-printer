@@ -6,9 +6,14 @@
 #define BAUDRATE 115200
 
 #define PIDTEMP
+#define ULTIPANEL
 
 // coarse Endstop Settings
 #define ENDSTOPPULLUPS // Comment this out (using // at the start of the line) to disable the endstop pullup resistors
+
+#ifndef MOTHERBOARD
+#define MOTHERBOARD 33
+#endif
 
 //
 #define  DEFAULT_Kp 22.2

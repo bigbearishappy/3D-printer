@@ -58,14 +58,14 @@ void Config_ResetDefault(void)
 	add_homeing[0] = 0;
 	add_homeing[1] = 0;
 	add_homeing[2] = 0;
-#ifdef ULTIPANEL
+/*#ifdef ULTIPANEL
     plaPreheatHotendTemp 	= PLA_PREHEAT_HOTEND_TEMP;
     plaPreheatHPBTemp		= PLA_PREHEAT_HPB_TEMP;
     plaPreheatFanSpeed 		= PLA_PREHEAT_FAN_SPEED;
     absPreheatHotendTemp 	= ABS_PREHEAT_HOTEND_TEMP;
     absPreheatHPBTemp 		= ABS_PREHEAT_HPB_TEMP;
     absPreheatFanSpeed 		= ABS_PREHEAT_FAN_SPEED;
-#endif
+#endif */
 #ifdef PIDTEMP
     Kp = DEFAULT_Kp;
     Ki = scalePID_i(DEFAULT_Ki);

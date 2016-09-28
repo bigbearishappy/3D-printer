@@ -43,5 +43,8 @@
 // if unwanted behavior is observed on a user's machine when running at very slow speeds.
 #define MINIMUM_PLANNER_SPEED 0.05// (mm/sec)
 
+//default stepper release if idle
+#define DEFAULT_STEPPER_DEACTIVE_TIME 60
+
 #endif
 

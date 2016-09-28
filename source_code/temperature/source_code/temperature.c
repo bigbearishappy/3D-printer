@@ -4,6 +4,9 @@
 //public values
 int target_temperature[EXTRUDERS] = { 0 };
 
+int target_temperature_bed = 0;
+float current_temperature_bed = 0.0;
+
 //private value
 #ifdef PIDTEMP
 static float temp_iState_min[EXTRUDERS];
@@ -165,4 +168,21 @@ float degHotend(uint8_t extruder)
 float degTargetHotend(uint8_t extruder) {  
   return target_temperature[extruder];
 }
+
+int isHeatingBed() {
+  return target_temperature_bed > current_temperature_bed;
+}
+
+int isCoolingBed() {
+  return target_temperature_bed < current_temperature_bed;
+}
+
+/**************************************************************************************
+name:		disable_heater()
+function:	disable the heater
+			[in]	-	void
+			[out]	-	void
+**************************************************************************************/
+void disable_heater(void)
+{}
 

@@ -208,3 +208,21 @@ void st_set_e_position(const long e)
   count_position[E_AXIS] = e;
   CRITICAL_SECTION_END;
 }
+
+/***************************************************************************************************
+name:		finishAndDisableSteppers()
+function:	check the command and disable all the steppers
+			[in]	-	void
+			[out]	-	void
+***************************************************************************************************/
+void finishAndDisableSteppers()
+{
+  st_synchronize();
+  disable_x();
+  disable_y();
+  disable_z();
+  disable_e0();
+  //disable_e1();
+  //disable_e2();
+}
+

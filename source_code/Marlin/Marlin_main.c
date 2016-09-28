@@ -7,7 +7,14 @@
 #include"language.h"
 #include"BSP.h"
 
-int target_temperature_bed = 0;
+#ifdef ULTIPANEL
+  #ifdef PS_DEFAULT_OFF
+    int powersupply = false;
+  #else
+	int powersupply = true;
+  #endif
+#endif
+
 static int buflen = 0;
 static char serial_char;
 static uint32_t serial_count = 0;
@@ -47,12 +54,16 @@ static float offset[3] = {0.0, 0.0, 0.0};
 static uint8_t home_all_axis = true;
 uint8_t axis_known_position[3] = {false, false, false};
 
+static unsigned long max_inactive_time = 0;
+
 unsigned long starttime = 0;
 unsigned long stoptime = 0;
 
 static uint8_t tmp_extruder;
 int CooldownNoWait = true;
 int target_direction;
+
+static unsigned long stepper_inactive_time = DEFAULT_STEPPER_DEACTIVE_TIME*1000l;
 
 int8_t i = 0;
 
@@ -297,6 +308,12 @@ void process_command(void)
     int pin_number;
 	int8_t cur_extruder;
 	long residencyStart;
+	float tt;
+	int all_axis;
+	float value;
+	float factor;
+    int pin_state;	// required pin state - default is inverted
+	int target;
 
 	uint32_t current_time = 0;
 
@@ -692,6 +709,353 @@ void process_command(void)
       break;
 
 	  }
+		case 190: // M190 - 						//Wait for bed heater to reach target.
+#if defined(TEMP_BED_PIN) && TEMP_BED_PIN > -1
+		    //LCD_MESSAGEPGM(MSG_BED_HEATING);
+		    if (code_seen('S')) {
+		      setTargetBed(code_value());
+		      CooldownNoWait = true;
+		    } else if (code_seen('R')) {
+		      setTargetBed(code_value());
+		      CooldownNoWait = false;
+		    }
+		    codenum = tim_millis;//millis();
+		
+		    target_direction = isHeatingBed(); // true if heating, false if cooling
+		
+		    while ( target_direction ? (isHeatingBed()) : (isCoolingBed()&&(CooldownNoWait==false)) )
+		    {
+			  current_time = tim_millis;
+		      if(( current_time - codenum) > 1000 ) //Print Temp Reading every 1 second while heating up.
+		      {
+		        tt = degHotend(active_extruder);
+		        //SERIAL_PROTOCOLPGM("T:");
+		        //SERIAL_PROTOCOL(tt);
+		        //SERIAL_PROTOCOLPGM(" E:");
+		        //SERIAL_PROTOCOL((int)active_extruder);
+		        //SERIAL_PROTOCOLPGM(" B:");
+		        //SERIAL_PROTOCOL_F(degBed(),1);
+		        //SERIAL_PROTOCOLLN("");
+		        codenum = tim_millis;//millis();
+		      }
+		      //manage_heater();
+		      //manage_inactivity();
+		      //lcd_update();
+		    }
+		    //LCD_MESSAGEPGM(MSG_BED_DONE);
+		    previous_millis_cmd = tim_millis;//millis();
+#endif
+		    break;
+#if defined(FAN_PIN) && FAN_PIN > -1
+      case 106: //M106 Fan On					//turn the fan
+        if (code_seen('S')){
+           fanSpeed=constrain(code_value(),0,255);
+        }
+        else {
+          fanSpeed=255;
+        }
+        break;
+      case 107: //M107 Fan Off				//turn off the fan
+        fanSpeed = 0;
+        break;
+#endif //FAN_PIN
+#if defined(PS_ON_PIN) && PS_ON_PIN > -1
+      case 80: // M80 - 						//Turn on Power Supply
+        //SET_OUTPUT(PS_ON_PIN); //GND
+        //WRITE(PS_ON_PIN, PS_ON_AWAKE);
+
+        // If you have a switch on suicide pin, this is useful
+        // if you want to start another print with suicide feature after
+        // a print without suicide...
+        /*#if defined SUICIDE_PIN && SUICIDE_PIN > -1
+            SET_OUTPUT(SUICIDE_PIN);
+            WRITE(SUICIDE_PIN, HIGH);
+        #endif
+
+        #ifdef ULTIPANEL
+          powersupply = true;
+          LCD_MESSAGEPGM(WELCOME_MSG);
+          lcd_update();
+        #endif*/
+        break;
+#endif
+
+		case 81: // M81 - 						//Turn off Power Supply
+		disable_heater();
+		st_synchronize();
+		disable_e0();
+		//disable_e1();
+		//disable_e2();
+		finishAndDisableSteppers();
+		fanSpeed = 0;
+		//delay(1000); // Wait a little before to switch off
+	#if defined(SUICIDE_PIN) && SUICIDE_PIN > -1
+		st_synchronize();
+		suicide();
+	#elif defined(PS_ON_PIN) && PS_ON_PIN > -1
+		SET_OUTPUT(PS_ON_PIN);
+		WRITE(PS_ON_PIN, PS_ON_ASLEEP);
+	#endif
+	#ifdef ULTIPANEL
+		powersupply = false;
+		//LCD_MESSAGEPGM(MACHINE_NAME" "MSG_OFF".");
+		//lcd_update();
+	#endif
+		break;
+    case 82:								//set the printer to the absolute position mode
+      axis_relative_modes[3] = false;
+      break;
+    case 83:								//set the printer to the relative position mode
+      axis_relative_modes[3] = true;
+      break;
+    case 18: //compatibility
+    case 84: // M84
+      if(code_seen('S')){
+        stepper_inactive_time = code_value() * 1000;
+      }
+      else
+      {
+        all_axis = !((code_seen(axis_codes[0])) || (code_seen(axis_codes[1])) || (code_seen(axis_codes[2]))|| (code_seen(axis_codes[3])));
+        if(all_axis)
+        {
+          st_synchronize();
+          disable_e0();
+          //disable_e1();
+          //disable_e2();
+          finishAndDisableSteppers();
+        }
+        else
+        {
+          st_synchronize();
+          if(code_seen('X')) disable_x();
+          if(code_seen('Y')) disable_y();
+          if(code_seen('Z')) disable_z();
+          #if ((E0_ENABLE_PIN != X_ENABLE_PIN)/* && (E1_ENABLE_PIN != Y_ENABLE_PIN)*/) // Only enable on boards that have seperate ENABLE_PINS
+            if(code_seen('E')) {
+              disable_e0();
+              //disable_e1();
+              //disable_e2();
+            }
+          #endif
+        }
+      }
+      break;
+	case 85: // M85							//set the inactive time
+		code_seen('S');
+		max_inactive_time = code_value() * 1000;
+	break;
+    case 92: // M92							//set the value of axis_steps_per_unit
+      for(i = 0; i < NUM_AXIS; i++)
+      {
+        if(code_seen(axis_codes[i]))
+        {
+          if(i == 3) { // E
+            value = code_value();
+            if(value < 20.0) {
+              factor = axis_steps_per_unit[i] / value; // increase e constants if M92 E14 is given for netfab.
+              max_e_jerk *= factor;
+              max_feedrate[i] *= factor;
+              axis_steps_per_sqr_second[i] *= factor;
+            }
+            axis_steps_per_unit[i] = value;
+          }
+          else {
+            axis_steps_per_unit[i] = code_value();
+          }
+        }
+      }
+      break;
+    case 115: // M115						//print the printer's message
+      //SERIAL_PROTOCOLPGM(MSG_M115_REPORT);
+	  printf("marlin\r\n");
+    break;
+    case 114: // M114						//print the x,y,z,e message
+      /*SERIAL_PROTOCOLPGM("X:");
+      SERIAL_PROTOCOL(current_position[X_AXIS]);
+      SERIAL_PROTOCOLPGM("Y:");
+      SERIAL_PROTOCOL(current_position[Y_AXIS]);
+      SERIAL_PROTOCOLPGM("Z:");
+      SERIAL_PROTOCOL(current_position[Z_AXIS]);
+      SERIAL_PROTOCOLPGM("E:");
+      SERIAL_PROTOCOL(current_position[E_AXIS]);
+
+      SERIAL_PROTOCOLPGM(MSG_COUNT_X);
+      SERIAL_PROTOCOL(float(st_get_position(X_AXIS))/axis_steps_per_unit[X_AXIS]);
+      SERIAL_PROTOCOLPGM("Y:");
+      SERIAL_PROTOCOL(float(st_get_position(Y_AXIS))/axis_steps_per_unit[Y_AXIS]);
+      SERIAL_PROTOCOLPGM("Z:");
+      SERIAL_PROTOCOL(float(st_get_position(Z_AXIS))/axis_steps_per_unit[Z_AXIS]);
+
+      SERIAL_PROTOCOLLN("");
+	  */
+      break;
+    case 120: // M120						//disable the endstops
+      enable_endstops(false) ;
+      break;
+    case 121: // M121						//enable the endstops
+      enable_endstops(true) ;
+      break;
+    case 119: // M119						//report endstops' status
+    //SERIAL_PROTOCOLLN(MSG_M119_REPORT);
+      #if defined(X_MIN_PIN) && X_MIN_PIN > -1
+        //SERIAL_PROTOCOLPGM(MSG_X_MIN);
+        //SERIAL_PROTOCOLLN(((READ(X_MIN_PIN)^X_MIN_ENDSTOP_INVERTING)?MSG_ENDSTOP_HIT:MSG_ENDSTOP_OPEN));
+      #endif
+      #if defined(X_MAX_PIN) && X_MAX_PIN > -1
+        //SERIAL_PROTOCOLPGM(MSG_X_MAX);
+        //SERIAL_PROTOCOLLN(((READ(X_MAX_PIN)^X_MAX_ENDSTOP_INVERTING)?MSG_ENDSTOP_HIT:MSG_ENDSTOP_OPEN));
+      #endif
+      #if defined(Y_MIN_PIN) && Y_MIN_PIN > -1
+        //SERIAL_PROTOCOLPGM(MSG_Y_MIN);
+        //SERIAL_PROTOCOLLN(((READ(Y_MIN_PIN)^Y_MIN_ENDSTOP_INVERTING)?MSG_ENDSTOP_HIT:MSG_ENDSTOP_OPEN));
+      #endif
+      #if defined(Y_MAX_PIN) && Y_MAX_PIN > -1
+        //SERIAL_PROTOCOLPGM(MSG_Y_MAX);
+        //SERIAL_PROTOCOLLN(((READ(Y_MAX_PIN)^Y_MAX_ENDSTOP_INVERTING)?MSG_ENDSTOP_HIT:MSG_ENDSTOP_OPEN));
+      #endif
+      #if defined(Z_MIN_PIN) && Z_MIN_PIN > -1
+        //SERIAL_PROTOCOLPGM(MSG_Z_MIN);
+        //SERIAL_PROTOCOLLN(((READ(Z_MIN_PIN)^Z_MIN_ENDSTOP_INVERTING)?MSG_ENDSTOP_HIT:MSG_ENDSTOP_OPEN));
+      #endif
+      #if defined(Z_MAX_PIN) && Z_MAX_PIN > -1
+        //SERIAL_PROTOCOLPGM(MSG_Z_MAX);
+        //SERIAL_PROTOCOLLN(((READ(Z_MAX_PIN)^Z_MAX_ENDSTOP_INVERTING)?MSG_ENDSTOP_HIT:MSG_ENDSTOP_OPEN));
+      #endif
+      break;
+    case 201: // M201						//set the value of max_acceleration_units_per_sq_second
+      for(i = 0; i < NUM_AXIS; i++)
+      {
+        if(code_seen(axis_codes[i]))
+        {
+          max_acceleration_units_per_sq_second[i] = code_value();
+        }
+      }
+      // steps per sq second need to be updated to agree with the units per sq second (as they are what is used in the planner)
+      reset_acceleration_rates();
+      break;
+    case 203: // M203 						//set the max feedrate mm/sec
+      for(i = 0; i < NUM_AXIS; i++) {
+        if(code_seen(axis_codes[i])) max_feedrate[i] = code_value();
+      }
+      break;
+    case 204: // M204 						//acclereration S normal moves T filmanent only moves
+      {
+        if(code_seen('S')) acceleration = code_value() ;
+        if(code_seen('T')) retract_acceleration = code_value() ;
+      }
+      break;
+    case 205: //M205 advanced settings:  minimum travel speed S=while printing T=travel only,  B=minimum segment time X= maximum xy jerk, Z=maximum Z jerk
+    {
+      if(code_seen('S')) minimumfeedrate = code_value();
+      if(code_seen('T')) mintravelfeedrate = code_value();
+      if(code_seen('B')) minsegmenttime = code_value() ;
+      if(code_seen('X')) max_xy_jerk = code_value() ;
+      if(code_seen('Z')) max_z_jerk = code_value() ;
+      if(code_seen('E')) max_e_jerk = code_value() ;
+    }
+    break;
+    case 206: // M206 						//set the additional homeing offset
+      for(i = 0; i < 3; i++)
+      {
+        if(code_seen(axis_codes[i])) add_homeing[i] = code_value();
+      }
+    break;
+
+    case 220: 									// M220 S<factor in percent>- set speed factor override percentage
+    {
+      if(code_seen('S'))
+      {
+        feedmultiply = code_value() ;
+      }
+    }
+    break;
+    case 221: 									// M221 S<factor in percent>- set extrude factor override percentage
+    {
+      if(code_seen('S'))
+      {
+        extrudemultiply = code_value() ;
+      }
+    }
+    break;
+	case 226: 									// M226 P<pin number> S<pin state>- Wait until the specified pin reaches the state required
+	{
+      if(code_seen('P')){
+        pin_number = code_value(); // pin number
+        pin_state = -1; // required pin state - default is inverted
+
+        if(code_seen('S')) pin_state = code_value(); // required pin state
+
+        if(pin_state >= -1 && pin_state <= 1){
+
+          for(i = 0; i < (int8_t)sizeof(sensitive_pins); i++)
+          {
+            if (sensitive_pins[i] == pin_number)
+            {
+              pin_number = -1;
+              break;
+            }
+          }
+
+          if (pin_number > -1)
+          {
+            st_synchronize();
+
+            //pinMode(pin_number, INPUT);
+
+            //int target;
+            switch(pin_state){
+            case 1:
+              target = 1;//HIGH;
+              break;
+
+            case 0:
+              target = 0;//LOW;
+              break;
+
+            case -1:
+              //target = !digitalRead(pin_number);
+              break;
+            }
+
+            /*while(digitalRead(pin_number) != target){
+              manage_heater();
+              manage_inactivity();
+              lcd_update();
+            }*/
+          }
+        }
+      }
+    }
+    break;
+    #ifdef PIDTEMP
+    case 301: // M301							//set the value of P I D
+      {
+        if(code_seen('P')) Kp = code_value();
+        if(code_seen('I')) Ki = scalePID_i(code_value());
+        if(code_seen('D')) Kd = scalePID_d(code_value());
+
+        #ifdef PID_ADD_EXTRUSION_RATE
+        if(code_seen('C')) Kc = code_value();
+        #endif
+
+        updatePID();
+        //SERIAL_PROTOCOL(MSG_OK);
+        //SERIAL_PROTOCOL(" p:");
+        //SERIAL_PROTOCOL(Kp);
+        //SERIAL_PROTOCOL(" i:");
+        //SERIAL_PROTOCOL(unscalePID_i(Ki));
+        //SERIAL_PROTOCOL(" d:");
+        //SERIAL_PROTOCOL(unscalePID_d(Kd));
+        #ifdef PID_ADD_EXTRUSION_RATE
+        //SERIAL_PROTOCOL(" c:");
+        //Kc does not have scaling applied above, or in resetting defaults
+        //SERIAL_PROTOCOL(Kc);
+        #endif
+        //SERIAL_PROTOCOLLN("");
+      }
+      break;
+    #endif //PIDTEMP
+
 
 		}
 	}
