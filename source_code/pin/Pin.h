@@ -63,6 +63,13 @@
 	#define TEMP_2_PIN          -1
 	#define HEATER_BED_PIN      -1
 	#define TEMP_BED_PIN        0//-1
+
+// M240  Triggers a camera by emulating a Canon RC-1 Remote
+// Data from: http://www.doc-diy.net/photo/rc-1_hacked/
+	#define PHOTOGRAPH_PIN     29
+	#define MOTOR_CURRENT_PWM_XY_PIN 44
+	#define MOTOR_CURRENT_PWM_Z_PIN 45
+	#define MOTOR_CURRENT_PWM_E_PIN 46
 	#endif
 
 #endif

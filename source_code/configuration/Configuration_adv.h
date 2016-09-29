@@ -46,5 +46,17 @@
 //default stepper release if idle
 #define DEFAULT_STEPPER_DEACTIVE_TIME 60
 
+//adds support for experimental filament exchange support M600; requires display
+#ifdef ULTIPANEL
+  #define FILAMENTCHANGEENABLE
+  #ifdef FILAMENTCHANGEENABLE
+    #define FILAMENTCHANGE_XPOS 3
+    #define FILAMENTCHANGE_YPOS 3
+    #define FILAMENTCHANGE_ZADD 10
+    #define FILAMENTCHANGE_FIRSTRETRACT -2
+    #define FILAMENTCHANGE_FINALRETRACT -100
+  #endif
+#endif
+
 #endif
 

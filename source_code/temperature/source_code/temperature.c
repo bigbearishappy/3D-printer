@@ -89,6 +89,17 @@ int isHeatingHotend(uint8_t extruder){
   return target_temperature[extruder] > current_temperature[extruder];
 }
 
+/*******************************************************************************
+name:		PID_autotune()
+funtion:	use PID to control the extruder's temperature
+			[in]	-	temp:		input temperature
+						extruder:	current extruder
+						ncycles:	option
+			[out]	-	void
+*******************************************************************************/
+void PID_autotune(float temp, int extruder, int ncycles)
+{}
+
 /****************************************************************************
 name:		analog2temp
 function:	

@@ -23,3 +23,6 @@ plan_buffer_line()完成移植							( ok at 20160925)
 
 下一步移植任务：
 planner_reverse_pass()完成移植						( ok at 20150926)							
+
+下一步移植任务：
+process_commands()完成移植							( ok at 20160929)

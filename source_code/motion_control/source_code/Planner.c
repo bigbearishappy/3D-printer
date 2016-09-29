@@ -749,5 +749,18 @@ void plan_set_position(const float x, const float y, const float z, const float 
   previous_speed[3] = 0.0;
 }
 
+#ifdef PREVENT_DANGEROUS_EXTRUDE
+/***************************************************************************************************
+name:		set_extruder_min_temp()
+function:	set the extruder minimum temperature
+			[in]	-	temp:temperature
+			[out]	-	void
+***************************************************************************************************/
+void set_extrude_min_temp(float temp)
+{
+  extrude_min_temp=temp;
+}
+#endif
+
 
 

@@ -24,7 +24,7 @@ static uint8_t fromsd[BUFSIZE];
 static int bufindw = 0;
 static int bufindr = 0;
 
-static long gcode_N, gcode_LastN;
+static long gcode_N, gcode_LastN,Stopped_gcode_LastN = 0;
 static char *strchr_pointer; // just a pointer to find chars in the cmd string like X, Y, Z, E, etc
 uint8_t Stopped = false;
 static unsigned long previous_millis_cmd = 0;
@@ -281,7 +281,7 @@ Description:
 ****************************************************************************/
 void ClearToSend(void)
 {
-  previous_millis_cmd = 1;//millis();
+  previous_millis_cmd = tim_millis;//millis();
   printf(MSG_OK);printf("\r\n");
 }
 
@@ -314,6 +314,16 @@ void process_command(void)
 	float factor;
     int pin_state;	// required pin state - default is inverted
 	int target;
+	const uint8_t NUM_PULSES = 16;
+	const float PULSE_LENGTH = 0.01524;
+	float temp;
+	int e;
+    int c;
+	float target1[4];
+    float lastpos[4];
+	uint8_t cnt;
+	uint8_t channel,current;
+	int make_move;
 
 	uint32_t current_time = 0;
 
@@ -1055,10 +1065,286 @@ void process_command(void)
       }
       break;
     #endif //PIDTEMP
+    case 240: // M240  Triggers a camera by emulating a Canon RC-1 : http://www.doc-diy.net/photo/rc-1_hacked/
+     {
+      #if defined(PHOTOGRAPH_PIN) && PHOTOGRAPH_PIN > -1
+        //NUM_PULSES = 16;
+        //PULSE_LENGTH = 0.01524;
+        for(i=0; i < NUM_PULSES; i++) {
+          //WRITE(PHOTOGRAPH_PIN, HIGH);
+          //_delay_ms(PULSE_LENGTH);
+          //WRITE(PHOTOGRAPH_PIN, LOW);
+          //_delay_ms(PULSE_LENGTH);
+        }
+        //delay(7.33);
+        for(i=0; i < NUM_PULSES; i++) {
+          //WRITE(PHOTOGRAPH_PIN, HIGH);
+          //_delay_ms(PULSE_LENGTH);
+          //WRITE(PHOTOGRAPH_PIN, LOW);
+          //_delay_ms(PULSE_LENGTH);
+        }
+      #endif
+     }
+    break;
+#ifdef PREVENT_DANGEROUS_EXTRUDE
+    case 302: 											// allow cold extrudes, or set the minimum extrude temperature
+    {
+	  temp = 0.0;
+	  if (code_seen('S')) 
+	  	temp=code_value();
+      set_extrude_min_temp(temp);
+    }
+    break;
+#endif
+    case 303: 											// M303 PID autotune
+    {
+      temp = 150.0;
+      e = 0;
+      c = 5;
+      if (code_seen('E')) e = code_value();
+        if (e<0)
+          temp=70;
+      if (code_seen('S')) temp = code_value();
+      if (code_seen('C')) c = code_value();
+      PID_autotune(temp, e, c);
+    }
+    break;
+    case 400: 											// M400 finish all moves
+    {
+      st_synchronize();
+    }
+    break;
+    case 500: // M500 Store settings in EEPROM
+    {
+        //Config_StoreSettings();
+    }
+    break;
+    case 501: // M501 Read settings from EEPROM
+    {
+        //Config_RetrieveSettings();
+    }
+    break;
+    case 502: // M502 Revert to default settings
+    {
+        Config_ResetDefault();
+    }
+    break;
+    case 503: // M503 print settings currently in memory
+    {
+        Config_PrintSettings();
+    }
+    break;
 
+    #ifdef FILAMENTCHANGEENABLE
+    case 600: //Pause for filament change X[pos] Y[pos] Z[relative lift] E[initial retract] L[later retract distance for removal]
+    {
+        //float target[4];
+        //float lastpos[4];
+        target1[X_AXIS] =current_position[X_AXIS];
+        target1[Y_AXIS] =current_position[Y_AXIS];
+        target1[Z_AXIS] =current_position[Z_AXIS];
+        target1[E_AXIS] =current_position[E_AXIS];
+        lastpos[X_AXIS]=current_position[X_AXIS];
+        lastpos[Y_AXIS]=current_position[Y_AXIS];
+        lastpos[Z_AXIS]=current_position[Z_AXIS];
+        lastpos[E_AXIS]=current_position[E_AXIS];
+        //retract by E
+        if(code_seen('E'))
+        {
+          target1[E_AXIS] += code_value();
+        }
+        else
+        {
+          #ifdef FILAMENTCHANGE_FIRSTRETRACT
+            target1[E_AXIS] += FILAMENTCHANGE_FIRSTRETRACT ;
+          #endif
+        }
+        plan_buffer_line(target1[X_AXIS], target1[Y_AXIS], target1[Z_AXIS], target1[E_AXIS], feedrate/60, active_extruder);
 
+        //lift Z
+        if(code_seen('Z'))
+        {
+          target1[Z_AXIS] += code_value();
+        }
+        else
+        {
+          #ifdef FILAMENTCHANGE_ZADD
+            target1[Z_AXIS] += FILAMENTCHANGE_ZADD ;
+          #endif
+        }
+        plan_buffer_line(target1[X_AXIS], target1[Y_AXIS], target1[Z_AXIS], target1[E_AXIS], feedrate/60, active_extruder);
+
+        //move xy
+        if(code_seen('X'))
+        {
+          target1[X_AXIS] += code_value();
+        }
+        else
+        {
+          #ifdef FILAMENTCHANGE_XPOS
+            target1[X_AXIS]= FILAMENTCHANGE_XPOS ;
+          #endif
+        }
+        if(code_seen('Y'))
+        {
+          target1[Y_AXIS]= code_value();
+        }
+        else
+        {
+          #ifdef FILAMENTCHANGE_YPOS
+            target1[Y_AXIS]= FILAMENTCHANGE_YPOS ;
+          #endif
+        }
+
+        plan_buffer_line(target1[X_AXIS], target1[Y_AXIS], target1[Z_AXIS], target1[E_AXIS], feedrate/60, active_extruder);
+
+        if(code_seen('L'))
+        {
+          target1[E_AXIS] += code_value();
+        }
+        else
+        {
+          #ifdef FILAMENTCHANGE_FINALRETRACT
+            target1[E_AXIS] += FILAMENTCHANGE_FINALRETRACT ;
+          #endif
+        }
+
+        plan_buffer_line(target1[X_AXIS], target1[Y_AXIS], target1[Z_AXIS], target1[E_AXIS], feedrate/60, active_extruder);
+
+        //finish moves
+        st_synchronize();
+        //disable extruder steppers so filament can be removed
+        disable_e0();
+        //disable_e1();
+        //disable_e2();
+        //delay(100);
+        //LCD_ALERTMESSAGEPGM(MSG_FILAMENTCHANGE);
+        cnt=0;
+        /*while(!lcd_clicked()){
+          cnt++;
+          manage_heater();
+          manage_inactivity();
+          lcd_update();
+          if(cnt==0)
+          {
+          #if BEEPER > 0
+            SET_OUTPUT(BEEPER);
+
+            WRITE(BEEPER,HIGH);
+            delay(3);
+            WRITE(BEEPER,LOW);
+            delay(3);
+          #else
+            lcd_buzz(1000/6,100);
+          #endif
+          }
+        }*/
+
+        //return to normal
+        if(code_seen('L'))
+        {
+          target1[E_AXIS] += -code_value();
+        }
+        else
+        {
+          #ifdef FILAMENTCHANGE_FINALRETRACT
+            target1[E_AXIS] += (-1)*FILAMENTCHANGE_FINALRETRACT ;
+          #endif
+        }
+        current_position[E_AXIS]=target1[E_AXIS]; //the long retract of L is compensated by manual filament feeding
+        plan_set_e_position(current_position[E_AXIS]);
+        plan_buffer_line(target1[X_AXIS], target1[Y_AXIS], target1[Z_AXIS], target1[E_AXIS], feedrate/60, active_extruder); //should do nothing
+        plan_buffer_line(lastpos[X_AXIS], lastpos[Y_AXIS], target1[Z_AXIS], target1[E_AXIS], feedrate/60, active_extruder); //move xy back
+        plan_buffer_line(lastpos[X_AXIS], lastpos[Y_AXIS], lastpos[Z_AXIS], target1[E_AXIS], feedrate/60, active_extruder); //move z back
+        plan_buffer_line(lastpos[X_AXIS], lastpos[Y_AXIS], lastpos[Z_AXIS], lastpos[E_AXIS], feedrate/60, active_extruder); //final untretract
+    }
+    break;
+    #endif //FILAMENTCHANGEENABLE
+    case 907: // M907 Set digital trimpot motor current using axis codes.
+    {
+      #if defined(DIGIPOTSS_PIN) && DIGIPOTSS_PIN > -1
+        for(int i=0;i<NUM_AXIS;i++) if(code_seen(axis_codes[i])) digipot_current(i,code_value());
+        if(code_seen('B')) digipot_current(4,code_value());
+        if(code_seen('S')) for(int i=0;i<=4;i++) digipot_current(i,code_value());
+      #endif
+      #ifdef MOTOR_CURRENT_PWM_XY_PIN
+        if(code_seen('X')) digipot_current(0, code_value());
+      #endif
+      #ifdef MOTOR_CURRENT_PWM_Z_PIN
+        if(code_seen('Z')) digipot_current(1, code_value());
+      #endif
+      #ifdef MOTOR_CURRENT_PWM_E_PIN
+        if(code_seen('E')) digipot_current(2, code_value());
+      #endif
+    }
+    break;
+    case 908: // M908 Control digital trimpot directly.
+    {
+      #if defined(DIGIPOTSS_PIN) && DIGIPOTSS_PIN > -1
+        //uint8_t channel,current;
+        if(code_seen('P')) channel=code_value();
+        if(code_seen('S')) current=code_value();
+        //digitalPotWrite(channel, current);
+      #endif
+    }
+    break;
+	case 350:
+	break;
+	case 351:
+	break;
+    case 999: // M999: Restart after being stopped
+      Stopped = false;
+      //lcd_reset_alert_level();
+      gcode_LastN = Stopped_gcode_LastN;
+      FlushSerialRequestResend();
+    break;
 		}
 	}
+
+	else if(code_seen('T'))
+	{
+    tmp_extruder = code_value();
+    if(tmp_extruder >= EXTRUDERS) {
+      //SERIAL_ECHO_START;
+      //SERIAL_ECHO("T");
+      //SERIAL_ECHO(tmp_extruder);
+      //SERIAL_ECHOLN(MSG_INVALID_EXTRUDER);
+    }
+	else
+	{
+      make_move = false;
+      if(code_seen('F')) {
+        make_move = true;
+        next_feedrate = code_value();
+        if(next_feedrate > 0.0) {
+          feedrate = next_feedrate;
+        }
+      }
+      #if EXTRUDERS > 1
+      if(tmp_extruder != active_extruder) {
+        // Save current position to return to after applying extruder offset
+        memcpy(destination, current_position, sizeof(destination));
+        plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
+        // Move to the old position if 'F' was in the parameters
+        if(make_move && Stopped == false) {
+           prepare_move();
+        }
+      }
+      #endif
+      //SERIAL_ECHO_START;
+      //SERIAL_ECHO(MSG_ACTIVE_EXTRUDER);
+      //SERIAL_PROTOCOLLN((int)active_extruder);
+      }
+	}
+
+	else
+	{
+    //SERIAL_ECHO_START;
+    //SERIAL_ECHOPGM(MSG_UNKNOWN_COMMAND);
+    //SERIAL_ECHO(cmdbuffer[bufindr]);
+    //SERIAL_ECHOLNPGM("\"");
+	}
+	ClearToSend();
 }
 
 /****************************************************************************

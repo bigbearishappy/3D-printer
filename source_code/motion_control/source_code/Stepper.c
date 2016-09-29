@@ -226,3 +226,13 @@ void finishAndDisableSteppers()
   //disable_e2();
 }
 
+/*******************************************************************************************************
+name:		digipot_current()
+function:	write the value to the pot
+			[in]	-	driver
+						current
+			[out]	-	void
+*******************************************************************************************************/
+void digipot_current(uint8_t driver, int current)
+{}
+

@@ -76,6 +76,7 @@ void plan_init(void);
 static int8_t prev_block_index(int8_t block_index);
 uint8_t blocks_queued(void);
 float max_allowable_speed(float acceleration, float target_velocity, float distance);
+void set_extrude_min_temp(float temp);
 float estimate_acceleration_distance(float initial_rate, float target_rate, float acceleration);
 float intersection_distance(float initial_rate, float final_rate, float acceleration, float distance);
 void calculate_trapezoid_for_block(block_t *block, float entry_factor, float exit_factor);

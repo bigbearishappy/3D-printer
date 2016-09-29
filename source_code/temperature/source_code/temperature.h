@@ -20,6 +20,7 @@ int isHeatingHotend(uint8_t extruder);
 int isHeatingBed(void);
 int isCoolingBed(void);
 void disable_heater(void);
+void PID_autotune(float temp, int extruder, int ncycles);
 
 #ifdef PIDTEMP
   extern float Kp,Ki,Kd,Kc;
