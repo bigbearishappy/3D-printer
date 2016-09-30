@@ -335,7 +335,7 @@ void process_command(void)
     		case 1: 									// G1								//fast move
 			if(Stopped == false) {
         	get_coordinates(); // For X Y Z E F
-        	//prepare_move();
+        	prepare_move();
         	return;
       		}
     		case 2: 									// G2  - CW ARC
@@ -1443,10 +1443,10 @@ void prepare_move(void)
 
 	// Do not use feedmultiply for E or Z only moves
   	if( (current_position[X_AXIS] == destination [X_AXIS]) && (current_position[Y_AXIS] == destination [Y_AXIS])) {
-    	//plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
+    	plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
   	}
   	else {
-    	//plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate*feedmultiply/60/100.0, active_extruder);
+    	plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate*feedmultiply/60/100.0, active_extruder);
   	}
 
 	for(i=0; i < NUM_AXIS; i++) {
