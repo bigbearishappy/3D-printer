@@ -26,3 +26,17 @@ planner_reverse_pass()完成移植						( ok at 20150926)
 
 下一步移植任务：
 process_commands()完成移植							( ok at 20160929)
+
+下一步移植任务：
+manage_heater()完成移植								( ok at 20161005)
+
+下一步移植任务：
+manage_inactivity()完成移植							( ok at 20161005)
+
+下一步移植任务：
+checkHitEndstops()完成移植							( ok at 20161005)
+
+第一遍移植完成：
+细节检查：
+1 tp_init()移植不完整
+2 st_init()移植不完整

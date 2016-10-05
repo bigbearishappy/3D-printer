@@ -58,6 +58,10 @@ void clamp_to_software_endstops(float target[3]);
 int8_t next_block_index(int8_t block_index);
 
 int setTargetedHotend(int code);
+void manage_inactivity(void);
+void checkHitEndstops(void);
+void kill(void);
+void suicide(void);
 
 int fputc(int ch, FILE *f);							//it's related with the usart data transmission
 int GetKey (void);

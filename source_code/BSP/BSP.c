@@ -51,6 +51,8 @@ void NVIC_Configuration(void)
 {
 	NVIC_InitTypeDef NVIC_InitStructure;
 
+	NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
+
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
 
 	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn; 						//USART1 interrupt         

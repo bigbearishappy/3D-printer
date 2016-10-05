@@ -21,6 +21,8 @@ int isHeatingBed(void);
 int isCoolingBed(void);
 void disable_heater(void);
 void PID_autotune(float temp, int extruder, int ncycles);
+void manage_heater(void);
+static void updateTemperaturesFromRawValues(void);
 
 #ifdef PIDTEMP
   extern float Kp,Ki,Kd,Kc;

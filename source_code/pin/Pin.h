@@ -70,6 +70,11 @@
 	#define MOTOR_CURRENT_PWM_XY_PIN 44
 	#define MOTOR_CURRENT_PWM_Z_PIN 45
 	#define MOTOR_CURRENT_PWM_E_PIN 46
+
+	#define PS_ON_PIN          12
+	#define SUICIDE_PIN        54  //PIN that has to be turned on right after start, to keep power flowing.
+	#define KILL_PIN           -1
+
 	#endif
 
 #endif

@@ -90,9 +90,9 @@ int main()
 			process_command();
 			buflen -= 1;
 		}
-		/*manage_heater();
+		manage_heater();
 		manage_inactivity();
-		checkHitEndstops();*/
+		checkHitEndstops();/**/
 	}
 }
 
@@ -111,6 +111,7 @@ Description:
 ****************************************************************************/
 void system_init(void)
 {
+	int8_t i;
 	RCC_Configuration();
 	NVIC_Configuration();
 	TIM_Configuration();
@@ -121,6 +122,10 @@ void system_init(void)
 
 //这里有很多开机时的打印信息，留在以后专门整理20160412
 
+  for(i = 0; i < BUFSIZE; i++)
+  {
+    fromsd[i] = false;
+  }
   // loads data from EEPROM if available else uses defaults (and resets step acceleration rate)
   Config_RetrieveSettings();
 
@@ -1565,6 +1570,73 @@ int setTargetedHotend(int code){
     }
   }
   return false;
+}
+
+/***************************************************************************************
+name:		manage_inactivity()
+function:	manage the printer when it has nothing to do
+			[in]	-	void
+			[out]	-	void
+***************************************************************************************/
+void manage_inactivity()
+{
+	unsigned int temp = 0;
+	temp = tim_millis;
+	if( (temp - previous_millis_cmd) >  max_inactive_time )
+	if(max_inactive_time)
+	  kill();
+
+	if(stepper_inactive_time)  {
+	temp = tim_millis;
+	if( (temp - previous_millis_cmd) >  stepper_inactive_time )
+		{
+		  if(blocks_queued() == false) {
+		    disable_x();
+		    disable_y();
+		    disable_z();
+		    disable_e0();
+		  }
+		}
+	}
+
+	check_axes_activity();
+}
+
+/*********************************************************************************************
+name:		kill()
+function:	disable all the function of the printer
+			[in]	-	void
+			[out]	-	void
+*********************************************************************************************/
+void kill()
+{
+  //cli(); // Stop interrupts
+  disable_heater();
+
+  disable_x();
+  disable_y();
+  disable_z();
+  disable_e0();
+#if defined(PS_ON_PIN) && PS_ON_PIN > -1
+  //pinMode(PS_ON_PIN,INPUT);
+#endif
+  //SERIAL_ERROR_START;
+  //SERIAL_ERRORLNPGM(MSG_ERR_KILLED);
+  //LCD_ALERTMESSAGEPGM(MSG_KILLED);
+  suicide();
+  while(1) { /* Intentionally left empty */ } // Wait for reset
+}
+
+/**************************************************************************************
+name:		suicide()
+function:	stop the printer
+**************************************************************************************/
+void suicide()
+{
+  #if defined(SUICIDE_PIN) && SUICIDE_PIN > -1
+    //SET_OUTPUT(SUICIDE_PIN);
+    //WRITE(SUICIDE_PIN, LOW);
+  #endif
 }
 
 // 发送数据

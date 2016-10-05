@@ -762,5 +762,70 @@ void set_extrude_min_temp(float temp)
 }
 #endif
 
+/***************************************************************************************************
+name:		check_axes_activity()
+function:	check if the a axis is active
+			[in]	-	void
+			[out]	-	void
+***************************************************************************************************/
+void check_axes_activity()
+{
+	unsigned char x_active = 0;
+	unsigned char y_active = 0;  
+	unsigned char z_active = 0;
+	unsigned char e_active = 0;
+	unsigned char tail_fan_speed = fanSpeed;
+	block_t *block;
+	uint8_t block_index;
+
+	if(block_buffer_tail != block_buffer_head)
+	{
+	block_index = block_buffer_tail;
+	tail_fan_speed = block_buffer[block_index].fan_speed;
+	while(block_index != block_buffer_head)
+	{
+	  block = &block_buffer[block_index];
+	  if(block->steps_x != 0) x_active++;
+	  if(block->steps_y != 0) y_active++;
+	  if(block->steps_z != 0) z_active++;
+	  if(block->steps_e != 0) e_active++;
+	  block_index = (block_index+1) & (BLOCK_BUFFER_SIZE - 1);
+	}
+	}
+
+	if((DISABLE_X) && (x_active == 0)) disable_x();
+	if((DISABLE_Y) && (y_active == 0)) disable_y();
+	if((DISABLE_Z) && (z_active == 0)) disable_z();
+	if((DISABLE_E) && (e_active == 0)) disable_e0(); 
+
+#if defined(FAN_PIN) && FAN_PIN > -1
+	#ifdef FAN_SOFT_PWM
+	fanSpeedSoftPwm = tail_fan_speed;
+	#else
+	//analogWrite(FAN_PIN,tail_fan_speed);
+	#endif//!FAN_SOFT_PWM
+#endif//FAN_PIN > -1
+
+#ifdef AUTOTEMP
+  getHighESpeed();
+#endif
+}
+
+/***************************************************************************************************
+name:		getHighESpeed()
+function:	get the speed of the extruder
+			[in]	-	void
+			[out]	-	void
+***************************************************************************************************/
+#ifdef AUTOTEMP
+void getHighESpeed()
+{
+	static float oldt=0;
+	if(!autotemp_enabled){
+    return;
+  	}
+}
+#endif
+
 
 

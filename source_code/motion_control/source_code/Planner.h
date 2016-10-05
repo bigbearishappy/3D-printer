@@ -89,5 +89,7 @@ void planner_forward_pass_kernel(block_t *previous, block_t *current, block_t *n
 void plan_buffer_line(const float x, const float y, const float z, const float e, float feed_rate, const uint8_t extruder);
 void plan_set_e_position(const float e);
 void plan_set_position(const float x, const float y, const float z, const float e);
+void check_axes_activity(void);
+void getHighESpeed(void);
 
 #endif

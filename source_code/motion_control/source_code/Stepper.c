@@ -236,3 +236,30 @@ function:	write the value to the pot
 void digipot_current(uint8_t driver, int current)
 {}
 
+/****************************************************************************************************
+name:		checkHitEndstops()
+function:	check if the endstops is hit
+			[in]	-	void
+			[out]	-	void
+****************************************************************************************************/
+void checkHitEndstops()
+{
+	if(endstop_x_hit || endstop_y_hit || endstop_z_hit) {
+	//SERIAL_ECHO_START;
+	//SERIAL_ECHOPGM(MSG_ENDSTOPS_HIT);
+	if(endstop_x_hit) {
+	 //SERIAL_ECHOPAIR(" X:",(float)endstops_trigsteps[X_AXIS]/axis_steps_per_unit[X_AXIS]);
+	}
+	if(endstop_y_hit) {
+	 //SERIAL_ECHOPAIR(" Y:",(float)endstops_trigsteps[Y_AXIS]/axis_steps_per_unit[Y_AXIS]);
+	}
+	if(endstop_z_hit) {
+	 //SERIAL_ECHOPAIR(" Z:",(float)endstops_trigsteps[Z_AXIS]/axis_steps_per_unit[Z_AXIS]);
+	}
+	//SERIAL_ECHOLN("");
+	endstop_x_hit=false;
+	endstop_y_hit=false;
+	endstop_z_hit=false;
+	}
+}
+

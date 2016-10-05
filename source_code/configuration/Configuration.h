@@ -6,6 +6,8 @@
 #define BAUDRATE 115200
 
 #define PIDTEMP
+#define PID_MAX 255 // limits current to nozzle while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
+
 #define ULTIPANEL
 
 // coarse Endstop Settings
@@ -128,5 +130,33 @@
 #define TEMP_HYSTERESIS 3       // (degC) range of +/- temperatures considered "close" to the target one
 #define TEMP_WINDOW     1       // (degC) Window around target to start the residency timer x degC early.
 
+//#define TEMP_SENSOR_0 -1
+#define TEMP_SENSOR_0 3
+//#define TEMP_SENSOR_1 -1
+#define TEMP_SENSOR_1 1
+//#define TEMP_SENSOR_2 0
+#define TEMP_SENSOR_2 0
+//#define TEMP_SENSOR_BED 0
+#define TEMP_SENSOR_BED 3
+
+// The minimal temperature defines the temperature below which the heater will not be enabled It is used
+// to check that the wiring to the thermistor is not broken.
+// Otherwise this would lead to the heater being powered on all the time.
+#define HEATER_0_MINTEMP 5
+#define BED_MINTEMP 5
+
+// When temperature exceeds max temp, your heater will be switched off.
+// This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
+// You should use MINTEMP for thermistor short/failure protection.
+#define HEATER_0_MAXTEMP 275
+#define BED_MAXTEMP 150
+
+#define MAX_BED_POWER 255 // limits duty cycle to bed; 255=full current
+
+// Disables axis when it's not being used.
+#define DISABLE_X false
+#define DISABLE_Y false
+#define DISABLE_Z false
+#define DISABLE_E false // For all extruders
 
 #endif
