@@ -11,6 +11,10 @@ static volatile uint8_t endstop_z_hit=false;
 
 volatile long count_position[NUM_AXIS] = { 0, 0, 0, 0};
 
+#ifdef MOTOR_CURRENT_PWM_XY_PIN
+  int motor_current_setting[3] = DEFAULT_PWM_MOTOR_CURRENT;
+#endif
+
 #define ENABLE_STEPPER_DRIVER_INTERRUPT()  1
 
 /****************************************************************************
@@ -26,6 +30,9 @@ Description:
 ****************************************************************************/
 void st_init(void)
 {
+    digipot_init(); //Initialize Digipot Motor Current
+    microstep_init(); //Initialize Microstepping Pins
+
 //initialize the dir pin
 #if defined(X_DIR_PIN)&&X_DIR_PIN > -1
 	//set the pin to output
@@ -158,13 +165,123 @@ void enable_endstops(uint8_t check)
 	check_endstops = check;
 }
 
+/*****************************************************************************************************
+name:		digipot_init()
+function:	initialize the digital pot
+			[in]	-	void
+			[out]	-	void
+*****************************************************************************************************/
 void digipot_init(void)
 {
+#if defined(DIGIPOTSS_PIN) && DIGIPOTSS_PIN > -1
+    int i;
+	const uint8_t digipot_motor_current[] = DIGIPOT_MOTOR_CURRENT;
+	
+	//SPI.begin();
+	//pinMode(DIGIPOTSS_PIN, OUTPUT);
+	for(i=0;i<=4;i++)
+	  digipot_current(i,digipot_motor_current[i]);
+#endif
+
+#ifdef MOTOR_CURRENT_PWM_XY_PIN
+	//pinMode(MOTOR_CURRENT_PWM_XY_PIN, OUTPUT);
+	//pinMode(MOTOR_CURRENT_PWM_Z_PIN, OUTPUT);
+	//pinMode(MOTOR_CURRENT_PWM_E_PIN, OUTPUT);
+	digipot_current(0, motor_current_setting[0]);
+	digipot_current(1, motor_current_setting[1]);
+	digipot_current(2, motor_current_setting[2]);
+	//Set timer5 to 31khz so the PWM of the motor power is as constant as possible. (removes a buzzing noise)
+	//TCCR5B = (TCCR5B & ~(_BV(CS50) | _BV(CS51) | _BV(CS52))) | _BV(CS50);
+#endif
 }
 
+/**********************************************************************************************************
+name:		microstep_init()
+function:	initialize the microstep
+			[in]	-	void
+			[out]	-	void
+**********************************************************************************************************/
 void microstep_init(void)
-{}
+{
+#if defined(X_MS1_PIN) && X_MS1_PIN > -1
+    int i;
+	const uint8_t microstep_modes[] = MICROSTEP_MODES;
+	//pinMode(X_MS2_PIN,OUTPUT);
+	//pinMode(Y_MS2_PIN,OUTPUT);
+	//pinMode(Z_MS2_PIN,OUTPUT);
+	//pinMode(E0_MS2_PIN,OUTPUT);
+	//pinMode(E1_MS2_PIN,OUTPUT);
+	for(i=0;i<=4;i++) 
+		microstep_mode(i,microstep_modes[i]);
+#endif
+}
 
+/**************************************************************************************************
+name:		microstep_ms()
+function:	manage all the microstep of the printer
+			[in]	-	driver
+						ms1
+						ms2
+			[out]	-	void
+**************************************************************************************************/
+void microstep_ms(uint8_t driver, int8_t ms1, int8_t ms2)
+{
+  if(ms1 > -1) switch(driver)
+  {
+    case 0: 
+	//digitalWrite( X_MS1_PIN,ms1); 
+	break;
+    case 1: 
+	//digitalWrite( Y_MS1_PIN,ms1); 
+	break;
+    case 2: 
+	//digitalWrite( Z_MS1_PIN,ms1);
+	break;
+    case 3: 
+	//digitalWrite(E0_MS1_PIN,ms1); 
+	break;
+    case 4: 
+	//digitalWrite(E1_MS1_PIN,ms1); 
+	break;
+  }
+  if(ms2 > -1) switch(driver)
+  {
+    case 0: 
+	//digitalWrite( X_MS2_PIN,ms2); 
+	break;
+    case 1: 
+	//digitalWrite( Y_MS2_PIN,ms2); 
+	break;
+    case 2: 
+	//digitalWrite( Z_MS2_PIN,ms2); 
+	break;
+    case 3: 
+	//digitalWrite(E0_MS2_PIN,ms2); 
+	break;
+    case 4: 
+	//digitalWrite(E1_MS2_PIN,ms2); 
+	break;
+  }
+}
+
+/*********************************************************************************************************
+name:		microstep_mode()
+function:	set the mode of a microstep
+			[in]	-	driver
+						stepping_mode
+			[out]	-	void
+*********************************************************************************************************/
+void microstep_mode(uint8_t driver, uint8_t stepping_mode)
+{
+	switch(stepping_mode)
+	{
+	case 1: microstep_ms(driver,MICROSTEP1); break;
+	case 2: microstep_ms(driver,MICROSTEP2); break;
+	case 4: microstep_ms(driver,MICROSTEP4); break;
+	case 8: microstep_ms(driver,MICROSTEP8); break;
+	case 16: microstep_ms(driver,MICROSTEP16); break;
+	}
+}
 
 /****************************************************************************
 name:		st_synchronize

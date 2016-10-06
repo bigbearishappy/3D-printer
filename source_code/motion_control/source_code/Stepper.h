@@ -4,6 +4,8 @@
 void st_init(void);
 void digipot_init(void);
 void microstep_init(void);
+void microstep_ms(uint8_t driver, int8_t ms1, int8_t ms2);
+void microstep_mode(uint8_t driver, uint8_t stepping_mode);
 void enable_endstops(uint8_t check);
 void endstops_hit_on_purpose(void);
 void finishAndDisableSteppers(void);

@@ -4,7 +4,7 @@
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
 D:\Users\daxiong\Desktop\3d-printer\BBear_Petty.uvproj
-Project File Date:  10/05/2016
+Project File Date:  10/06/2016
 
 <h2>Output:</h2>
 compiling Marlin_main.c...
@@ -42,8 +42,781 @@ source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was se
 source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
 source_code\Marlin\Marlin_main.c - 0 Error(s), 32 Warning(s).
 Build target 'BBear_Petty'
+compiling system_stm32f10x.c...
+compiling temperature.c...
+source_code\temperature\source_code\temperature.c(229): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(214): warning:  #550-D: variable "pid_input" was set but never used
+source_code\temperature\source_code\temperature.c(299): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(301): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(15): warning:  #550-D: variable "temp_iState_min" was set but never used
+source_code\temperature\source_code\temperature.c(16): warning:  #550-D: variable "temp_iState_max" was set but never used
+source_code\temperature\source_code\temperature.c(35): warning:  #550-D: variable "soft_pwm" was set but never used
+compiling Planner.c...
+source_code\motion_control\source_code\Planner.c(203): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(210): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(264): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(266): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(409): warning:  #177-D: variable "segment_time" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(419): warning:  #177-D: variable "jerk" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(725): warning:  #223-D: function "lround" declared implicitly
+source_code\motion_control\source_code\Planner.c(740): warning:  #223-D: function "lround" declared implicitly
+source_code\motion_control\source_code\Planner.c(796): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(797): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(798): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(799): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(777): warning:  #550-D: variable "tail_fan_speed" was set but never used
+source_code\motion_control\source_code\Planner.c(823): warning:  #177-D: variable "oldt" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(38): warning:  #550-D: variable "previous_nominal_speed" was set but never used
+compiling Stepper.c...
+source_code\motion_control\source_code\Stepper.c(104): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(109): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(114): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(119): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(197): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(207): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(209): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(221): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(222): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(223): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(224): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(6): warning:  #550-D: variable "check_endstops" was set but never used
+compiling Ultralcd.c...
+compiling ConfigurationStore.c...
+compiling USART.c...
+compiling TIM.c...
+compiling BSP.c...
+compiling misc.c...
+compiling stm32f10x_adc.c...
+compiling stm32f10x_bkp.c...
+compiling stm32f10x_can.c...
+compiling stm32f10x_cec.c...
+compiling stm32f10x_crc.c...
+compiling stm32f10x_dac.c...
+compiling stm32f10x_dbgmcu.c...
+compiling stm32f10x_dma.c...
+compiling stm32f10x_exti.c...
+compiling stm32f10x_flash.c...
+compiling stm32f10x_fsmc.c...
+compiling stm32f10x_gpio.c...
+compiling stm32f10x_i2c.c...
+compiling stm32f10x_iwdg.c...
+compiling stm32f10x_pwr.c...
+compiling stm32f10x_rcc.c...
+compiling stm32f10x_rtc.c...
+compiling stm32f10x_sdio.c...
+compiling stm32f10x_spi.c...
+compiling stm32f10x_tim.c...
+compiling stm32f10x_usart.c...
+compiling stm32f10x_wwdg.c...
+compiling core_cm3.c...
+assembling startup_stm32f10x_md.s...
+linking...
+Program Size: Code=39408 RO-data=1060 RW-data=332 ZI-data=3876  
+".\Output\BBear_Petty.axf" - 0 Error(s), 34 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(640): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(801): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(837): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(845): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(846): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(847): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(850): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(307): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(309): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(316): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(321): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(323): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(328): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #177-D: variable "channel" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #177-D: variable "current" was declared but never referenced
+source_code\Marlin\Marlin_main.c(331): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1495): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1594): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1595): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1596): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1597): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1616): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1617): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1618): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1619): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 0 Error(s), 32 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(640): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(801): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(837): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(845): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(846): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(847): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(850): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(307): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(309): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(316): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(321): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(323): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(328): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #177-D: variable "channel" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #177-D: variable "current" was declared but never referenced
+source_code\Marlin\Marlin_main.c(331): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1495): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1594): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1595): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1596): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1597): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1616): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1617): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1618): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1619): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 0 Error(s), 32 Warning(s).
+Build target 'BBear_Petty'
+compiling motion_control.c...
+source_code\motion_control\source_code\motion_control.c(27): warning:  #1-D: last line of file ends without a newline
+linking...
+Program Size: Code=39408 RO-data=1060 RW-data=332 ZI-data=3876  
+".\Output\BBear_Petty.axf" - 0 Error(s), 1 Warning(s).
+Build target 'BBear_Petty'
+compiling motion_control.c...
 linking...
 Program Size: Code=39408 RO-data=1060 RW-data=332 ZI-data=3876  
 ".\Output\BBear_Petty.axf" - 0 Error(s), 0 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(640): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(801): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(837): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(845): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(846): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(847): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(850): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(307): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(309): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(316): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(321): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(323): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(328): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #177-D: variable "channel" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #177-D: variable "current" was declared but never referenced
+source_code\Marlin\Marlin_main.c(331): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1495): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1594): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1595): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1596): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1597): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1616): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1617): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1618): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1619): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 0 Error(s), 32 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(640): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(801): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(837): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(845): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(846): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(847): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(850): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(307): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(309): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(316): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(321): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(323): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(328): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #177-D: variable "channel" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #177-D: variable "current" was declared but never referenced
+source_code\Marlin\Marlin_main.c(331): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1495): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1594): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1595): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1596): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1597): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1616): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1617): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1618): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1619): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 0 Error(s), 32 Warning(s).
+Build target 'BBear_Petty'
+compiling temperature.c...
+source_code\temperature\source_code\temperature.c(229): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(214): warning:  #550-D: variable "pid_input" was set but never used
+source_code\temperature\source_code\temperature.c(299): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(301): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(15): warning:  #550-D: variable "temp_iState_min" was set but never used
+source_code\temperature\source_code\temperature.c(16): warning:  #550-D: variable "temp_iState_max" was set but never used
+source_code\temperature\source_code\temperature.c(35): warning:  #550-D: variable "soft_pwm" was set but never used
+compiling Planner.c...
+source_code\motion_control\source_code\Planner.c(203): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(210): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(264): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(266): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(409): warning:  #177-D: variable "segment_time" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(419): warning:  #177-D: variable "jerk" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(725): warning:  #223-D: function "lround" declared implicitly
+source_code\motion_control\source_code\Planner.c(740): warning:  #223-D: function "lround" declared implicitly
+source_code\motion_control\source_code\Planner.c(796): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(797): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(798): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(799): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(777): warning:  #550-D: variable "tail_fan_speed" was set but never used
+source_code\motion_control\source_code\Planner.c(823): warning:  #177-D: variable "oldt" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(38): warning:  #550-D: variable "previous_nominal_speed" was set but never used
+compiling Stepper.c...
+source_code\motion_control\source_code\Stepper.c(104): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(109): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(114): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(119): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(197): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(207): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(209): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(221): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(222): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(223): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(224): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(6): warning:  #550-D: variable "check_endstops" was set but never used
+compiling motion_control.c...
+compiling ConfigurationStore.c...
+compiling USART.c...
+compiling TIM.c...
+compiling BSP.c...
+linking...
+Program Size: Code=39408 RO-data=1060 RW-data=332 ZI-data=3876  
+".\Output\BBear_Petty.axf" - 0 Error(s), 34 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(640): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(801): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(837): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(845): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(846): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(847): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(850): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(307): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(309): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(316): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(321): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(323): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(328): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #177-D: variable "channel" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #177-D: variable "current" was declared but never referenced
+source_code\Marlin\Marlin_main.c(331): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1495): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1594): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1595): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1596): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1597): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1616): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1617): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1618): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1619): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 0 Error(s), 32 Warning(s).
+Build target 'BBear_Petty'
+compiling temperature.c...
+source_code\temperature\source_code\temperature.c(273): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(258): warning:  #550-D: variable "pid_input" was set but never used
+source_code\temperature\source_code\temperature.c(343): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(345): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(16): warning:  #550-D: variable "temp_iState_min" was set but never used
+source_code\temperature\source_code\temperature.c(17): warning:  #550-D: variable "temp_iState_max" was set but never used
+source_code\temperature\source_code\temperature.c(36): warning:  #550-D: variable "soft_pwm" was set but never used
+linking...
+Program Size: Code=39532 RO-data=1056 RW-data=344 ZI-data=3880  
+".\Output\BBear_Petty.axf" - 0 Error(s), 7 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(640): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(801): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(837): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(845): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(846): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(847): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(850): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1271): error:  #29: expected an expression
+source_code\Marlin\Marlin_main.c(1273): error:  #29: expected an expression
+source_code\Marlin\Marlin_main.c(307): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(309): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(316): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(321): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(323): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(328): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "channel" was set but never used
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "current" was set but never used
+source_code\Marlin\Marlin_main.c(331): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1495): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1594): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1595): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1596): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1597): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1616): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1617): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1618): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1619): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 2 Error(s), 32 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(332): error:  #101: "i" has already been declared in the current scope
+source_code\Marlin\Marlin_main.c(641): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(802): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(838): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(846): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(847): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(848): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(851): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1274): error:  #29: expected an expression
+source_code\Marlin\Marlin_main.c(307): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(308): warning:  #177-D: variable "i" was declared but never referenced
+source_code\Marlin\Marlin_main.c(309): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(316): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(321): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(323): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(328): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "channel" was set but never used
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "current" was set but never used
+source_code\Marlin\Marlin_main.c(331): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1496): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1595): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1596): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1597): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1598): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1617): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1618): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1619): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1620): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 2 Error(s), 33 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(332): error:  #101: "i" has already been declared in the current scope
+source_code\Marlin\Marlin_main.c(641): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(802): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(838): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(846): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(847): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(848): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(851): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(307): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(308): warning:  #177-D: variable "i" was declared but never referenced
+source_code\Marlin\Marlin_main.c(309): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(316): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(321): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(323): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(328): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "channel" was set but never used
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "current" was set but never used
+source_code\Marlin\Marlin_main.c(331): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1496): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1595): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1596): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1597): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1598): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1617): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1618): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1619): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1620): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 1 Error(s), 33 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(640): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(801): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(837): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(845): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(846): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(847): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(850): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(307): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(309): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(316): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(321): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(323): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(328): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "channel" was set but never used
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "current" was set but never used
+source_code\Marlin\Marlin_main.c(331): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1495): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1594): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1595): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1596): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1597): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1616): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1617): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1618): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1619): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 0 Error(s), 32 Warning(s).
+Build target 'BBear_Petty'
+compiling temperature.c...
+source_code\temperature\source_code\temperature.c(273): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(258): warning:  #550-D: variable "pid_input" was set but never used
+source_code\temperature\source_code\temperature.c(343): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(345): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(16): warning:  #550-D: variable "temp_iState_min" was set but never used
+source_code\temperature\source_code\temperature.c(17): warning:  #550-D: variable "temp_iState_max" was set but never used
+source_code\temperature\source_code\temperature.c(36): warning:  #550-D: variable "soft_pwm" was set but never used
+compiling Planner.c...
+source_code\motion_control\source_code\Planner.c(203): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(210): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(264): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(266): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(409): warning:  #177-D: variable "segment_time" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(419): warning:  #177-D: variable "jerk" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(725): warning:  #223-D: function "lround" declared implicitly
+source_code\motion_control\source_code\Planner.c(740): warning:  #223-D: function "lround" declared implicitly
+source_code\motion_control\source_code\Planner.c(796): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(797): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(798): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(799): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(777): warning:  #550-D: variable "tail_fan_speed" was set but never used
+source_code\motion_control\source_code\Planner.c(823): warning:  #177-D: variable "oldt" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(38): warning:  #550-D: variable "previous_nominal_speed" was set but never used
+compiling Stepper.c...
+source_code\motion_control\source_code\Stepper.c(107): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(112): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(117): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(122): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(206): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(216): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(218): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(230): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(231): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(232): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(233): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(6): warning:  #550-D: variable "check_endstops" was set but never used
+compiling motion_control.c...
+compiling ConfigurationStore.c...
+compiling USART.c...
+compiling TIM.c...
+compiling BSP.c...
+linking...
+Program Size: Code=39744 RO-data=1060 RW-data=344 ZI-data=3880  
+".\Output\BBear_Petty.axf" - 0 Error(s), 34 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(640): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(801): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(837): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(845): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(846): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(847): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(850): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(307): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(309): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(316): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(321): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(323): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(328): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "channel" was set but never used
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "current" was set but never used
+source_code\Marlin\Marlin_main.c(331): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1495): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1594): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1595): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1596): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1597): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1616): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1617): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1618): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1619): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 0 Error(s), 32 Warning(s).
+Build target 'BBear_Petty'
+compiling temperature.c...
+source_code\temperature\source_code\temperature.c(273): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(258): warning:  #550-D: variable "pid_input" was set but never used
+source_code\temperature\source_code\temperature.c(343): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(345): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(16): warning:  #550-D: variable "temp_iState_min" was set but never used
+source_code\temperature\source_code\temperature.c(17): warning:  #550-D: variable "temp_iState_max" was set but never used
+source_code\temperature\source_code\temperature.c(36): warning:  #550-D: variable "soft_pwm" was set but never used
+compiling Planner.c...
+source_code\motion_control\source_code\Planner.c(203): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(210): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(264): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(266): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(409): warning:  #177-D: variable "segment_time" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(419): warning:  #177-D: variable "jerk" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(725): warning:  #223-D: function "lround" declared implicitly
+source_code\motion_control\source_code\Planner.c(740): warning:  #223-D: function "lround" declared implicitly
+source_code\motion_control\source_code\Planner.c(796): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(797): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(798): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(799): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(777): warning:  #550-D: variable "tail_fan_speed" was set but never used
+source_code\motion_control\source_code\Planner.c(823): warning:  #177-D: variable "oldt" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(38): warning:  #550-D: variable "previous_nominal_speed" was set but never used
+compiling Stepper.c...
+source_code\motion_control\source_code\Stepper.c(111): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(116): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(121): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(126): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(230): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(240): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(242): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(254): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(255): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(256): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(257): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(6): warning:  #550-D: variable "check_endstops" was set but never used
+compiling motion_control.c...
+compiling ConfigurationStore.c...
+compiling USART.c...
+compiling TIM.c...
+compiling BSP.c...
+linking...
+Program Size: Code=39816 RO-data=1060 RW-data=356 ZI-data=3876  
+".\Output\BBear_Petty.axf" - 0 Error(s), 34 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(640): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(801): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(837): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(845): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(846): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(847): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(850): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(307): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(309): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(316): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(321): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(323): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(328): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "channel" was set but never used
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "current" was set but never used
+source_code\Marlin\Marlin_main.c(331): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1495): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1594): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1595): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1596): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1597): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1616): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1617): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1618): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1619): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 0 Error(s), 32 Warning(s).
+Build target 'BBear_Petty'
+compiling temperature.c...
+source_code\temperature\source_code\temperature.c(273): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(258): warning:  #550-D: variable "pid_input" was set but never used
+source_code\temperature\source_code\temperature.c(343): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(345): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(16): warning:  #550-D: variable "temp_iState_min" was set but never used
+source_code\temperature\source_code\temperature.c(17): warning:  #550-D: variable "temp_iState_max" was set but never used
+source_code\temperature\source_code\temperature.c(36): warning:  #550-D: variable "soft_pwm" was set but never used
+compiling Planner.c...
+source_code\motion_control\source_code\Planner.c(203): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(210): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(264): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(266): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(409): warning:  #177-D: variable "segment_time" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(419): warning:  #177-D: variable "jerk" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(725): warning:  #223-D: function "lround" declared implicitly
+source_code\motion_control\source_code\Planner.c(740): warning:  #223-D: function "lround" declared implicitly
+source_code\motion_control\source_code\Planner.c(796): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(797): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(798): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(799): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Planner.c(777): warning:  #550-D: variable "tail_fan_speed" was set but never used
+source_code\motion_control\source_code\Planner.c(823): warning:  #177-D: variable "oldt" was declared but never referenced
+source_code\motion_control\source_code\Planner.c(38): warning:  #550-D: variable "previous_nominal_speed" was set but never used
+compiling Stepper.c...
+source_code\motion_control\source_code\Stepper.c(111): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(116): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(121): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(126): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(314): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(324): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(326): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(338): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(339): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(340): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(341): warning:  #174-D: expression has no effect
+source_code\motion_control\source_code\Stepper.c(6): warning:  #550-D: variable "check_endstops" was set but never used
+compiling motion_control.c...
+compiling ConfigurationStore.c...
+compiling USART.c...
+compiling TIM.c...
+compiling BSP.c...
+linking...
+Program Size: Code=40012 RO-data=1056 RW-data=356 ZI-data=3876  
+".\Output\BBear_Petty.axf" - 0 Error(s), 34 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(84): error:  #35: #error directive: oops! make sure you have
+source_code\Marlin\Marlin_main.c - 1 Error(s), 1 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(640): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(801): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(837): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(845): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(846): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(847): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(850): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(307): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(309): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(311): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(316): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(321): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(323): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(328): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "channel" was set but never used
+source_code\Marlin\Marlin_main.c(330): warning:  #550-D: variable "current" was set but never used
+source_code\Marlin\Marlin_main.c(331): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1495): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1594): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1595): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1596): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1597): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1616): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1617): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1618): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1619): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 0 Error(s), 32 Warning(s).
+Build target 'BBear_Petty'
+linking...
+Program Size: Code=40012 RO-data=1056 RW-data=356 ZI-data=3876  
+".\Output\BBear_Petty.axf" - 0 Error(s), 0 Warning(s).
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(658): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(819): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(855): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(863): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(864): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(865): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(868): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(325): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(329): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(334): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(339): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(341): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(345): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(346): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(347): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(348): warning:  #550-D: variable "channel" was set but never used
+source_code\Marlin\Marlin_main.c(348): warning:  #550-D: variable "current" was set but never used
+source_code\Marlin\Marlin_main.c(349): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1513): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1612): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1613): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1614): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1615): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1634): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1635): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1636): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1637): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+source_code\Marlin\Marlin_main.c - 0 Error(s), 32 Warning(s).
+Build target 'BBear_Petty'
+linking...
+Program Size: Code=40200 RO-data=1060 RW-data=356 ZI-data=3876  
+".\Output\BBear_Petty.axf" - 0 Error(s), 0 Warning(s).
+Build target 'BBear_Petty'
+compiling Marlin_main.c...
+source_code\Marlin\Marlin_main.c(32): warning:  #520-D: initialization with "{...}" expected for aggregate object
+source_code\Marlin\Marlin_main.c(658): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(819): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(855): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(863): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(864): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(865): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(868): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(325): warning:  #177-D: variable "starpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(327): warning:  #177-D: variable "time" was declared but never referenced
+source_code\Marlin\Marlin_main.c(329): warning:  #550-D: variable "sec" was set but never used
+source_code\Marlin\Marlin_main.c(329): warning:  #550-D: variable "min" was set but never used
+source_code\Marlin\Marlin_main.c(334): warning:  #550-D: variable "tt" was set but never used
+source_code\Marlin\Marlin_main.c(339): warning:  #550-D: variable "target" was set but never used
+source_code\Marlin\Marlin_main.c(341): warning:  #177-D: variable "PULSE_LENGTH" was declared but never referenced
+source_code\Marlin\Marlin_main.c(345): warning:  #177-D: variable "target1" was declared but never referenced
+source_code\Marlin\Marlin_main.c(346): warning:  #177-D: variable "lastpos" was declared but never referenced
+source_code\Marlin\Marlin_main.c(347): warning:  #177-D: variable "cnt" was declared but never referenced
+source_code\Marlin\Marlin_main.c(348): warning:  #550-D: variable "channel" was set but never used
+source_code\Marlin\Marlin_main.c(348): warning:  #550-D: variable "current" was set but never used
+source_code\Marlin\Marlin_main.c(349): warning:  #550-D: variable "make_move" was set but never used
+source_code\Marlin\Marlin_main.c(1513): warning:  #550-D: variable "seen" was set but never used
+source_code\Marlin\Marlin_main.c(1612): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1613): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1614): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1615): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1634): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1635): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1636): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(1637): warning:  #174-D: expression has no effect
+source_code\Marlin\Marlin_main.c(23): warning:  #550-D: variable "fromsd" was set but never used
+source_code\Marlin\Marlin_main.c(53): warning:  #550-D: variable "offset" was set but never used
+linking...
+Program Size: Code=40200 RO-data=1060 RW-data=356 ZI-data=3876  
+".\Output\BBear_Petty.axf" - 0 Error(s), 32 Warning(s).
 Clean started: Project: 'BBear_Petty'
    deleting intermediate output files for target 'BBear_Petty'

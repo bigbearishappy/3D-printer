@@ -1,6 +1,8 @@
 #ifndef motion_control_h
 #define motion_control_h
 
+#define M_PI 3.1415926
+
 // Execute an arc in offset mode format. position == current xyz, target == target xyz, 
 // offset == offset from current xyz, axis_XXX defines circle plane in tool space, axis_linear is
 // the direction of helical travel, radius == circle radius, isclockwise boolean. Used

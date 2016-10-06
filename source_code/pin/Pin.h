@@ -1,7 +1,7 @@
 #ifndef PINS_H
 #define PINS_H
 
-#define X_MS1_PIN -1
+#define X_MS1_PIN 40
 #define X_MS2_PIN -1
 #define Y_MS1_PIN -1
 #define Y_MS2_PIN -1
@@ -11,7 +11,7 @@
 #define E0_MS2_PIN -1
 #define E1_MS1_PIN -1
 #define E1_MS2_PIN -1
-#define DIGIPOTSS_PIN -1
+#define DIGIPOTSS_PIN 38
 
 #if MOTHERBOARD == 33
 #define KNOWN_BOARD 1
@@ -74,6 +74,8 @@
 	#define PS_ON_PIN          12
 	#define SUICIDE_PIN        54  //PIN that has to be turned on right after start, to keep power flowing.
 	#define KILL_PIN           -1
+
+	#define DEFAULT_PWM_MOTOR_CURRENT  {1300, 1300, 1250}
 
 	#endif
 

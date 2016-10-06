@@ -1,5 +1,6 @@
 #include "Marlin.h"
 #include "temperature.h"
+#include "thermistortable.h"
 
 //public values
 int target_temperature[EXTRUDERS] = { 0 };
@@ -12,14 +13,14 @@ unsigned char soft_pwm_bed;
 
 //private value
 #ifdef PIDTEMP
-static float temp_iState_min[EXTRUDERS];
-static float temp_iState_max[EXTRUDERS];
+static float temp_iState_min[EXTRUDERS];//PID temp's min value
+static float temp_iState_max[EXTRUDERS];//PID temp's max value
 #endif
 
 static volatile int temp_meas_ready = false;
 
-static int maxttemp[EXTRUDERS] = {16383};
-static int minttemp[EXTRUDERS] = {0};
+//static int maxttemp[EXTRUDERS] = {16383};
+//static int minttemp[EXTRUDERS] = {0};
 
 #ifdef PIDTEMP
   	float Kp=DEFAULT_Kp;
@@ -34,6 +35,26 @@ static int minttemp[EXTRUDERS] = {0};
 float current_temperature[EXTRUDERS] = { 0.0 };
 static unsigned char soft_pwm[EXTRUDERS];
 
+#if EXTRUDERS > 3
+  # error Unsupported number of extruders
+#elif EXTRUDERS > 2
+  # define ARRAY_BY_EXTRUDERS(v1, v2, v3) { v1, v2, v3 }
+#elif EXTRUDERS > 1
+  # define ARRAY_BY_EXTRUDERS(v1, v2, v3) { v1, v2 }
+#else
+  # define ARRAY_BY_EXTRUDERS(v1, v2, v3) { v1 }
+#endif
+
+// Init min and max temp with extreme values to prevent false errors during startup
+static int minttemp_raw[EXTRUDERS] = ARRAY_BY_EXTRUDERS( HEATER_0_RAW_LO_TEMP , HEATER_1_RAW_LO_TEMP , HEATER_2_RAW_LO_TEMP );
+static int maxttemp_raw[EXTRUDERS] = ARRAY_BY_EXTRUDERS( HEATER_0_RAW_HI_TEMP , HEATER_1_RAW_HI_TEMP , HEATER_2_RAW_HI_TEMP );
+static int minttemp[EXTRUDERS] = ARRAY_BY_EXTRUDERS( 0, 0, 0 );
+static int maxttemp[EXTRUDERS] = ARRAY_BY_EXTRUDERS( 16383, 16383, 16383 );
+
+#ifdef BED_MAXTEMP
+static int bed_maxttemp_raw = HEATER_BED_RAW_HI_TEMP;
+#endif
+
 /****************************************************************************
 name:		tp_init
 function:	
@@ -47,17 +68,22 @@ Description:
 ****************************************************************************/
 void tp_init()
 {
-	uint8_t e;
-	for(e = 0; e < EXTRUDERS; e++)
+	int e;
+	for(e = 0; e < EXTRUDERS; e++){
 		maxttemp[e] = maxttemp[0];
 #ifdef PIDTEMP
     temp_iState_min[e] = 0.0;
     temp_iState_max[e] = PID_INTEGRAL_DRIVE_MAX / Ki;
 #endif //PIDTEMP
+	}
+
 #if defined(HEATER_0_PIN) && (HEATER_0_PIN > -1) 
 	//SET_OUTPUT(HEATER_0_PIN);
 	//GPIO_SetBits();
 #endif
+#if defined(HEATER_BED_PIN) && (HEATER_BED_PIN > -1) 
+	//SET_OUTPUT(HEATER_BED_PIN);
+#endif 
 #if defined(FAN_PIN) && (FAN_PIN > -1) 
     //SET_OUTPUT(FAN_PIN);
 #endif
@@ -66,27 +92,45 @@ void tp_init()
 #if defined(TEMP_0_PIN) && (TEMP_0_PIN > -1)
 #endif
 
-#if defined(TEMP_1_PIN) && (TEMP_1_PIN > -1)
-#endif
-
-#if defined(TEMP_2_PIN) && (TEMP_2_PIN > -1)
-#endif
-
 #if defined(TEMP_BED_PIN) && (TEMP_BED_PIN > -1)
 #endif
+
+// Use timer0 for temperature measurement
+// Interleave temperature interrupt with millies interrupt
 
 // Wait for temperature measurement to settle
 //delayms(250);
 
 #ifdef HEATER_0_MINTEMP
-
+	minttemp[0] = HEATER_0_MINTEMP;
+	while(analog2temp(minttemp_raw[0], 0) < HEATER_0_MINTEMP) {
+	#if HEATER_0_RAW_LO_TEMP < HEATER_0_RAW_HI_TEMP
+	    minttemp_raw[0] += OVERSAMPLENR;
+	#else
+	    minttemp_raw[0] -= OVERSAMPLENR;
+	#endif
+	}
 #endif //MINTEMP
-#ifdef HEATER_0_MAXTEMP
 
+#ifdef HEATER_0_MAXTEMP
+	maxttemp[0] = HEATER_0_MAXTEMP;
+	while(analog2temp(maxttemp_raw[0], 0) > HEATER_0_MAXTEMP) {
+	#if HEATER_0_RAW_LO_TEMP < HEATER_0_RAW_HI_TEMP
+	    maxttemp_raw[0] -= OVERSAMPLENR;
+	#else
+	    maxttemp_raw[0] += OVERSAMPLENR;
+	#endif
+  	}
 #endif //MAXTEMP
 
 #ifdef BED_MAXTEMP
-
+  	while(analog2tempBed(bed_maxttemp_raw) > BED_MAXTEMP) {
+	#if HEATER_BED_RAW_LO_TEMP < HEATER_BED_RAW_HI_TEMP
+	    bed_maxttemp_raw -= OVERSAMPLENR;
+	#else
+	    bed_maxttemp_raw += OVERSAMPLENR;
+	#endif
+  	}
 #endif //BED_MAXTEMP
   
 }

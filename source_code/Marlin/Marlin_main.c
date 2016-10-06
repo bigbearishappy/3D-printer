@@ -174,6 +174,8 @@ void get_command()
 	uint8_t i = 0;
 	char buf[4] = "M110";
 	const char *p;
+	char checksum;//byte data can be + or -,but char just can be +
+	char count;
 	while(USART1_DATA_OK == READY)
 	{
 		serial_char = USART1_Cache[i++];
@@ -181,7 +183,7 @@ void get_command()
 		{
 			if(!serial_count){						//if empty line
 				comment_mode = false;				//for new line
-				//return;
+				return;
 				}
 			cmdbuffer[bufindw][serial_count] = 0;	//terminate string
 			if(!comment_mode){
@@ -197,12 +199,28 @@ void get_command()
 						printf("%d",gcode_LastN);
             			FlushSerialRequestResend();
             			serial_count = 0;
-            			//return;
+            			return;
           				}  
 						//if no errors, continue parsing
+					if(strchr(cmdbuffer[bufindw], '*') != NULL)
+					{
+					checksum = 0;//byte data can be + or -,but char just can be +
+					count = 0;
+					while(cmdbuffer[bufindw][count] != '*') 
+						checksum = checksum^cmdbuffer[bufindw][count++];//^ function:XOR
 					
-					else
-          			{
+					strchr_pointer = strchr(cmdbuffer[bufindw], '*');
+					
+					if( (int)(strtod(&cmdbuffer[bufindw][strchr_pointer - cmdbuffer[bufindw] + 1], NULL)) != checksum) {//strtod:translate string to float number
+					  //SERIAL_ERROR_START;
+					  //SERIAL_ERRORPGM(MSG_ERR_CHECKSUM_MISMATCH);
+					  //SERIAL_ERRORLN(gcode_LastN);
+					  FlushSerialRequestResend();
+					  serial_count = 0;
+					  return;
+					}
+					//if no errors, continue parsing
+					}else{
             			printf(MSG_ERR_NO_CHECKSUM);
             			printf("%d",gcode_LastN);
             			FlushSerialRequestResend();
@@ -1268,9 +1286,9 @@ void process_command(void)
     case 907: // M907 Set digital trimpot motor current using axis codes.
     {
       #if defined(DIGIPOTSS_PIN) && DIGIPOTSS_PIN > -1
-        for(int i=0;i<NUM_AXIS;i++) if(code_seen(axis_codes[i])) digipot_current(i,code_value());
+        for(i=0;i<NUM_AXIS;i++) if(code_seen(axis_codes[i])) digipot_current(i,code_value());
         if(code_seen('B')) digipot_current(4,code_value());
-        if(code_seen('S')) for(int i=0;i<=4;i++) digipot_current(i,code_value());
+        if(code_seen('S')) for(i=0;i<=4;i++) digipot_current(i,code_value());
       #endif
       #ifdef MOTOR_CURRENT_PWM_XY_PIN
         if(code_seen('X')) digipot_current(0, code_value());

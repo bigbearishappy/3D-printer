@@ -1,6 +1,9 @@
 #ifndef CONFIGURATION_ADV_H
 #define CONFIGURATION_ADV_H
 
+#define LOW 	0
+#define HIGH	1
+
 //Feedrate for manual moves along X, Y, Z, E
 #define DEFAULT_MINIMUMFEEDRATE			0.0
 #define DEFAULT_MINTRAVELFEEDRATE		0.0
@@ -60,6 +63,22 @@
 
 #define BED_HYSTERESIS 2 //only disable heating if T>target+BED_HYSTERESIS and enable heating if T>target-BED_HYSTERESIS
 
+// Arc interpretation settings:
+#define MM_PER_ARC_SEGMENT 1
+#define N_ARC_CORRECTION 25
+
+// Motor Current setting (Only functional when motor driver current ref pins are connected to a digital trimpot on supported boards)
+#define DIGIPOT_MOTOR_CURRENT {135,135,135,135,135} // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
+
+// Microstep setting (Only functional when stepper driver microstep pins are connected to MCU.
+#define MICROSTEP_MODES {16,16,16,16,16} // [1,2,4,8,16]
+
+// MS1 MS2 Stepper Driver Microstepping mode table
+#define MICROSTEP1 LOW,LOW
+#define MICROSTEP2 HIGH,LOW
+#define MICROSTEP4 LOW,HIGH
+#define MICROSTEP8 HIGH,HIGH
+#define MICROSTEP16 HIGH,HIGH
 
 #endif
 

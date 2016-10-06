@@ -1,0 +1,14 @@
+#ifndef THERMISTORTABLE_H
+#define THERMISTORTABLE_H
+
+#include "Marlin.h"
+
+#define OVERSAMPLENR 16
+
+#define HEATER_0_RAW_LO_TEMP	0
+#define HEATER_0_RAW_HI_TEMP	16383
+
+#define HEATER_BED_RAW_LO_TEMP	0
+#define HEATER_BED_RAW_HI_TEMP	16383
+
+#endif

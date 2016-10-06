@@ -39,4 +39,7 @@ checkHitEndstops()完成移植							( ok at 20161005)
 第一遍移植完成：
 细节检查：
 1 tp_init()移植不完整
+  tp_init()现在还有引脚定义和温度的具体获取没有完成
 2 st_init()移植不完整
+  st_init()现在还有引脚定义没有完成
+3 get_command()中打印信息部分不完整
