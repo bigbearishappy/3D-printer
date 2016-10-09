@@ -421,6 +421,11 @@
               <FileType>1</FileType>
               <FilePath>.\source_code\motion_control\source_code\Stepper.c</FilePath>
             </File>
+            <File>
+              <FileName>motion_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\motion_control\source_code\motion_control.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

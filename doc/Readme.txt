@@ -43,3 +43,4 @@ checkHitEndstops()完成移植							( ok at 20161005)
 2 st_init()移植不完整
   st_init()现在还有引脚定义没有完成
 3 get_command()中打印信息部分不完整
+4 
