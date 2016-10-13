@@ -8,7 +8,7 @@
 #define PIDTEMP
 #define PID_MAX 255 // limits current to nozzle while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
 
-#define ULTIPANEL
+//#define ULTIPANEL
 
 // coarse Endstop Settings
 #define ENDSTOPPULLUPS // Comment this out (using // at the start of the line) to disable the endstop pullup resistors

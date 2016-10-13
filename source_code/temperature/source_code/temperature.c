@@ -26,6 +26,9 @@ static volatile int temp_meas_ready = false;
   	float Kp=DEFAULT_Kp;
   	float Ki=(DEFAULT_Ki*PID_dT);
   	float Kd=(DEFAULT_Kd/PID_dT);
+  	#ifdef PID_ADD_EXTRUSION_RATE
+    	float Kc=DEFAULT_Kc;
+  	#endif
 #endif
 
 #ifdef PIDTEMP

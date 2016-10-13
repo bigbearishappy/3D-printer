@@ -8,6 +8,8 @@
 #define DEFAULT_MINIMUMFEEDRATE			0.0
 #define DEFAULT_MINTRAVELFEEDRATE		0.0
 
+#define ENDSTOPS_ONLY_FOR_HOMING // If defined the endstops will only be used for homing
+
 // minimum time in microseconds that a movement needs to take if the buffer is emptied.
 #define DEFAULT_MINSEGMENTTIME			20000
 
@@ -20,6 +22,8 @@
 #ifdef AUTOTEMP
   #define AUTOTEMP_OLDWEIGHT 0.98
 #endif
+
+#define PIDTEMP
 
 #ifdef PIDTEMP
 // this adds an experimental additional term to the heatingpower, proportional to the extrusion speed.
@@ -49,6 +53,7 @@
 //default stepper release if idle
 #define DEFAULT_STEPPER_DEACTIVE_TIME 60
 
+#define ULTIPANEL
 //adds support for experimental filament exchange support M600; requires display
 #ifdef ULTIPANEL
   #define FILAMENTCHANGEENABLE

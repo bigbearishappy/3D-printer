@@ -297,8 +297,8 @@ Description:
 void st_synchronize(void)
 {
 while(blocks_queued()) {
-    //manage_heater();
-    //manage_inactivity();
+    manage_heater();
+    manage_inactivity();
 	}
 }
 

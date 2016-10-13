@@ -390,11 +390,6 @@
               <FileType>1</FileType>
               <FilePath>.\source_code\Marlin\Marlin_main.c</FilePath>
             </File>
-            <File>
-              <FileName>system_stm32f10x.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\source_code\Marlin\system_stm32f10x.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -464,6 +459,11 @@
               <FileName>BSP.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\source_code\BSP\BSP.c</FilePath>
+            </File>
+            <File>
+              <FileName>pin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\pin\pin.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -12,7 +12,7 @@
 #define true	1
 #define false	0
 
-#define round(x)     			((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
+#define lround(x)     			((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 #define constrain(amt,low,high)	amt-low<0?low:amt;amt-high>0?high:amt;
 
 //临界断面开始
@@ -68,20 +68,20 @@ int GetKey (void);
 
 #if defined(X_ENABLE_PIN)&&X_ENABLE_PIN > -1
 	#define  enable_x() 1//WRITE(X_ENABLE_PIN, X_ENABLE_ON)
-	#define disable_x() 1//{WRITE(X_ENABLE_PIN,!X_ENABLE_ON); axis_known_position[X_AXIS] = false; }
+	#define disable_x() 0//{WRITE(X_ENABLE_PIN,!X_ENABLE_ON); axis_known_position[X_AXIS] = false; }
 #endif
 #if defined(Y_ENABLE_PIN)&&Y_ENABLE_PIN > -1
 	#define  enable_y() 1//WRITE(Y_ENABLE_PIN, Y_ENABLE_ON)
-	#define disable_y() 1//{ WRITE(Y_ENABLE_PIN,!Y_ENABLE_ON); axis_known_position[Y_AXIS] = false; }
+	#define disable_y() 0//{ WRITE(Y_ENABLE_PIN,!Y_ENABLE_ON); axis_known_position[Y_AXIS] = false; }
 #endif
 #if defined(Z_ENABLE_PIN)
 	#define  enable_z() 1//WRITE(Z_ENABLE_PIN, Z_ENABLE_ON)
-	#define disable_z() 1//{ WRITE(Z_ENABLE_PIN,!Z_ENABLE_ON); axis_known_position[Z_AXIS] = false; }
+	#define disable_z() 0//{ WRITE(Z_ENABLE_PIN,!Z_ENABLE_ON); axis_known_position[Z_AXIS] = false; }
 #endif
 
 #if defined(E0_ENABLE_PIN) && (E0_ENABLE_PIN > -1)
-  #define enable_e0() 1//WRITE(E0_ENABLE_PIN, E_ENABLE_ON)
-  #define disable_e0() 1//WRITE(E0_ENABLE_PIN,!E_ENABLE_ON)
+  #define enable_e0()  1//WRITE(E0_ENABLE_PIN, E_ENABLE_ON)
+  #define disable_e0() 0//WRITE(E0_ENABLE_PIN,!E_ENABLE_ON)
 #endif
 
 #endif

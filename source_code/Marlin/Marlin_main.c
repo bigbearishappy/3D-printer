@@ -78,6 +78,7 @@ Returns:
 Description:
 			null
 ****************************************************************************/
+void SystemInit(void){}
 int main()
 {
 	system_init();
@@ -379,18 +380,19 @@ void process_command(void)
       		if(code_seen('S')) codenum = code_value() * 1000; // seconds to wait
 
       		st_synchronize();
-      		//codenum += millis();  // keep track of when we started waiting
+      		////codenum += millis();  // keep track of when we started waiting
 			codenum += tim_millis;	//added at 20160518
       		previous_millis_cmd = tim_millis;
       		while(tim_millis  < codenum ){				//when the printer wait,the extruder's temperature can be control.same with lcd
-        		//manage_heater();
-        		//manage_inactivity();
+        		manage_heater();
+        		manage_inactivity();
       		}
       		break;
     		case 28: 									//G28 Home all Axis one at a time			//home all axis at a time
       		saved_feedrate = feedrate;
       		saved_feedmultiply = feedmultiply;
       		feedmultiply = 100;
+			////previous_millis_cmd = millis();
       		previous_millis_cmd = tim_millis;
 
       		enable_endstops(true);
@@ -399,6 +401,7 @@ void process_command(void)
         	destination[i] = current_position[i];
       		}
       		feedrate = 0.0;
+
       		home_all_axis = !((code_seen(axis_codes[0])) || (code_seen(axis_codes[1])) || (code_seen(axis_codes[2])));
 
       		#if Z_HOME_DIR > 0                      // If homing away from BED do Z first
@@ -432,7 +435,7 @@ void process_command(void)
 		            #if defined (Z_RAISE_BEFORE_HOMING) && (Z_RAISE_BEFORE_HOMING > 0)
 		              destination[Z_AXIS] = Z_RAISE_BEFORE_HOMING/* * home_dir(Z_AXIS) */* (-1);    // Set destination away from bed
 		              feedrate = max_feedrate[Z_AXIS];
-		              //plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate, active_extruder);
+		              plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate, active_extruder);
 		              st_synchronize();
 		            #endif
 		            //HOMEAXIS(Z);
@@ -445,8 +448,8 @@ void process_command(void)
 		            feedrate = XY_TRAVEL_SPEED;
 		            current_position[Z_AXIS] = 0;
 		
-		            //plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
-		            //plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate, active_extruder);
+		            plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
+		            plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate, active_extruder);
 		            st_synchronize();
 		            current_position[X_AXIS] = destination[X_AXIS];
 		            current_position[Y_AXIS] = destination[Y_AXIS];
@@ -462,10 +465,10 @@ void process_command(void)
 		              && (current_position[Y_AXIS]+Y_PROBE_OFFSET_FROM_EXTRUDER <= Y_MAX_POS)) {
 		
 		              current_position[Z_AXIS] = 0;
-		              //plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
+		              plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
 		              destination[Z_AXIS] = Z_RAISE_BEFORE_HOMING /** home_dir(Z_AXIS) */* (-1);    // Set destination away from bed
 		              feedrate = max_feedrate[Z_AXIS];
-		              //plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate, active_extruder);
+		              plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate, active_extruder);
 		              st_synchronize();
 		
 		              //HOMEAXIS(Z);
@@ -488,7 +491,7 @@ void process_command(void)
 		          current_position[Z_AXIS]=code_value()+add_homeing[2];
 		        }
 		      }
-		      //plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
+		      plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
 
       		#ifdef ENDSTOPS_ONLY_FOR_HOMING
         		enable_endstops(false);
@@ -536,13 +539,14 @@ void process_command(void)
       		if(code_seen('S')) codenum = code_value() * 1000; // seconds to wait
 
       		st_synchronize();
+		    ////previous_millis_cmd = millis();
       		previous_millis_cmd = tim_millis;//millis();
       		if (codenum > 0){
         		codenum += tim_millis;//millis();  // keep track of when we started waiting
 	        	while(tim_millis  < codenum /*&& !lcd_clicked()*/){
-	          	//manage_heater();
-	          	//manage_inactivity();
-	          	//lcd_update();
+	          		manage_heater();
+	          		manage_inactivity();
+	          		////lcd_update();
 	        	}
       		}
 			/*else{
@@ -558,16 +562,15 @@ void process_command(void)
 #endif
     case 17:						//start all the motor
         //LCD_MESSAGEPGM(MSG_NO_MOVE);
-        /*enable_x();
+        enable_x();
         enable_y();
         enable_z();
         enable_e0();
-        enable_e1();
-        enable_e2();  */
       break;
 
     case 31: //M31 					//take time since the start of the SD print or an M109 command
       {
+	  ////stoptime=millis();
       stoptime = tim_millis;//millis();
 	  t = (stoptime-starttime)/1000;
       min = t/60;
@@ -693,7 +696,6 @@ void process_command(void)
         residencyStart = -1;
         /* continue to loop until we have reached the target temp
           _and_ until TEMP_RESIDENCY_TIME hasn't passed since we reached it */
-		current_time = tim_millis;
         while((residencyStart == -1) ||
               (residencyStart >= 0 && (((unsigned int) (current_time - residencyStart)) < (TEMP_RESIDENCY_TIME * 1000UL))) ) {
       #endif //TEMP_RESIDENCY_TIME
@@ -721,8 +723,8 @@ void process_command(void)
             #endif
             codenum = tim_millis;
           }
-          //manage_heater();
-          //manage_inactivity();
+          manage_heater();
+          manage_inactivity();
           //lcd_update();
         #ifdef TEMP_RESIDENCY_TIME
             /* start/restart the TEMP_RESIDENCY_TIME timer whenever we reach target temp for the first time
@@ -771,9 +773,9 @@ void process_command(void)
 		        //SERIAL_PROTOCOLLN("");
 		        codenum = tim_millis;//millis();
 		      }
-		      //manage_heater();
-		      //manage_inactivity();
-		      //lcd_update();
+		      manage_heater();
+		      manage_inactivity();
+		      ////lcd_update();
 		    }
 		    //LCD_MESSAGEPGM(MSG_BED_DONE);
 		    previous_millis_cmd = tim_millis;//millis();
@@ -817,8 +819,6 @@ void process_command(void)
 		disable_heater();
 		st_synchronize();
 		disable_e0();
-		//disable_e1();
-		//disable_e2();
 		finishAndDisableSteppers();
 		fanSpeed = 0;
 		//delay(1000); // Wait a little before to switch off
@@ -853,8 +853,6 @@ void process_command(void)
         {
           st_synchronize();
           disable_e0();
-          //disable_e1();
-          //disable_e2();
           finishAndDisableSteppers();
         }
         else
@@ -866,8 +864,6 @@ void process_command(void)
           #if ((E0_ENABLE_PIN != X_ENABLE_PIN)/* && (E1_ENABLE_PIN != Y_ENABLE_PIN)*/) // Only enable on boards that have seperate ENABLE_PINS
             if(code_seen('E')) {
               disable_e0();
-              //disable_e1();
-              //disable_e2();
             }
           #endif
         }
@@ -902,6 +898,12 @@ void process_command(void)
       //SERIAL_PROTOCOLPGM(MSG_M115_REPORT);
 	  printf("marlin\r\n");
     break;
+    case 117: // M117 display message			//print the message to the lcd
+      starpos = (strchr(strchr_pointer + 5,'*'));
+      if(starpos!=NULL)
+        *(starpos-1)='\0';
+      //lcd_setstatus(strchr_pointer + 5);
+      break;
     case 114: // M114						//print the x,y,z,e message
       /*SERIAL_PROTOCOLPGM("X:");
       SERIAL_PROTOCOL(current_position[X_AXIS]);
@@ -1238,8 +1240,6 @@ void process_command(void)
         st_synchronize();
         //disable extruder steppers so filament can be removed
         disable_e0();
-        //disable_e1();
-        //disable_e2();
         //delay(100);
         //LCD_ALERTMESSAGEPGM(MSG_FILAMENTCHANGE);
         cnt=0;
@@ -1312,8 +1312,10 @@ void process_command(void)
     }
     break;
 	case 350:
+	//
 	break;
 	case 351:
+	//
 	break;
     case 999: // M999: Restart after being stopped
       Stopped = false;

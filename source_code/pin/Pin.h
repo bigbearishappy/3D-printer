@@ -1,6 +1,8 @@
 #ifndef PINS_H
 #define PINS_H
 
+#include"stm32f10x.h"
+
 #define X_MS1_PIN 40
 #define X_MS2_PIN -1
 #define Y_MS1_PIN -1
@@ -19,7 +21,7 @@
 	#if MOTHERBOARD == 33
     #define X_STEP_PIN         54
     #define X_DIR_PIN          55
-    #define X_ENABLE_PIN       38
+    #define X_ENABLE_PIN       53//GPIO_Pin_9
     #define X_MIN_PIN           3
     #define X_MAX_PIN           2
 
@@ -61,7 +63,7 @@
 	#define TEMP_0_PIN          0    // MUST USE ANALOG INPUT NUMBERING NOT DIGITAL OUTPUT NUMBERING!!!!!!!!!
 	#define TEMP_1_PIN          -1
 	#define TEMP_2_PIN          -1
-	#define HEATER_BED_PIN      -1
+	//#define HEATER_BED_PIN      -1
 	#define TEMP_BED_PIN        0//-1
 
 // M240  Triggers a camera by emulating a Canon RC-1 Remote
@@ -80,6 +82,8 @@
 	#endif
 
 #endif
+
+void PIN_Configuration(void);
 
 
 #endif
