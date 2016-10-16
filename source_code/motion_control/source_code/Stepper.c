@@ -34,51 +34,51 @@ void st_init(void)
     microstep_init(); //Initialize Microstepping Pins
 
 //initialize the dir pin
-#if defined(X_DIR_PIN)&&X_DIR_PIN > -1
+#if defined(X_DIR_PIN)//&&X_DIR_PIN > -1
 	//set the pin to output
 #endif
-#if defined(Y_DIR_PIN)&&Y_DIR_PIN > -1
+#if defined(Y_DIR_PIN)//&&Y_DIR_PIN > -1
 	//set the pin to output
 #endif
-#if defined(Z_DIR_PIN)&&Z_DIR_PIN > -1
+#if defined(Z_DIR_PIN)//&&Z_DIR_PIN > -1
 	//set the pin to output
 #endif
-#if defined(E0_DIR_PIN)&&E0_DIR_PIN > -1
+#if defined(E0_DIR_PIN)//&&E0_DIR_PIN > -1
 	//set the pin to output
 #endif
 
 //initialize the enable pin
-#if defined(X_ENABLE_PIN)&&X_ENABLE_PIN > -1
+#if defined(X_ENABLE_PIN)//&&X_ENABLE_PIN > -1
 	//set the pin to output
 	if(!X_ENABLE_ON)	//set the X_ENABLE_PIN to high
 #endif
-#if defined(Y_ENABLE_PIN)&&Y_ENABLE_PIN > -1
+#if defined(Y_ENABLE_PIN)//&&Y_ENABLE_PIN > -1
 	//set the pin to output
 	if(!Y_ENABLE_ON)	//set the Y_ENABLE_PIN to high
 #endif
-#if defined(Z_ENABLE_PIN)&&Z_ENABLE_PIN > -1
+#if defined(Z_ENABLE_PIN)//&&Z_ENABLE_PIN > -1
 	//set the pin to output
 	if(!Z_ENABLE_ON)	//set the Z_ENABLE_PIN to high
 #endif
-#if defined(E0_ENABLE_PIN)&&E0_ENABLE_PIN > -1
+#if defined(E0_ENABLE_PIN)//&&E0_ENABLE_PIN > -1
 	//set the pin to output
 	if(!E_ENABLE_ON)	//set the E_ENABLE_PIN to high
 #endif
 
 //initialize the endstops
-#if defined(X_MIN_PIN)&&X_MIN_PIN > -1
+#if defined(X_MIN_PIN)//&&X_MIN_PIN > -1
 	//set the pin to output
 	#ifdef ENDSTOPPULLUP_XMIN
 	//set the X_MIN_PIN to high
 	#endif
 #endif
-#if defined(Y_MIN_PIN)&&Y_MIN_PIN > -1
+#if defined(Y_MIN_PIN)//&&Y_MIN_PIN > -1
 	//set the pin to output
 	#ifdef ENDSTOPPULLUP_YMIN
 	//set the Y_MIN_PIN to high
 	#endif
 #endif
-#if defined(Z_MIN_PIN)&&Z_MIN_PIN > -1
+#if defined(Z_MIN_PIN)//&&Z_MIN_PIN > -1
 	//set the pin to output
 	#ifdef ENDSTOPPULLUP_ZMIN
 	//set the Z_MIN_PIN to high
@@ -105,22 +105,22 @@ void st_init(void)
 #endif
 
 //initialize the step pin
-#if defined(X_STEP_PIN) && (X_STEP_PIN > -1)
+#if defined(X_STEP_PIN)// && (X_STEP_PIN > -1)
     //SET_OUTPUT(X_STEP_PIN);
     //WRITE(X_STEP_PIN,INVERT_X_STEP_PIN);	
 	disable_x();
 #endif
-#if defined(Y_STEP_PIN) && (Y_STEP_PIN > -1)
+#if defined(Y_STEP_PIN)// && (Y_STEP_PIN > -1)
     //SET_OUTPUT(Y_STEP_PIN);
     //WRITE(Y_STEP_PIN,INVERT_Y_STEP_PIN);
     disable_y();
 #endif
-#if defined(Z_STEP_PIN) && (Z_STEP_PIN > -1)
+#if defined(Z_STEP_PIN)// && (Z_STEP_PIN > -1)
     //SET_OUTPUT(Z_STEP_PIN);
     //WRITE(Z_STEP_PIN,INVERT_Z_STEP_PIN);
     disable_z();
 #endif
-#if defined(E0_STEP_PIN) && (E0_STEP_PIN > -1)
+#if defined(E0_STEP_PIN)// && (E0_STEP_PIN > -1)
     //SET_OUTPUT(E0_STEP_PIN);
     //WRITE(E0_STEP_PIN,INVERT_E_STEP_PIN);
     disable_e0();

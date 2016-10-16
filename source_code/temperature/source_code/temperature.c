@@ -80,22 +80,22 @@ void tp_init()
 #endif //PIDTEMP
 	}
 
-#if defined(HEATER_0_PIN) && (HEATER_0_PIN > -1) 
+#if defined(HEATER_0_PIN)// && (HEATER_0_PIN > -1) 
 	//SET_OUTPUT(HEATER_0_PIN);
 	//GPIO_SetBits();
 #endif
-#if defined(HEATER_BED_PIN) && (HEATER_BED_PIN > -1) 
+#if defined(HEATER_BED_PIN)// && (HEATER_BED_PIN > -1) 
 	//SET_OUTPUT(HEATER_BED_PIN);
 #endif 
-#if defined(FAN_PIN) && (FAN_PIN > -1) 
+#if defined(FAN_PIN) //&& (FAN_PIN > -1) 
     //SET_OUTPUT(FAN_PIN);
 #endif
 
 // Set analog inputs
-#if defined(TEMP_0_PIN) && (TEMP_0_PIN > -1)
+#if defined(TEMP_0_PIN)// && (TEMP_0_PIN > -1)
 #endif
 
-#if defined(TEMP_BED_PIN) && (TEMP_BED_PIN > -1)
+#if defined(TEMP_BED_PIN)// && (TEMP_BED_PIN > -1)
 #endif
 
 // Use timer0 for temperature measurement

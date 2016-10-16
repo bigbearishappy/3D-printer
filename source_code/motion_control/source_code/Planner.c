@@ -798,7 +798,7 @@ void check_axes_activity()
 	if((DISABLE_Z) && (z_active == 0)) disable_z();
 	if((DISABLE_E) && (e_active == 0)) disable_e0(); 
 
-#if defined(FAN_PIN) && FAN_PIN > -1
+#if defined(FAN_PIN)// && FAN_PIN > -1
 	#ifdef FAN_SOFT_PWM
 	fanSpeedSoftPwm = tail_fan_speed;
 	#else

@@ -348,6 +348,7 @@ void process_command(void)
 	uint8_t cnt;
 	uint8_t channel,current;
 	int make_move;
+	int temp1 = 0,temp2 = 0;
 
 	uint32_t current_time = 0;
 
@@ -597,7 +598,7 @@ void process_command(void)
             break;
           }
         }
-      #if defined(FAN_PIN) && FAN_PIN > -1
+      #if defined(FAN_PIN)// && FAN_PIN > -1
         if (pin_number == FAN_PIN)
           fanSpeed = pin_status;
       #endif
@@ -626,12 +627,12 @@ void process_command(void)
       if(setTargetedHotend(105)){
         break;
         }
-      #if defined(TEMP_0_PIN) && TEMP_0_PIN > -1
+      #if defined(TEMP_0_PIN)// && TEMP_0_PIN > -1
         //SERIAL_PROTOCOLPGM("ok T:");
         //SERIAL_PROTOCOL_F(degHotend(tmp_extruder),1);
         //SERIAL_PROTOCOLPGM(" /");
         //SERIAL_PROTOCOL_F(degTargetHotend(tmp_extruder),1);
-        #if defined(TEMP_BED_PIN) && TEMP_BED_PIN > -1
+        #if defined(TEMP_BED_PIN)// && TEMP_BED_PIN > -1
           //SERIAL_PROTOCOLPGM(" B:");
           //SERIAL_PROTOCOL_F(degBed(),1);
           //SERIAL_PROTOCOLPGM(" /");
@@ -745,7 +746,7 @@ void process_command(void)
 
 	  }
 		case 190: // M190 - 						//Wait for bed heater to reach target.
-#if defined(TEMP_BED_PIN) && TEMP_BED_PIN > -1
+#if defined(TEMP_BED_PIN)// && TEMP_BED_PIN > -1
 		    //LCD_MESSAGEPGM(MSG_BED_HEATING);
 		    if (code_seen('S')) {
 		      setTargetBed(code_value());
@@ -781,7 +782,7 @@ void process_command(void)
 		    previous_millis_cmd = tim_millis;//millis();
 #endif
 		    break;
-#if defined(FAN_PIN) && FAN_PIN > -1
+#if defined(FAN_PIN)// && FAN_PIN > -1
       case 106: //M106 Fan On					//turn the fan
         if (code_seen('S')){
            fanSpeed=constrain(code_value(),0,255);
@@ -861,7 +862,9 @@ void process_command(void)
           if(code_seen('X')) disable_x();
           if(code_seen('Y')) disable_y();
           if(code_seen('Z')) disable_z();
-          #if ((E0_ENABLE_PIN != X_ENABLE_PIN)/* && (E1_ENABLE_PIN != Y_ENABLE_PIN)*/) // Only enable on boards that have seperate ENABLE_PINS
+		  temp1 = E0_ENABLE_PIN;
+		  temp2 = X_ENABLE_PIN;
+          #if ((temp1 != temp2)/* && (E1_ENABLE_PIN != Y_ENABLE_PIN)*/) // Only enable on boards that have seperate ENABLE_PINS
             if(code_seen('E')) {
               disable_e0();
             }
@@ -932,7 +935,7 @@ void process_command(void)
       break;
     case 119: // M119						//report endstops' status
     //SERIAL_PROTOCOLLN(MSG_M119_REPORT);
-      #if defined(X_MIN_PIN) && X_MIN_PIN > -1
+      #if defined(X_MIN_PIN)// && X_MIN_PIN > -1
         //SERIAL_PROTOCOLPGM(MSG_X_MIN);
         //SERIAL_PROTOCOLLN(((READ(X_MIN_PIN)^X_MIN_ENDSTOP_INVERTING)?MSG_ENDSTOP_HIT:MSG_ENDSTOP_OPEN));
       #endif
@@ -940,7 +943,7 @@ void process_command(void)
         //SERIAL_PROTOCOLPGM(MSG_X_MAX);
         //SERIAL_PROTOCOLLN(((READ(X_MAX_PIN)^X_MAX_ENDSTOP_INVERTING)?MSG_ENDSTOP_HIT:MSG_ENDSTOP_OPEN));
       #endif
-      #if defined(Y_MIN_PIN) && Y_MIN_PIN > -1
+      #if defined(Y_MIN_PIN)// && Y_MIN_PIN > -1
         //SERIAL_PROTOCOLPGM(MSG_Y_MIN);
         //SERIAL_PROTOCOLLN(((READ(Y_MIN_PIN)^Y_MIN_ENDSTOP_INVERTING)?MSG_ENDSTOP_HIT:MSG_ENDSTOP_OPEN));
       #endif
@@ -948,7 +951,7 @@ void process_command(void)
         //SERIAL_PROTOCOLPGM(MSG_Y_MAX);
         //SERIAL_PROTOCOLLN(((READ(Y_MAX_PIN)^Y_MAX_ENDSTOP_INVERTING)?MSG_ENDSTOP_HIT:MSG_ENDSTOP_OPEN));
       #endif
-      #if defined(Z_MIN_PIN) && Z_MIN_PIN > -1
+      #if defined(Z_MIN_PIN)// && Z_MIN_PIN > -1
         //SERIAL_PROTOCOLPGM(MSG_Z_MIN);
         //SERIAL_PROTOCOLLN(((READ(Z_MIN_PIN)^Z_MIN_ENDSTOP_INVERTING)?MSG_ENDSTOP_HIT:MSG_ENDSTOP_OPEN));
       #endif
