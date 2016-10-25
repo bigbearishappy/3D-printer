@@ -84,8 +84,8 @@ int main()
 	system_init();
 	for(;;)
 	{
-		if(buflen < (BUFSIZE - 1))
-			get_command();
+		//if(buflen < (BUFSIZE - 1))
+		//	get_command();
 		if(buflen)
 		{
 			process_command();
