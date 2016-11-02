@@ -1,0 +1,25 @@
+Connecting...
+start
+Printer is now online.
+echo: External Reset
+Marlin1.0.0
+echo: Last Updated: Nov  2 2016 21:09:01 | Author: (none, default config)
+Compiled: Nov  2 2016
+echo: Free Memory: 5247  PlannerBufferBytes: 1232
+echo:Hardcoded Default Settings Loaded
+echo:Steps per unit:
+echo:  M92 X85.33 Y85.33 Z2560.00 E836.00
+echo:Maximum feedrates (mm/s):
+echo:  M203 X500.00 Y500.00 Z5.00 E25.00
+echo:Maximum Acceleration (mm/s2):
+echo:  M201 X9000 Y9000 Z100 E10000
+echo:Acceleration: S=acceleration, T=retract acceleration
+echo:  M204 S3000.00 T3000.00
+echo:Advanced variables: S=Min feedrate (mm/s), T=Min travel feedrate (mm/s), B=minimum segment time (ms), X=maximum XY jerk (mm/s),  Z=maximum Z jerk (mm/s),  E=maximum E jerk (mm/s)
+echo:  M205 S0.00 T0.00 B20000 X20.00 Z0.40 E5.00
+echo:Home offset (mm):
+echo:  M206 X0.00 Y0.00 Z0.00
+echo:PID settings:
+echo:   M301 P22.20 I1.08 D114.00
+Error:Temperature heated bed switched off. MAXTEMP triggered !!
+Error:Printer stopped due to errors. Fix the error and use M999 to restart. (Temperature is reset. Set it after restarting)
