@@ -1,7 +1,7 @@
 #include"USART.h"
 
-uint8_t USART1_Cache[MAX_CMD_SIZE];
-uint8_t USART1_DATA_OK = UNREADY;
+char USART1_Cache[MAX_CMD_SIZE];
+Queue_l *queue;
 static uint8_t i = 0;
 uint8_t comment_mode = 0;
 
@@ -20,6 +20,8 @@ void USART_Configuration(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
+	
+	Queueinit(queue, USART1_Cache, MAX_CMD_SIZE);
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA |RCC_APB2Periph_AFIO | RCC_APB2Periph_USART1, ENABLE);
 	
@@ -50,14 +52,8 @@ void USART1_IRQHandler(void)
 	uint8_t data;
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
 	{
-		USART1_DATA_OK = UNREADY;
-		USART_ClearITPendingBit(USART1,USART_IT_RXNE);
 		data = USART_ReceiveData(USART1);
-		USART1_Cache[i++] = data;
-		if(data == '\n' || data == '\r' || (data == ':' && comment_mode == 0) || i >= (MAX_CMD_SIZE - 1) ) 		//receive the end of the cmd
-		{
-			USART1_DATA_OK = READY;
-			i = 0;
-		}
+		Queueputc(queue, data);//add data to the queue loop
+		USART_ClearITPendingBit(USART1,USART_IT_RXNE);
 	}
 }

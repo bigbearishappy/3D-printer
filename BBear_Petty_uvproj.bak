@@ -466,6 +466,11 @@
               <FileType>1</FileType>
               <FilePath>.\source_code\pin\pin.c</FilePath>
             </File>
+            <File>
+              <FileName>ADC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\temperature\source_code\ADC.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -29,7 +29,7 @@ static char *strchr_pointer; // just a pointer to find chars in the cmd string l
 uint8_t Stopped = false;
 static unsigned long previous_millis_cmd = 0;
 
-const int sensitive_pins[] = 0;//SENSITIVE_PINS; // Sensitive pin list for M42
+const int sensitive_pins[] = {0};//SENSITIVE_PINS; // Sensitive pin list for M42
 
 //public value
 float current_position[NUM_AXIS] = { 0.0, 0.0, 0.0, 0.0 };
@@ -177,9 +177,11 @@ void get_command()
 	const char *p;
 	char checksum;//byte data can be + or -,but char just can be +
 	char count;
-	while(USART1_DATA_OK == READY)
+	//while(USART1_DATA_OK == READY)
+	while(!Queueisempty(queue))
 	{
-		serial_char = USART1_Cache[i++];
+		//serial_char = USART1_Cache[i++];
+		serial_char = Queuegetc(queue);
 		if(serial_char == '\n' || serial_char == '\r'||(serial_char == ':' && comment_mode == false)||serial_count >= (MAX_CMD_SIZE - 1))
 		{
 			if(!serial_count){						//if empty line
@@ -260,7 +262,7 @@ void get_command()
           			}
 				}
 				bufindw = (bufindw + 1)%BUFSIZE;
-        		buflen += 1;
+        buflen += 1;
 			}
 			serial_count = 0; //clear buffer
 		} 
