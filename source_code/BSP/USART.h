@@ -9,7 +9,7 @@
 #define READY	1	
 
 extern char USART1_Cache[MAX_CMD_SIZE];
-extern Queue_l *queue;
+extern Queue_l queue;
 
 extern uint8_t USART1_DATA_OK;
 extern uint8_t comment_mode;

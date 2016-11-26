@@ -3,7 +3,7 @@
 #include "planner.h"
 #include "temperature.h"
 
-static uint8_t check_endstops = 1;
+volatile static uint8_t check_endstops = 1;
 
 static volatile uint8_t endstop_x_hit=false;
 static volatile uint8_t endstop_y_hit=false;
@@ -311,7 +311,7 @@ function:	wake up the stepper
 void st_wake_up(void)
 {
   //  TCNT1 = 0;
-  ENABLE_STEPPER_DRIVER_INTERRUPT();
+  //ENABLE_STEPPER_DRIVER_INTERRUPT();
 }
 
 /**************************************************************************************************

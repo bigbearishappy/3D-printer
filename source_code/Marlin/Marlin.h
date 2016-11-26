@@ -17,8 +17,8 @@
 
 //临界断面开始
 #ifndef CRITICAL_SECTION_START
-  #define CRITICAL_SECTION_START  1//unsigned char _sreg = SREG; cli();//清零中断
-  #define CRITICAL_SECTION_END    0//SREG = _sreg;
+  #define CRITICAL_SECTION_START  GPIO_SetBits(GPIOA,GPIO_Pin_2)//1//unsigned char _sreg = SREG; cli();//清零中断
+  #define CRITICAL_SECTION_END    GPIO_SetBits(GPIOA,GPIO_Pin_2)//0//SREG = _sreg;
 #endif //CRITICAL_SECTION_START
 
 
@@ -67,21 +67,21 @@ int fputc(int ch, FILE *f);							//it's related with the usart data transmissio
 int GetKey (void);
 
 #if defined(X_ENABLE_PIN)// && (X_ENABLE_PIN > -1)
-	#define  enable_x() 1//WRITE(X_ENABLE_PIN, X_ENABLE_ON)
-	#define disable_x() 0//{WRITE(X_ENABLE_PIN,!X_ENABLE_ON); axis_known_position[X_AXIS] = false; }
+	#define  enable_x() GPIO_SetBits(GPIOA,GPIO_Pin_2)//1//WRITE(X_ENABLE_PIN, X_ENABLE_ON)
+	#define disable_x() GPIO_ResetBits(GPIOA,GPIO_Pin_2)//0//{WRITE(X_ENABLE_PIN,!X_ENABLE_ON); axis_known_position[X_AXIS] = false; }
 #endif
 #if defined(Y_ENABLE_PIN)//&&Y_ENABLE_PIN > -1
-	#define  enable_y() 1//WRITE(Y_ENABLE_PIN, Y_ENABLE_ON)
-	#define disable_y() 0//{ WRITE(Y_ENABLE_PIN,!Y_ENABLE_ON); axis_known_position[Y_AXIS] = false; }
+	#define  enable_y() GPIO_SetBits(GPIOA,GPIO_Pin_2)//1//WRITE(Y_ENABLE_PIN, Y_ENABLE_ON)
+	#define disable_y() GPIO_ResetBits(GPIOA,GPIO_Pin_2)//0//{ WRITE(Y_ENABLE_PIN,!Y_ENABLE_ON); axis_known_position[Y_AXIS] = false; }
 #endif
 #if defined(Z_ENABLE_PIN)
-	#define  enable_z() 1//WRITE(Z_ENABLE_PIN, Z_ENABLE_ON)
-	#define disable_z() 0//{ WRITE(Z_ENABLE_PIN,!Z_ENABLE_ON); axis_known_position[Z_AXIS] = false; }
+	#define  enable_z() GPIO_SetBits(GPIOA,GPIO_Pin_2)//1//WRITE(Z_ENABLE_PIN, Z_ENABLE_ON)
+	#define disable_z() GPIO_ResetBits(GPIOA,GPIO_Pin_2)//0//{ WRITE(Z_ENABLE_PIN,!Z_ENABLE_ON); axis_known_position[Z_AXIS] = false; }
 #endif
 
 #if defined(E0_ENABLE_PIN)// && (E0_ENABLE_PIN > -1)
-  #define enable_e0()  1//WRITE(E0_ENABLE_PIN, E_ENABLE_ON)
-  #define disable_e0() 0//WRITE(E0_ENABLE_PIN,!E_ENABLE_ON)
+  #define enable_e0()  GPIO_SetBits(GPIOA,GPIO_Pin_2)//1//WRITE(E0_ENABLE_PIN, E_ENABLE_ON)
+  #define disable_e0() GPIO_ResetBits(GPIOA,GPIO_Pin_2)//0//WRITE(E0_ENABLE_PIN,!E_ENABLE_ON)
 #endif
 
 #endif

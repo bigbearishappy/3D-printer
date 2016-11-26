@@ -13,8 +13,8 @@ unsigned char soft_pwm_bed;
 
 //private value
 #ifdef PIDTEMP
-static float temp_iState_min[EXTRUDERS];//PID temp's min value
-static float temp_iState_max[EXTRUDERS];//PID temp's max value
+volatile static float temp_iState_min[EXTRUDERS];//PID temp's min value
+volatile static float temp_iState_max[EXTRUDERS];//PID temp's max value
 #endif
 
 static volatile int temp_meas_ready = false;
@@ -29,10 +29,6 @@ static volatile int temp_meas_ready = false;
   	#ifdef PID_ADD_EXTRUSION_RATE
     	float Kc=DEFAULT_Kc;
   	#endif
-#endif
-
-#ifdef PIDTEMP
-	static float temp_iState_max[EXTRUDERS];
 #endif
 
 float current_temperature[EXTRUDERS] = { 0.0 };
@@ -166,7 +162,7 @@ Description:
 			null
 ****************************************************************************/
 static float analog2temp(int raw, uint8_t e)
-{return 0;}
+{return 100;}
 
 /****************************************************************************
 name:		analog2tempBed
@@ -258,7 +254,7 @@ function:	use the pid to control the temp of the heater
 ***********************************************************************************************/
 void manage_heater()
 {
-	float pid_input;
+	volatile float pid_input;
 	float pid_output;
 	int e;
 	

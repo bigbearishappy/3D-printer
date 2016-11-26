@@ -35,7 +35,7 @@ volatile unsigned char block_buffer_tail;           	// Index of the block to pr
 // The current position of the tool in absolute steps
 long position[4];   									//rescaled from extern when axis_steps_per_unit are changed by gcode
 static float previous_speed[4]; 						// Speed of previous path line segment
-static float previous_nominal_speed; 					// Nominal speed of previous path line segment
+volatile static float previous_nominal_speed; 					// Nominal speed of previous path line segment
 
 unsigned long axis_steps_per_sqr_second[NUM_AXIS];
 
@@ -406,7 +406,7 @@ void plan_buffer_line(const float x, const float y, const float z, const float e
 	int moves_queued;
 	block_t *block;
 	float delta_mm[4];
-	unsigned long segment_time = 0;
+	volatile unsigned long segment_time = 0;
   	float current_speed[4];
   	float speed_factor = 1.0; //factor <=1 do decrease speed
 	int i;
@@ -416,7 +416,7 @@ void plan_buffer_line(const float x, const float y, const float z, const float e
 	float vmax_junction_factor;
 	float safe_speed;
 	static float previous_nominal_speed; 					// Nominal speed of previous path line segment
-	float jerk;
+	volatile float jerk;
 	double v_allowable;
 
 	next_buffer_head = next_block_index(block_buffer_head);
@@ -774,7 +774,7 @@ void check_axes_activity()
 	unsigned char y_active = 0;  
 	unsigned char z_active = 0;
 	unsigned char e_active = 0;
-	unsigned char tail_fan_speed = fanSpeed;
+	volatile unsigned char tail_fan_speed = fanSpeed;
 	block_t *block;
 	uint8_t block_index;
 
@@ -820,7 +820,7 @@ function:	get the speed of the extruder
 #ifdef AUTOTEMP
 void getHighESpeed()
 {
-	static float oldt=0;
+	volatile static float oldt=0;
 	if(!autotemp_enabled){
     return;
   	}

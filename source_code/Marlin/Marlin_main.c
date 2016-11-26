@@ -15,12 +15,14 @@
   #endif
 #endif
 
+#if 1
+static char connect_flag = 0;
 static int buflen = 0;
 static char serial_char;
 static uint32_t serial_count = 0;
 
 static char cmdbuffer[BUFSIZE][MAX_CMD_SIZE];
-static uint8_t fromsd[BUFSIZE];
+volatile static uint8_t fromsd[BUFSIZE];
 static int bufindw = 0;
 static int bufindr = 0;
 
@@ -50,7 +52,7 @@ const char axis_codes[NUM_AXIS] = {'X', 'Y', 'Z', 'E'};
 static float destination[NUM_AXIS] = {  0.0, 0.0, 0.0, 0.0};
 uint8_t axis_relative_modes[] = AXIS_RELATIVE_MODES;
 static uint8_t relative_mode = false;  //Determines Absolute or Relative Coordinates
-static float offset[3] = {0.0, 0.0, 0.0};
+volatile static float offset[3] = {0.0, 0.0, 0.0};
 static uint8_t home_all_axis = true;
 uint8_t axis_known_position[3] = {false, false, false};
 
@@ -66,6 +68,7 @@ int target_direction;
 static unsigned long stepper_inactive_time = DEFAULT_STEPPER_DEACTIVE_TIME*1000l;
 
 int8_t i = 0;
+#endif
 
 /****************************************************************************
 name:		main
@@ -84,16 +87,17 @@ int main()
 	system_init();
 	for(;;)
 	{
-		//if(buflen < (BUFSIZE - 1))
-		//	get_command();
+		//printf("123");
+		if(buflen < (BUFSIZE - 1))
+			get_command();
 		if(buflen)
 		{
 			process_command();
 			buflen -= 1;
 		}
-		manage_heater();
-		manage_inactivity();
-		checkHitEndstops();/**/
+//		manage_heater();
+//		manage_inactivity();
+//		checkHitEndstops();/**/		 
 	}
 }
 
@@ -112,7 +116,7 @@ Description:
 ****************************************************************************/
 void system_init(void)
 {
-	int8_t i;
+	//int8_t i;
 	RCC_Configuration();
 	NVIC_Configuration();
 	TIM_Configuration();
@@ -123,19 +127,22 @@ void system_init(void)
 
 //这里有很多开机时的打印信息，留在以后专门整理20160412
 
+
   for(i = 0; i < BUFSIZE; i++)
   {
     fromsd[i] = false;
   }
+  
+#if 1
   // loads data from EEPROM if available else uses defaults (and resets step acceleration rate)
   Config_RetrieveSettings();
 
   tp_init();				// Initialize temperature loop
   plan_init();				// Initialize planner;
-  //watchdog_init();
   st_init();				// Initialize stepper, this enables interrupts!
   //servo_init();
   //delay(1000);
+#endif
 }
 
 /*****************************************************************************************
@@ -145,6 +152,7 @@ function:	set a extruder to a degree
 						extruder:the target extruder
 			[out]	-	void
 *****************************************************************************************/
+#if 1
 void setTargetHotend(const float celsius, uint8_t extruder) {  
   target_temperature[extruder] = celsius;
 }
@@ -170,18 +178,19 @@ Returns:
 Description:
 			null
 ****************************************************************************/
+
 void get_command()
 {
-	uint8_t i = 0;
+	//uint8_t i = 0;
 	char buf[4] = "M110";
 	const char *p;
 	char checksum;//byte data can be + or -,but char just can be +
 	char count;
 	//while(USART1_DATA_OK == READY)
-	while(!Queueisempty(queue))
+	while(!Queueisempty(&queue))
 	{
 		//serial_char = USART1_Cache[i++];
-		serial_char = Queuegetc(queue);
+		serial_char = Queuegetc(&queue);
 		if(serial_char == '\n' || serial_char == '\r'||(serial_char == ':' && comment_mode == false)||serial_count >= (MAX_CMD_SIZE - 1))
 		{
 			if(!serial_count){						//if empty line
@@ -275,6 +284,7 @@ void get_command()
     	}
 	}
 }
+#endif
 
 /****************************************************************************
 name:		FlushSerialRequestResend
@@ -287,12 +297,14 @@ Returns:
 Description:
 			null
 ****************************************************************************/
+#if 1
 void FlushSerialRequestResend(void)
 {
   printf(MSG_RESEND);
   printf("%d\r\n",gcode_LastN + 1);
   ClearToSend();
 }
+
 
 /****************************************************************************
 name:		ClearToSend
@@ -310,6 +322,7 @@ void ClearToSend(void)
   previous_millis_cmd = tim_millis;//millis();
   printf(MSG_OK);printf("\r\n");
 }
+#endif
 
 /****************************************************************************
 name:		process_command
@@ -322,35 +335,36 @@ Returns:
 Description:
 			null
 ****************************************************************************/
+#if 1
 void process_command(void)
 {
 	unsigned long codenum; //throw away variable
 	char *starpos = NULL;
 	int8_t i;
-	char time[30];
+	volatile char time[30];
     unsigned long t = 0;
-    int sec,min;
+    volatile int sec,min;
     int pin_status;
     int pin_number;
 	int8_t cur_extruder;
 	long residencyStart;
-	float tt;
+	volatile float tt;
 	int all_axis;
 	float value;
 	float factor;
     int pin_state;	// required pin state - default is inverted
-	int target;
+	volatile int target;
 	const uint8_t NUM_PULSES = 16;
-	const float PULSE_LENGTH = 0.01524;
+	//const float PULSE_LENGTH = 0.01524;
 	float temp;
 	int e;
     int c;
 	float target1[4];
     float lastpos[4];
-	uint8_t cnt;
-	uint8_t channel,current;
-	int make_move;
-	int temp1 = 0,temp2 = 0;
+	volatile uint8_t cnt;
+	volatile uint8_t channel,current;
+	volatile int make_move;
+	volatile int temp1 = 0,temp2 = 0;
 
 	uint32_t current_time = 0;
 
@@ -640,6 +654,12 @@ void process_command(void)
           //SERIAL_PROTOCOLPGM(" /");
           //SERIAL_PROTOCOL_F(degTargetBed(),1);
         #endif //TEMP_BED_PIN
+		connect_flag++;
+		if(connect_flag >= 10)
+			connect_flag = 10;
+		if(connect_flag == 1){
+			//NVIC_SystemReset();
+		}
         for(cur_extruder = 0; cur_extruder < EXTRUDERS; ++cur_extruder) {
           //SERIAL_PROTOCOLPGM(" T");
           //SERIAL_PROTOCOL(cur_extruder);
@@ -647,6 +667,12 @@ void process_command(void)
           //SERIAL_PROTOCOL_F(degHotend(cur_extruder),1);
           //SERIAL_PROTOCOLPGM(" /");
           //SERIAL_PROTOCOL_F(degTargetHotend(cur_extruder),1);
+		  printf(" T");
+		  printf("%d",cur_extruder);
+		  printf(":");
+		  printf("%.2lf",degHotend(cur_extruder));
+		  printf(" /");
+		  printf("%.2lf",degTargetHotend(cur_extruder));
         }
       #else
         //SERIAL_ERROR_START;
@@ -1376,6 +1402,7 @@ void process_command(void)
 	}
 	ClearToSend();
 }
+#endif
 
 /****************************************************************************
 name:		code_seen
@@ -1388,6 +1415,7 @@ Returns:
 Description:
 			null
 ****************************************************************************/
+#if 1
 uint8_t code_seen(char code)
 {
 	strchr_pointer = strchr(cmdbuffer[bufindr], code);//strchr(const char *s,char c)查找字符串s中首次出现字符c的位置
@@ -1517,7 +1545,7 @@ Description:
 ****************************************************************************/
 void get_coordinates(void)
 {
-	uint8_t seen[4]={false,false,false,false};
+	volatile uint8_t seen[4]={false,false,false,false};
 	int8_t i;
 	for(i=0; i < NUM_AXIS; i++) {
     	if(code_seen(axis_codes[i]))
@@ -1663,6 +1691,7 @@ void suicide()
     //WRITE(SUICIDE_PIN, LOW);
   #endif
 }
+#endif
 
 // 发送数据
 int fputc(int ch, FILE *f)
