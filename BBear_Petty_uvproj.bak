@@ -208,13 +208,13 @@
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <RoSelD>3</RoSelD>
             <RwSelD>3</RwSelD>
             <CodeSel>0</CodeSel>
-            <OptFeed>0</OptFeed>
+            <OptFeed>1</OptFeed>
             <NoZi1>0</NoZi1>
             <NoZi2>0</NoZi2>
             <NoZi3>0</NoZi3>
@@ -407,6 +407,11 @@
           <GroupName>Motion_control</GroupName>
           <Files>
             <File>
+              <FileName>motion_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\motion_control\source_code\motion_control.c</FilePath>
+            </File>
+            <File>
               <FileName>Planner.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\source_code\motion_control\source_code\Planner.c</FilePath>
@@ -415,11 +420,6 @@
               <FileName>Stepper.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\source_code\motion_control\source_code\Stepper.c</FilePath>
-            </File>
-            <File>
-              <FileName>motion_control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\source_code\motion_control\source_code\motion_control.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -452,19 +452,19 @@
               <FilePath>.\source_code\BSP\USART.c</FilePath>
             </File>
             <File>
-              <FileName>TIM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\source_code\BSP\TIM.c</FilePath>
-            </File>
-            <File>
               <FileName>BSP.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\source_code\BSP\BSP.c</FilePath>
             </File>
             <File>
-              <FileName>pin.c</FileName>
+              <FileName>queue_loop.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\source_code\pin\pin.c</FilePath>
+              <FilePath>.\source_code\BSP\queue_loop.c</FilePath>
+            </File>
+            <File>
+              <FileName>TIM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\BSP\TIM.c</FilePath>
             </File>
             <File>
               <FileName>ADC.c</FileName>
@@ -472,9 +472,9 @@
               <FilePath>.\source_code\temperature\source_code\ADC.c</FilePath>
             </File>
             <File>
-              <FileName>queue_loop.c</FileName>
+              <FileName>pin.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\source_code\BSP\queue_loop.c</FilePath>
+              <FilePath>.\source_code\pin\pin.c</FilePath>
             </File>
           </Files>
         </Group>

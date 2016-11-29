@@ -7,6 +7,8 @@
 #include"language.h"
 #include"BSP.h"
 
+#define VERSION_STRING  "1.0.0"
+
 #ifdef ULTIPANEL
   #ifdef PS_DEFAULT_OFF
     int powersupply = false;
@@ -123,9 +125,28 @@ void system_init(void)
 	USART_Configuration();
 
 	printf("%d\n",BAUDRATE);
-	printf("start\n");
+	//printf("start\n");
+	SERIAL_PROTOCOLLNPGM("start");
 
 //这里有很多开机时的打印信息，留在以后专门整理20160412
+	SERIAL_ECHOPGM(MSG_MARLIN);
+  SERIAL_ECHOLNPGM(VERSION_STRING);
+  #ifdef STRING_VERSION_CONFIG_H
+    #ifdef STRING_CONFIG_H_AUTHOR
+      SERIAL_ECHO_START;
+      SERIAL_ECHOPGM(MSG_CONFIGURATION_VER);
+      SERIAL_ECHOPGM(STRING_VERSION_CONFIG_H);
+      SERIAL_ECHOPGM(MSG_AUTHOR);
+      SERIAL_ECHOLNPGM(STRING_CONFIG_H_AUTHOR);
+      SERIAL_ECHOPGM("Compiled: ");
+      SERIAL_ECHOLNPGM(__DATE__);
+    #endif
+  #endif
+  SERIAL_ECHO_START;
+  SERIAL_ECHOPGM(MSG_FREE_MEMORY);
+  //SERIAL_ECHO(freeMemory());
+  SERIAL_ECHOPGM(MSG_PLANNER_BUFFER_BYTES);
+  SERIAL_ECHOLN((int)sizeof(block_t)*BLOCK_BUFFER_SIZE);
 
 
   for(i = 0; i < BUFSIZE; i++)

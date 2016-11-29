@@ -21,6 +21,27 @@
   #define CRITICAL_SECTION_END    GPIO_SetBits(GPIOA,GPIO_Pin_2)//0//SREG = _sreg;
 #endif //CRITICAL_SECTION_START
 
+//DEFINATION OF SERIAL PRINT
+//#define SERIAL_PROTOCOL(x) printf()//(MYSERIAL.print(x))
+//#define SERIAL_PROTOCOL_F(x,y) (MYSERIAL.print(x,y))
+//#define SERIAL_PROTOCOLPGM(x) (serialprintPGM(PSTR(x)))
+#define SERIAL_PROTOCOLLN(x) printf("%d\r\n",x)//(MYSERIAL.print(x),MYSERIAL.write('\n'))
+#define SERIAL_PROTOCOLLNPGM(x) printf("%s\r\n",x)//(serialprintPGM(PSTR(x)),MYSERIAL.write('\n'))
+
+//#define SERIAL_ERROR_START (serialprintPGM(errormagic))
+//#define SERIAL_ERROR(x) SERIAL_PROTOCOL(x)
+//#define SERIAL_ERRORPGM(x) SERIAL_PROTOCOLPGM(x)
+//#define SERIAL_ERRORLN(x) SERIAL_PROTOCOLLN(x)
+//#define SERIAL_ERRORLNPGM(x) SERIAL_PROTOCOLLNPGM(x)
+
+#define SERIAL_ECHO_START printf("\r\n")//(serialprintPGM(echomagic))
+//#define SERIAL_ECHO(x) SERIAL_PROTOCOL(x)
+#define SERIAL_ECHOPGM(x) printf("%s\r\n",x)//SERIAL_PROTOCOLPGM(x)
+#define SERIAL_ECHOLN(x) SERIAL_PROTOCOLLN(x)
+#define SERIAL_ECHOLNPGM(x) printf("%s\r\n",x)//SERIAL_PROTOCOLLNPGM(x)
+
+
+
 
 //打印开始和结束时间
 extern unsigned long starttime;

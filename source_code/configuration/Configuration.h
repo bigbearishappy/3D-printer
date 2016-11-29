@@ -17,6 +17,9 @@
 #define MOTHERBOARD 33
 #endif
 
+#define STRING_VERSION_CONFIG_H __DATE__ " " __TIME__ // build date and time
+#define STRING_CONFIG_H_AUTHOR "(none, default config)" // Who made the changes.
+
 //
 #define  DEFAULT_Kp 22.2
 #define  DEFAULT_Ki 1.08
