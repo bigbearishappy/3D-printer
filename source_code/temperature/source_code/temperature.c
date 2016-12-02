@@ -76,7 +76,7 @@ void tp_init()
 #endif //PIDTEMP
 	}
 
-#if defined(HEATER_0_PIN)// && (HEATER_0_PIN > -1) 
+	#if defined(HEATER_0_PIN) & (HEATER_0_PIN > -1) 
 	//SET_OUTPUT(HEATER_0_PIN);
 	//GPIO_SetBits();
 #endif

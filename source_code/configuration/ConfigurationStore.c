@@ -79,8 +79,8 @@ void Config_ResetDefault(void)
 #endif//PID_ADD_EXTRUSION_RATE
 #endif//PIDTEMP
 
-	printf("echo");
-	printf("ardcoded Default Settings Loaded\n");
+SERIAL_ECHO_START;
+SERIAL_ECHOLNPGM("Hardcoded Default Settings Loaded");
 
 }
 
