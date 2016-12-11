@@ -296,10 +296,11 @@ Description:
 ****************************************************************************/
 void st_synchronize(void)
 {
-while(blocks_queued()) {
+/*while(blocks_queued()) {
     manage_heater();
     manage_inactivity();
 	}
+	*/
 }
 
 /***************************************************************************************************
@@ -324,6 +325,15 @@ void st_set_e_position(const long e)
   CRITICAL_SECTION_START;
   count_position[E_AXIS] = e;
   CRITICAL_SECTION_END;
+}
+
+long st_get_position(uint8_t axis)
+{
+  long count_pos;
+  CRITICAL_SECTION_START;
+  count_pos = count_position[axis];
+  CRITICAL_SECTION_END;
+  return count_pos;
 }
 
 /***************************************************************************************************
@@ -373,7 +383,7 @@ void checkHitEndstops()
 	if(endstop_z_hit) {
 	 //SERIAL_ECHOPAIR(" Z:",(float)endstops_trigsteps[Z_AXIS]/axis_steps_per_unit[Z_AXIS]);
 	}
-	//SERIAL_ECHOLN("");
+	SERIAL_ECHOLN("");
 	endstop_x_hit=false;
 	endstop_y_hit=false;
 	endstop_z_hit=false;

@@ -199,6 +199,12 @@ void updatePID()
 #endif
 }
 
+int getHeaterPower(int heater) {
+	if (heater<0)
+		return soft_pwm_bed;
+  return soft_pwm[heater];
+}
+
 
 float scalePID_i(float i)
 {
@@ -223,6 +229,16 @@ float unscalePID_d(float d)
 float degHotend(uint8_t extruder) 
 {  
   return current_temperature[extruder];
+}
+
+float degBed(void)
+{
+	return current_temperature_bed;
+}
+
+float degTargetBed(void)
+{
+	return target_temperature_bed;
 }
 
 float degTargetHotend(uint8_t extruder) {  

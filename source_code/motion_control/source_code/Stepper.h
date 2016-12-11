@@ -14,5 +14,6 @@ void st_synchronize(void);
 void st_wake_up(void);
 void st_set_e_position(const long e);
 void digipot_current(uint8_t driver, int current);
+long st_get_position(uint8_t axis);
 
 #endif

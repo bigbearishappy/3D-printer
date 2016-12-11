@@ -5,7 +5,7 @@
 typedef enum{FALSE = 0,TRUE = 1} bool;
 
 #ifndef MAX_SIZE
-#define MAX_SIZE	5
+#define MAX_SIZE	96//10
 #endif
 
 #define QUEUEISFULL -1

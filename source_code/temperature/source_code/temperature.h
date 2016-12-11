@@ -15,6 +15,8 @@ void updatePID(void);
 static float analog2temp(int raw, uint8_t e);
 static float analog2tempBed(int raw);
 float degHotend(uint8_t extruder);
+float degBed(void);
+float degTargetBed(void);
 float degTargetHotend(uint8_t extruder);
 int isHeatingHotend(uint8_t extruder);
 int isHeatingBed(void);
@@ -23,6 +25,8 @@ void disable_heater(void);
 void PID_autotune(float temp, int extruder, int ncycles);
 void manage_heater(void);
 static void updateTemperaturesFromRawValues(void);
+
+int getHeaterPower(int heater);
 
 #ifdef PIDTEMP
   extern float Kp,Ki,Kd,Kc;

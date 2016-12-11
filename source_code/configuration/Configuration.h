@@ -2,6 +2,7 @@
 #define CONFIGURATION_H
 
 #include"Configuration_adv.h"
+#include "queue_loop.h"
 
 #define BAUDRATE 115200
 
@@ -69,6 +70,14 @@
   #define ENDSTOPPULLUP_YMIN
   #define ENDSTOPPULLUP_ZMIN
 #endif
+
+// The pullups are needed if you directly connect a mechanical endswitch between the signal and ground pins.
+//const bool X_MIN_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
+//const bool Y_MIN_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
+//const bool Z_MIN_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
+//const bool X_MAX_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
+//const bool Y_MAX_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
+//const bool Z_MAX_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
 
 //By default pololu step drivers require an active high signal. However, some high power drivers require an active low signal as step.
 #define INVERT_X_STEP_PIN false
