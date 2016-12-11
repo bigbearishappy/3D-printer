@@ -253,10 +253,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>21</ColumnNumber>
+      <ColumnNumber>52</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>22</TopLine>
-      <CurrentLine>22</CurrentLine>
+      <CurrentLine>37</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\source_code\Marlin\Marlin_main.c</PathWithFileName>
       <FilenameWithoutPath>Marlin_main.c</FilenameWithoutPath>
