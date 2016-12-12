@@ -1,1 +1,78 @@
 ---- setTargetedHotend Matches (0 in 0 files) ----
+---- Fastio.h Matches (0 in 0 files) ----
+---- bufindw Matches (37 in 1 files) ----
+Marlin_main.cpp (cpp):static int bufindw = 0;
+Marlin_main.cpp (cpp):    strcpy(&(cmdbuffer[bufindw][0]),cmd);//复制cmd数组中的值到cmdbuffer
+Marlin_main.cpp (cpp):    SERIAL_ECHO(cmdbuffer[bufindw]);
+Marlin_main.cpp (cpp):    bufindw= (bufindw + 1)%BUFSIZE;
+Marlin_main.cpp (cpp):    strcpy_P(&(cmdbuffer[bufindw][0]),cmd);
+Marlin_main.cpp (cpp):    SERIAL_ECHO(cmdbuffer[bufindw]);
+Marlin_main.cpp (cpp):    bufindw= (bufindw + 1)%BUFSIZE;
+Marlin_main.cpp (cpp):      cmdbuffer[bufindw][serial_count] = 0; //terminate string
+Marlin_main.cpp (cpp):        fromsd[bufindw] = false;
+Marlin_main.cpp (cpp):        if(strchr(cmdbuffer[bufindw], 'N') != NULL)//strchr function:search for 'N' in cmfbuffer[bufindw].if it exists,return the pointer of it,or return NULL
+Marlin_main.cpp (cpp):          strchr_pointer = strchr(cmdbuffer[bufindw], 'N');
+Marlin_main.cpp (cpp):          gcode_N = (strtol(&cmdbuffer[bufindw][strchr_pointer - cmdbuffer[bufindw] + 1], NULL, 10));//transform the target data to decimal number
+Marlin_main.cpp (cpp):          if(gcode_N != gcode_LastN+1 && (strstr_P(cmdbuffer[bufindw], PSTR("M110")) == NULL) ) {	//strstr_P function:find out if PSTR("M110") is in the cmdbuffer[bufindew]
+Marlin_main.cpp (cpp):          																							//if so,return the pointer that the PSTR("M110") first exist in cmdbuffer[bufindw],or return NULL.
+Marlin_main.cpp (cpp):          if(strchr(cmdbuffer[bufindw], '*') != NULL)
+Marlin_main.cpp (cpp):            while(cmdbuffer[bufindw][count] != '*') 
+Marlin_main.cpp (cpp):				checksum = checksum^cmdbuffer[bufindw][count++];//^ function:XOR
+Marlin_main.cpp (cpp):            strchr_pointer = strchr(cmdbuffer[bufindw], '*');
+Marlin_main.cpp (cpp):            if( (int)(strtod(&cmdbuffer[bufindw][strchr_pointer - cmdbuffer[bufindw] + 1], NULL)) != checksum) {//strtod:translate string to float number
+Marlin_main.cpp (cpp):          if((strchr(cmdbuffer[bufindw], '*') != NULL))
+Marlin_main.cpp (cpp):        if((strchr(cmdbuffer[bufindw], 'G') != NULL)){
+Marlin_main.cpp (cpp):          strchr_pointer = strchr(cmdbuffer[bufindw], 'G');
+Marlin_main.cpp (cpp):          switch((int)((strtod(&cmdbuffer[bufindw][strchr_pointer - cmdbuffer[bufindw] + 1], NULL)))){
+Marlin_main.cpp (cpp):        bufindw = (bufindw + 1)%BUFSIZE;
+Marlin_main.cpp (cpp):	  	cmdbuffer[bufindw][serial_count++] = serial_char;
+Marlin_main.cpp (cpp):      cmdbuffer[bufindw][serial_count] = 0; //terminate string
+Marlin_main.cpp (cpp):        fromsd[bufindw] = true;
+Marlin_main.cpp (cpp):        bufindw = (bufindw + 1)%BUFSIZE;
+Marlin_main.cpp (cpp):      if(!comment_mode) cmdbuffer[bufindw][serial_count++] = serial_char;
+---- enquecommand Matches (4 in 4 files) ----
+Cardreader.cpp (cpp):      enquecommand(cmd);
+Marlin.h (include):void enquecommand(const char *cmd); //put an ascii command at the end of the current buffer.
+Marlin_main.cpp (cpp):void enquecommand(const char *cmd)
+Ultralcd.cpp (cpp):    enquecommand(cmd);
+---- bufindr Matches (17 in 1 files) ----
+Marlin_main.cpp (cpp):static int bufindr = 0;
+Marlin_main.cpp (cpp):        if(strstr_P(cmdbuffer[bufindr], PSTR("M29")) == NULL)
+Marlin_main.cpp (cpp):          card.write_command(cmdbuffer[bufindr]);
+Marlin_main.cpp (cpp):    bufindr = (bufindr + 1)%BUFSIZE;
+Marlin_main.cpp (cpp):  return (strtod(&cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], NULL));
+Marlin_main.cpp (cpp):  return (strtol(&cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], NULL, 10));
+Marlin_main.cpp (cpp):  strchr_pointer = strchr(cmdbuffer[bufindr], code);//strchr(const char *s,char c)查找字符串s中首次出现字符c的位置
+Marlin_main.cpp (cpp):        char* npos = strchr(cmdbuffer[bufindr], 'N');
+Marlin_main.cpp (cpp):          char* npos = strchr(cmdbuffer[bufindr], 'N');
+Marlin_main.cpp (cpp):        char* npos = strchr(cmdbuffer[bufindr], 'N');
+Marlin_main.cpp (cpp):            SERIAL_ECHO(cmdbuffer[bufindr]);
+Marlin_main.cpp (cpp):    SERIAL_ECHO(cmdbuffer[bufindr]);
+Marlin_main.cpp (cpp):  //char cmdbuffer[bufindr][100]="Resend:";
+Marlin_main.cpp (cpp):  if(fromsd[bufindr])
+---- blocks_queued Matches (4 in 3 files) ----
+Marlin_main.cpp (cpp):      if(blocks_queued() == false) {
+Planner.h (include):FORCE_INLINE bool blocks_queued() 
+Stepper.cpp (cpp):    while( blocks_queued()) {
+Stepper.cpp (cpp):  while(blocks_queued())
+---- block_buffer_head Matches (20 in 2 files) ----
+Planner.cpp (cpp):volatile unsigned char block_buffer_head;           // Index of the next block to be pushed
+Planner.cpp (cpp):  uint8_t block_index = block_buffer_head;
+Planner.cpp (cpp):  if(((block_buffer_head-tail + BLOCK_BUFFER_SIZE) & (BLOCK_BUFFER_SIZE - 1)) > 3) {
+Planner.cpp (cpp):    block_index = (block_buffer_head - 3) & (BLOCK_BUFFER_SIZE - 1);
+Planner.cpp (cpp):  while(block_index != block_buffer_head) {
+Planner.cpp (cpp):  while(block_index != block_buffer_head) {
+Planner.cpp (cpp):  block_buffer_head = 0;
+Planner.cpp (cpp):  while(block_index != block_buffer_head) {
+Planner.cpp (cpp):  if(block_buffer_tail != block_buffer_head)
+Planner.cpp (cpp):    while(block_index != block_buffer_head)
+Planner.cpp (cpp):  int next_buffer_head = next_block_index(block_buffer_head);
+Planner.cpp (cpp):  block_t *block = &block_buffer[block_buffer_head];
+Planner.cpp (cpp):  int moves_queued=(block_buffer_head-block_buffer_tail + BLOCK_BUFFER_SIZE) & (BLOCK_BUFFER_SIZE - 1);
+Planner.cpp (cpp):  if ((block_buffer_head != block_buffer_tail) && (previous_nominal_speed > 0.0)) {
+Planner.cpp (cpp):  block_buffer_head = next_buffer_head;
+Planner.cpp (cpp):  return (block_buffer_head-block_buffer_tail + BLOCK_BUFFER_SIZE) & (BLOCK_BUFFER_SIZE - 1);
+Planner.h (include):extern volatile unsigned char block_buffer_head;           // Index of the next block to be pushed
+Planner.h (include):  if (block_buffer_head != block_buffer_tail) {
+Planner.h (include):  if (block_buffer_head == block_buffer_tail) { 
+Planner.h (include):  if (block_buffer_head == block_buffer_tail) { 

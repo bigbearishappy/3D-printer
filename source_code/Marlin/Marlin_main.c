@@ -408,16 +408,11 @@ void get_command()
 		} 
 		else
     	{
-		//printf(" %x",serial_char);
-		//printf("else\r\n");
       	if(serial_char == ';') 
 	  		comment_mode = true;
       	if(!comment_mode) 
 	  		cmdbuffer[bufindw][serial_count++] = serial_char;
     	}
-		//for(i = 0;i < serial_count; i++)
-		//	printf(" %x",cmdbuffer[bufindw][i]);
-		//printf("\r\n");
 	}
 }
 #endif
@@ -606,7 +601,7 @@ void process_command(void)
 		
 		            plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
 		            plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate, active_extruder);
-		            //st_synchronize();
+		            st_synchronize();
 		            current_position[X_AXIS] = destination[X_AXIS];
 		            current_position[Y_AXIS] = destination[Y_AXIS];
 		
