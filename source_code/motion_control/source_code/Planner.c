@@ -3,6 +3,7 @@
 #include "stepper.h"
 #include"temperature.h"
 #include<string.h>
+#include "language.h"
 
 float axis_steps_per_unit[4];
 float max_feedrate[4];
@@ -433,10 +434,10 @@ void plan_buffer_line(const float x, const float y, const float z, const float e
   	// The target position of the tool in absolute steps
   	// Calculate target position in absolute steps
   	//this should be done after the wait, because otherwise a M92 code within the gcode disrupts this calculation somehow
-  	target[X_AXIS] = round(x*axis_steps_per_unit[X_AXIS]);
-  	target[Y_AXIS] = round(y*axis_steps_per_unit[Y_AXIS]);
-  	target[Z_AXIS] = round(z*axis_steps_per_unit[Z_AXIS]);     
-  	//target[E_AXIS] = lround(e*axis_steps_per_unit[E_AXIS]);
+  	target[X_AXIS] = lround(x*axis_steps_per_unit[X_AXIS]);
+  	target[Y_AXIS] = lround(y*axis_steps_per_unit[Y_AXIS]);
+  	target[Z_AXIS] = lround(z*axis_steps_per_unit[Z_AXIS]);     
+  	target[E_AXIS] = lround(e*axis_steps_per_unit[E_AXIS]);
 
     #ifdef PREVENT_DANGEROUS_EXTRUDE
     if(target[E_AXIS] != position[E_AXIS])
@@ -444,16 +445,16 @@ void plan_buffer_line(const float x, const float y, const float z, const float e
       if(degHotend(active_extruder)<extrude_min_temp)//温度不够，无法进行挤出操作
       {
         position[E_AXIS]=target[E_AXIS]; //behave as if the move really took place, but ignore E part
-        //SERIAL_ECHO_START;
-        //SERIAL_ECHOLNPGM(MSG_ERR_COLD_EXTRUDE_STOP);
+        SERIAL_ECHO_START;
+        SERIAL_ECHOLNPGM(MSG_ERR_COLD_EXTRUDE_STOP);
       }
     
       #ifdef PREVENT_LENGTHY_EXTRUDE
       if(labs(target[E_AXIS]-position[E_AXIS])>axis_steps_per_unit[E_AXIS]*EXTRUDE_MAXLENGTH)
       {
         position[E_AXIS]=target[E_AXIS]; //behave as if the move really took place, but ignore E part
-        //SERIAL_ECHO_START;
-        //SERIAL_ECHOLNPGM(MSG_ERR_LONG_EXTRUDE_STOP);
+        SERIAL_ECHO_START;
+        SERIAL_ECHOLNPGM(MSG_ERR_LONG_EXTRUDE_STOP);
       }
       #endif
     }
@@ -531,21 +532,21 @@ void plan_buffer_line(const float x, const float y, const float z, const float e
   	#ifdef COREXY
   	if((block->steps_x != 0) || (block->steps_y != 0))
   	{
-    	//enable_x();
-    	//enable_y();
+    	enable_x();
+    	enable_y();
   	}
   	#else
-  	if(block->steps_x != 0); //enable_x();
-  	if(block->steps_y != 0); //enable_y();
+  	if(block->steps_x != 0) enable_x();
+  	if(block->steps_y != 0) enable_y();
   	#endif
 #ifndef Z_LATE_ENABLE
-  	if(block->steps_z != 0); //enable_z();
+  	if(block->steps_z != 0) enable_z();
 #endif
 
   	// Enable all
   	if(block->steps_e != 0)
   	{
-    //enable_e0();
+    enable_e0();
     //enable_e1();
     //enable_e2(); 
   	}

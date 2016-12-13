@@ -4,29 +4,24 @@
 <h1>礦ision Build Log</h1>
 <h2>Project:</h2>
 E:\software_tool\Make381\3d-printer\BBear_Petty.uvproj
-Project File Date:  11/29/2016
+Project File Date:  12/13/2016
 
 <h2>Output:</h2>
 Build target 'BBear_Petty'
 Clean started - Project: 'BBear_Petty'
    deleting intermediate output files for target 'BBear_Petty'
 compiling Marlin_main.c...
-source_code\Marlin\Marlin_main.c(483): warning:  #223-D: function "round" declared implicitly
-                            destination[X_AXIS] = round(Z_SAFE_HOMING_X_POINT - X_PROBE_OFFSET_FROM_EXTRUDER);
-source_code\Marlin\Marlin_main.c(711): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(315): warning:  #177-D: variable "i" was declared but never referenced
+        uint8_t i = 0;
+source_code\Marlin\Marlin_main.c(821): warning:  #111-D: statement is unreachable
           break;
 source_code\Marlin\Marlin_main.c: 2 warnings, 0 errors
 compiling temperature.c...
-source_code\temperature\source_code\temperature.c(272): warning:  #174-D: expression has no effect
+source_code\temperature\source_code\temperature.c(288): warning:  #174-D: expression has no effect
       pid_output = constrain(target_temperature[e], 0, PID_MAX);//constrain(x, a, b);将x的值约束到a和b之间
-source_code\temperature\source_code\temperature.c(35): warning:  #550-D: variable "soft_pwm" was set but never used
-  static unsigned char soft_pwm[EXTRUDERS];
-source_code\temperature\source_code\temperature.c: 2 warnings, 0 errors
+source_code\temperature\source_code\temperature.c: 1 warning, 0 errors
 compiling motion_control.c...
 compiling Planner.c...
-source_code\motion_control\source_code\Planner.c(436): warning:  #223-D: function "round" declared implicitly
-        target[X_AXIS] = round(x*axis_steps_per_unit[X_AXIS]);
-source_code\motion_control\source_code\Planner.c: 1 warning, 0 errors
 compiling Stepper.c...
 compiling Ultralcd.c...
 compiling ConfigurationStore.c...
@@ -53,24 +48,17 @@ compiling stm32f10x_usart.c...
 compiling core_cm3.c...
 assembling startup_stm32f10x_md.s...
 linking...
-Program Size: Code=33832 RO-data=728 RW-data=340 ZI-data=7140  
-".\Output\BBear_Petty.axf" - 0 Error(s), 7 Warning(s).
+Program Size: Code=35708 RO-data=724 RW-data=340 ZI-data=7140  
+".\Output\BBear_Petty.axf" - 0 Error(s), 5 Warning(s).
 
 *** Performing Cross-Module-Optimization:
 compiling Marlin_main.c...
-source_code\Marlin\Marlin_main.c(483): warning:  #223-D: function "round" declared implicitly
-                            destination[X_AXIS] = round(Z_SAFE_HOMING_X_POINT - X_PROBE_OFFSET_FROM_EXTRUDER);
-source_code\Marlin\Marlin_main.c(711): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(315): warning:  #177-D: variable "i" was declared but never referenced
+        uint8_t i = 0;
+source_code\Marlin\Marlin_main.c(821): warning:  #111-D: statement is unreachable
           break;
 source_code\Marlin\Marlin_main.c: 2 warnings, 0 errors
-compiling temperature.c...
-source_code\temperature\source_code\temperature.c(272): warning:  #174-D: expression has no effect
-      pid_output = constrain(target_temperature[e], 0, PID_MAX);//constrain(x, a, b);将x的值约束到a和b之间
-source_code\temperature\source_code\temperature.c(35): warning:  #550-D: variable "soft_pwm" was set but never used
-  static unsigned char soft_pwm[EXTRUDERS];
-source_code\temperature\source_code\temperature.c: 2 warnings, 0 errors
 compiling motion_control.c...
-compiling Stepper.c...
 compiling queue_loop.c...
 source_code\BSP\queue_loop.c(37): warning:  #68-D: integer conversion resulted in a change of sign
                 return QUEUEISFULL;             
@@ -90,21 +78,14 @@ compiling stm32f10x_tim.c...
 compiling stm32f10x_usart.c...
 compiling core_cm3.c...
 linking...
-Program Size: Code=28384 RO-data=728 RW-data=340 ZI-data=7140  
+Program Size: Code=30336 RO-data=728 RW-data=340 ZI-data=7140  
 compiling Marlin_main.c...
-source_code\Marlin\Marlin_main.c(483): warning:  #223-D: function "round" declared implicitly
-                            destination[X_AXIS] = round(Z_SAFE_HOMING_X_POINT - X_PROBE_OFFSET_FROM_EXTRUDER);
-source_code\Marlin\Marlin_main.c(711): warning:  #111-D: statement is unreachable
+source_code\Marlin\Marlin_main.c(315): warning:  #177-D: variable "i" was declared but never referenced
+        uint8_t i = 0;
+source_code\Marlin\Marlin_main.c(821): warning:  #111-D: statement is unreachable
           break;
 source_code\Marlin\Marlin_main.c: 2 warnings, 0 errors
-compiling temperature.c...
-source_code\temperature\source_code\temperature.c(272): warning:  #174-D: expression has no effect
-      pid_output = constrain(target_temperature[e], 0, PID_MAX);//constrain(x, a, b);将x的值约束到a和b之间
-source_code\temperature\source_code\temperature.c(35): warning:  #550-D: variable "soft_pwm" was set but never used
-  static unsigned char soft_pwm[EXTRUDERS];
-source_code\temperature\source_code\temperature.c: 2 warnings, 0 errors
 compiling motion_control.c...
-compiling Stepper.c...
 compiling queue_loop.c...
 source_code\BSP\queue_loop.c(37): warning:  #68-D: integer conversion resulted in a change of sign
                 return QUEUEISFULL;             
@@ -124,28 +105,18 @@ compiling stm32f10x_tim.c...
 compiling stm32f10x_usart.c...
 compiling core_cm3.c...
 linking...
-Program Size: Code=28384 RO-data=728 RW-data=340 ZI-data=7140  
+Program Size: Code=30336 RO-data=728 RW-data=340 ZI-data=7140  
 FromELF: creating hex file...
-".\Output\BBear_Petty.axf" - 0 Error(s), 6 Warning(s).
+".\Output\BBear_Petty.axf" - 0 Error(s), 4 Warning(s).
 *** Completed Cross-Module-Optimization after 3 iteration(s).
 Clean started: Project: 'BBear_Petty'
    deleting intermediate output files for target 'BBear_Petty'
 </pre>
 </body>
 </html>
-                      destination[X_AXIS] = round(Z_SAFE_HOMING_X_POINT - X_PROBE_OFFSET_FROM_EXTRUDER);
-source_code\Marlin\Marlin_main.c(711): warning:  #111-D: statement is unreachable
-          break;
-source_code\Marlin\Marlin_main.c: 2 warnings, 0 errors
-"source_code\Marlin\Marlin_main.c" - 0 Error(s), 2 Warning(s).
-e\Marlin\Marlin_main.c: 2 warnings, 1 error
-"source_code\Marlin\Marlin_main.c" - 1 Error(s), 2 Warning(s).
-code\temperature.c: 2 warnings, 1 error
-"source_code\temperature\source_code\temperature.c" - 1 Error(s), 2 Warning(s).
-compiling Marlin_main.c...
-source_code\Marlin\Marlin_main.c(483): warning:  #223-D: function "round" declared implicitly
-                            destination[X_AXIS] = round(Z_SAFE_HOMING_X_POINT - X_PROBE_OFFSET_FROM_EXTRUDER);
-source_code\Marlin\Marlin_main.c(711): warning:  #111-D: statement is unreachable
+ed
+        uint8_t i = 0;
+source_code\Marlin\Marlin_main.c(821): warning:  #111-D: statement is unreachable
           break;
 source_code\Marlin\Marlin_main.c: 2 warnings, 0 errors
 "source_code\Marlin\Marlin_main.c" - 0 Error(s), 2 Warning(s).
