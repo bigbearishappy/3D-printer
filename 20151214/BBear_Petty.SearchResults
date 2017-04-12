@@ -1,78 +1,158 @@
----- setTargetedHotend Matches (0 in 0 files) ----
----- Fastio.h Matches (0 in 0 files) ----
----- bufindw Matches (37 in 1 files) ----
-Marlin_main.cpp (cpp):static int bufindw = 0;
-Marlin_main.cpp (cpp):    strcpy(&(cmdbuffer[bufindw][0]),cmd);//复制cmd数组中的值到cmdbuffer
-Marlin_main.cpp (cpp):    SERIAL_ECHO(cmdbuffer[bufindw]);
-Marlin_main.cpp (cpp):    bufindw= (bufindw + 1)%BUFSIZE;
-Marlin_main.cpp (cpp):    strcpy_P(&(cmdbuffer[bufindw][0]),cmd);
-Marlin_main.cpp (cpp):    SERIAL_ECHO(cmdbuffer[bufindw]);
-Marlin_main.cpp (cpp):    bufindw= (bufindw + 1)%BUFSIZE;
-Marlin_main.cpp (cpp):      cmdbuffer[bufindw][serial_count] = 0; //terminate string
-Marlin_main.cpp (cpp):        fromsd[bufindw] = false;
-Marlin_main.cpp (cpp):        if(strchr(cmdbuffer[bufindw], 'N') != NULL)//strchr function:search for 'N' in cmfbuffer[bufindw].if it exists,return the pointer of it,or return NULL
-Marlin_main.cpp (cpp):          strchr_pointer = strchr(cmdbuffer[bufindw], 'N');
-Marlin_main.cpp (cpp):          gcode_N = (strtol(&cmdbuffer[bufindw][strchr_pointer - cmdbuffer[bufindw] + 1], NULL, 10));//transform the target data to decimal number
-Marlin_main.cpp (cpp):          if(gcode_N != gcode_LastN+1 && (strstr_P(cmdbuffer[bufindw], PSTR("M110")) == NULL) ) {	//strstr_P function:find out if PSTR("M110") is in the cmdbuffer[bufindew]
-Marlin_main.cpp (cpp):          																							//if so,return the pointer that the PSTR("M110") first exist in cmdbuffer[bufindw],or return NULL.
-Marlin_main.cpp (cpp):          if(strchr(cmdbuffer[bufindw], '*') != NULL)
-Marlin_main.cpp (cpp):            while(cmdbuffer[bufindw][count] != '*') 
-Marlin_main.cpp (cpp):				checksum = checksum^cmdbuffer[bufindw][count++];//^ function:XOR
-Marlin_main.cpp (cpp):            strchr_pointer = strchr(cmdbuffer[bufindw], '*');
-Marlin_main.cpp (cpp):            if( (int)(strtod(&cmdbuffer[bufindw][strchr_pointer - cmdbuffer[bufindw] + 1], NULL)) != checksum) {//strtod:translate string to float number
-Marlin_main.cpp (cpp):          if((strchr(cmdbuffer[bufindw], '*') != NULL))
-Marlin_main.cpp (cpp):        if((strchr(cmdbuffer[bufindw], 'G') != NULL)){
-Marlin_main.cpp (cpp):          strchr_pointer = strchr(cmdbuffer[bufindw], 'G');
-Marlin_main.cpp (cpp):          switch((int)((strtod(&cmdbuffer[bufindw][strchr_pointer - cmdbuffer[bufindw] + 1], NULL)))){
-Marlin_main.cpp (cpp):        bufindw = (bufindw + 1)%BUFSIZE;
-Marlin_main.cpp (cpp):	  	cmdbuffer[bufindw][serial_count++] = serial_char;
-Marlin_main.cpp (cpp):      cmdbuffer[bufindw][serial_count] = 0; //terminate string
-Marlin_main.cpp (cpp):        fromsd[bufindw] = true;
-Marlin_main.cpp (cpp):        bufindw = (bufindw + 1)%BUFSIZE;
-Marlin_main.cpp (cpp):      if(!comment_mode) cmdbuffer[bufindw][serial_count++] = serial_char;
----- enquecommand Matches (4 in 4 files) ----
-Cardreader.cpp (cpp):      enquecommand(cmd);
-Marlin.h (include):void enquecommand(const char *cmd); //put an ascii command at the end of the current buffer.
-Marlin_main.cpp (cpp):void enquecommand(const char *cmd)
-Ultralcd.cpp (cpp):    enquecommand(cmd);
----- bufindr Matches (17 in 1 files) ----
-Marlin_main.cpp (cpp):static int bufindr = 0;
-Marlin_main.cpp (cpp):        if(strstr_P(cmdbuffer[bufindr], PSTR("M29")) == NULL)
-Marlin_main.cpp (cpp):          card.write_command(cmdbuffer[bufindr]);
-Marlin_main.cpp (cpp):    bufindr = (bufindr + 1)%BUFSIZE;
-Marlin_main.cpp (cpp):  return (strtod(&cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], NULL));
-Marlin_main.cpp (cpp):  return (strtol(&cmdbuffer[bufindr][strchr_pointer - cmdbuffer[bufindr] + 1], NULL, 10));
-Marlin_main.cpp (cpp):  strchr_pointer = strchr(cmdbuffer[bufindr], code);//strchr(const char *s,char c)查找字符串s中首次出现字符c的位置
-Marlin_main.cpp (cpp):        char* npos = strchr(cmdbuffer[bufindr], 'N');
-Marlin_main.cpp (cpp):          char* npos = strchr(cmdbuffer[bufindr], 'N');
-Marlin_main.cpp (cpp):        char* npos = strchr(cmdbuffer[bufindr], 'N');
-Marlin_main.cpp (cpp):            SERIAL_ECHO(cmdbuffer[bufindr]);
-Marlin_main.cpp (cpp):    SERIAL_ECHO(cmdbuffer[bufindr]);
-Marlin_main.cpp (cpp):  //char cmdbuffer[bufindr][100]="Resend:";
-Marlin_main.cpp (cpp):  if(fromsd[bufindr])
----- blocks_queued Matches (4 in 3 files) ----
-Marlin_main.cpp (cpp):      if(blocks_queued() == false) {
-Planner.h (include):FORCE_INLINE bool blocks_queued() 
-Stepper.cpp (cpp):    while( blocks_queued()) {
-Stepper.cpp (cpp):  while(blocks_queued())
----- block_buffer_head Matches (20 in 2 files) ----
-Planner.cpp (cpp):volatile unsigned char block_buffer_head;           // Index of the next block to be pushed
-Planner.cpp (cpp):  uint8_t block_index = block_buffer_head;
-Planner.cpp (cpp):  if(((block_buffer_head-tail + BLOCK_BUFFER_SIZE) & (BLOCK_BUFFER_SIZE - 1)) > 3) {
-Planner.cpp (cpp):    block_index = (block_buffer_head - 3) & (BLOCK_BUFFER_SIZE - 1);
-Planner.cpp (cpp):  while(block_index != block_buffer_head) {
-Planner.cpp (cpp):  while(block_index != block_buffer_head) {
-Planner.cpp (cpp):  block_buffer_head = 0;
-Planner.cpp (cpp):  while(block_index != block_buffer_head) {
-Planner.cpp (cpp):  if(block_buffer_tail != block_buffer_head)
-Planner.cpp (cpp):    while(block_index != block_buffer_head)
-Planner.cpp (cpp):  int next_buffer_head = next_block_index(block_buffer_head);
-Planner.cpp (cpp):  block_t *block = &block_buffer[block_buffer_head];
-Planner.cpp (cpp):  int moves_queued=(block_buffer_head-block_buffer_tail + BLOCK_BUFFER_SIZE) & (BLOCK_BUFFER_SIZE - 1);
-Planner.cpp (cpp):  if ((block_buffer_head != block_buffer_tail) && (previous_nominal_speed > 0.0)) {
-Planner.cpp (cpp):  block_buffer_head = next_buffer_head;
-Planner.cpp (cpp):  return (block_buffer_head-block_buffer_tail + BLOCK_BUFFER_SIZE) & (BLOCK_BUFFER_SIZE - 1);
-Planner.h (include):extern volatile unsigned char block_buffer_head;           // Index of the next block to be pushed
-Planner.h (include):  if (block_buffer_head != block_buffer_tail) {
-Planner.h (include):  if (block_buffer_head == block_buffer_tail) { 
-Planner.h (include):  if (block_buffer_head == block_buffer_tail) { 
+---- current_temperature Matches (15 in 2 files) ----
+Temperature.cpp (cpp):float current_temperature[EXTRUDERS] = { 0.0 };
+Temperature.cpp (cpp):      input = (extruder<0)?current_temperature_bed:current_temperature[extruder];//if the extruder number is less than 0,input = current_temperature_bed
+Temperature.cpp (cpp):    if (current_temperature[0] > EXTRUDER_AUTO_FAN_TEMPERATURE) 
+Temperature.cpp (cpp):    if (current_temperature[1] > EXTRUDER_AUTO_FAN_TEMPERATURE) 
+Temperature.cpp (cpp):    if (current_temperature[2] > EXTRUDER_AUTO_FAN_TEMPERATURE) 
+Temperature.cpp (cpp):    pid_input = current_temperature[e];
+Temperature.cpp (cpp):    if(current_temperature[e] < target_temperature[e]) {
+Temperature.cpp (cpp):    if((current_temperature[e] > minttemp[e]) && (current_temperature[e] < maxttemp[e])) 
+Temperature.cpp (cpp):      if(fabs(current_temperature[0] - redundant_temperature) > MAX_REDUNDANT_TEMP_SENSOR_DIFF) {
+Temperature.cpp (cpp):        current_temperature[e] = analog2temp(current_temperature_raw[e], e);
+Temperature.h (include):extern float current_temperature[EXTRUDERS];
+Temperature.h (include):  return current_temperature[extruder];
+Temperature.h (include):  return target_temperature[extruder] > current_temperature[extruder];
+Temperature.h (include):  return target_temperature[extruder] < current_temperature[extruder];
+---- updateTemperaturesFromRawValues Matches (5 in 1 files) ----
+Temperature.cpp (cpp):static void updateTemperaturesFromRawValues();
+Temperature.cpp (cpp):      updateTemperaturesFromRawValues();
+Temperature.cpp (cpp):  updateTemperaturesFromRawValues();
+Temperature.cpp (cpp):name:		updateTemperaturesFromRawValues()
+Temperature.cpp (cpp):static void updateTemperaturesFromRawValues()
+---- PID_autotune Matches (4 in 3 files) ----
+Marlin_main.cpp (cpp):      PID_autotune(temp, e, c);
+Temperature.cpp (cpp):name:		PID_autotune()
+Temperature.cpp (cpp):void PID_autotune(float temp, int extruder, int ncycles)
+Temperature.h (include):void PID_autotune(float temp, int extruder, int ncycles);
+---- manage_heater Matches (13 in 5 files) ----
+Marlin_main.cpp (cpp):  manage_heater();
+Marlin_main.cpp (cpp):        manage_heater();
+Marlin_main.cpp (cpp):          manage_heater();
+Marlin_main.cpp (cpp):          manage_heater();
+Marlin_main.cpp (cpp):          manage_heater();
+Marlin_main.cpp (cpp):          manage_heater();
+Marlin_main.cpp (cpp):              manage_heater();
+Marlin_main.cpp (cpp):          manage_heater();
+Planner.cpp (cpp):    manage_heater(); 
+Stepper.cpp (cpp):    manage_heater();
+Temperature.cpp (cpp):name:		manage_heater()
+Temperature.cpp (cpp):void manage_heater()
+Temperature.h (include):void manage_heater(); //it is critical that this is called periodically.
+---- current_temperature_raw Matches (19 in 2 files) ----
+Temperature.cpp (cpp):int current_temperature_raw[EXTRUDERS] = { 0 };
+Temperature.cpp (cpp):        current_temperature[e] = analog2temp(current_temperature_raw[e], e);
+Temperature.cpp (cpp):      current_temperature_raw[0] = raw_temp_0_value;
+Temperature.cpp (cpp):      current_temperature_raw[1] = raw_temp_1_value;
+Temperature.cpp (cpp):      current_temperature_raw[2] = raw_temp_2_value;
+Temperature.cpp (cpp):    if(current_temperature_raw[0] <= maxttemp_raw[0]) {
+Temperature.cpp (cpp):    if(current_temperature_raw[0] >= maxttemp_raw[0]) {
+Temperature.cpp (cpp):    if(current_temperature_raw[0] >= minttemp_raw[0]) {
+Temperature.cpp (cpp):    if(current_temperature_raw[0] <= minttemp_raw[0]) {
+Temperature.cpp (cpp):    if(current_temperature_raw[1] <= maxttemp_raw[1]) {
+Temperature.cpp (cpp):    if(current_temperature_raw[1] >= maxttemp_raw[1]) {
+Temperature.cpp (cpp):    if(current_temperature_raw[1] >= minttemp_raw[1]) {
+Temperature.cpp (cpp):    if(current_temperature_raw[1] <= minttemp_raw[1]) {
+Temperature.cpp (cpp):    if(current_temperature_raw[2] <= maxttemp_raw[2]) {
+Temperature.cpp (cpp):    if(current_temperature_raw[2] >= maxttemp_raw[2]) {
+Temperature.cpp (cpp):    if(current_temperature_raw[2] >= minttemp_raw[2]) {
+Temperature.cpp (cpp):    if(current_temperature_raw[2] <= minttemp_raw[2]) {
+Temperature.h (include):  extern int current_temperature_raw[EXTRUDERS];
+Temperature.h (include):    return current_temperature_raw[extruder];
+---- temp_meas_ready Matches (6 in 1 files) ----
+Temperature.cpp (cpp):static volatile bool temp_meas_ready = false;
+Temperature.cpp (cpp):    if(temp_meas_ready == true) { // temp sample ready
+Temperature.cpp (cpp):  if(temp_meas_ready != true)   //better readability
+Temperature.cpp (cpp):    temp_meas_ready = false;
+Temperature.cpp (cpp):    if (!temp_meas_ready) //Only update the raw values if they have been read. Else we could be updating them during reading.
+Temperature.cpp (cpp):    temp_meas_ready = true;
+---- current_temperature Matches (15 in 2 files) ----
+Temperature.cpp (cpp):float current_temperature[EXTRUDERS] = { 0.0 };
+Temperature.cpp (cpp):      input = (extruder<0)?current_temperature_bed:current_temperature[extruder];//if the extruder number is less than 0,input = current_temperature_bed
+Temperature.cpp (cpp):    if (current_temperature[0] > EXTRUDER_AUTO_FAN_TEMPERATURE) 
+Temperature.cpp (cpp):    if (current_temperature[1] > EXTRUDER_AUTO_FAN_TEMPERATURE) 
+Temperature.cpp (cpp):    if (current_temperature[2] > EXTRUDER_AUTO_FAN_TEMPERATURE) 
+Temperature.cpp (cpp):    pid_input = current_temperature[e];
+Temperature.cpp (cpp):    if(current_temperature[e] < target_temperature[e]) {
+Temperature.cpp (cpp):    if((current_temperature[e] > minttemp[e]) && (current_temperature[e] < maxttemp[e])) 
+Temperature.cpp (cpp):      if(fabs(current_temperature[0] - redundant_temperature) > MAX_REDUNDANT_TEMP_SENSOR_DIFF) {
+Temperature.cpp (cpp):        current_temperature[e] = analog2temp(current_temperature_raw[e], e);
+Temperature.h (include):extern float current_temperature[EXTRUDERS];
+Temperature.h (include):  return current_temperature[extruder];
+Temperature.h (include):  return target_temperature[extruder] > current_temperature[extruder];
+Temperature.h (include):  return target_temperature[extruder] < current_temperature[extruder];
+---- PID Matches (70 in 6 files) ----
+Configuration.h (include)://                          (but gives greater accuracy and more stable PID)
+Configuration.h (include):// PID settings:
+Configuration.h (include):// Comment the following line to disable PID and enable bang-bang.
+Configuration.h (include):#define PID_MAX 255 // limits current to nozzle while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
+Configuration.h (include):  //#define PID_OPENLOOP 1 // Puts PID in open loop. M104/M140 sets the output power from 0 to PID_MAX
+Configuration.h (include):                                  // is more then PID_FUNCTIONAL_RANGE then the PID will be shut off and the heater will be set to min/max.
+Configuration.h (include):  #define K1 0.95 //smoothing factor within the PID
+Configuration.h (include):// Select PID or bang-bang with PIDTEMPBED. If bang-bang, BED_LIMIT_SWITCHING will enable hysteresis
+Configuration.h (include):// Uncomment this to enable PID on the bed. It uses the same frequency PWM as the extruder.
+Configuration.h (include):// shouldn't use bed PID until someone else verifies your hardware works.
+Configuration.h (include):// If this is enabled, find your own PID constants below.
+Configuration.h (include):// all forms of bed control obey this (PID, bang-bang, bang-bang with hysteresis)
+ConfigurationStore.cpp (cpp):    SERIAL_ECHOLNPGM("PID settings:");
+ConfigurationStore.cpp (cpp):        // do not need to scale PID values as the values in EEPROM are already scaled		
+Language.h (include):	#define MSG_PID_P "PID-P"
+Language.h (include):	#define MSG_PID_I "PID-I"
+Language.h (include):	#define MSG_PID_D "PID-D"
+Language.h (include):	#define MSG_PID_C "PID-C"
+Language.h (include):	#define MSG_PID_P "PID-P"
+Language.h (include):	#define MSG_PID_I "PID-I"
+Language.h (include):	#define MSG_PID_D "PID-D"
+Language.h (include):	#define MSG_PID_C "PID-C"
+Language.h (include):	#define MSG_PID_P "PID-P"
+Language.h (include):	#define MSG_PID_I "PID-I"
+Language.h (include):	#define MSG_PID_D "PID-D"
+Language.h (include):	#define MSG_PID_C "PID-C"
+Language.h (include):	#define MSG_PID_P            "PID-P"
+Language.h (include):	#define MSG_PID_I            "PID-I"
+Language.h (include):	#define MSG_PID_D            "PID-D"
+Language.h (include):	#define MSG_PID_C            "PID-C"
+Language.h (include):	#define MSG_PID_P "PID-P"
+Language.h (include):	#define MSG_PID_I "PID-I"
+Language.h (include):	#define MSG_PID_D "PID-D"
+Language.h (include):	#define MSG_PID_C "PID-C"
+Language.h (include):	#define MSG_PID_P							" PID-P: "
+Language.h (include):	#define MSG_PID_I							" PID-I: "
+Language.h (include):	#define MSG_PID_D							" PID-D: "
+Language.h (include):	#define MSG_PID_C							" PID-C: "
+Language.h (include):	#define MSG_PID_P                "PID-P"
+Language.h (include):	#define MSG_PID_I                "PID-I"
+Language.h (include):	#define MSG_PID_D                "PID-D"
+Language.h (include):	#define MSG_PID_C                "PID-C"
+Language.h (include):	#define MSG_PID_P " PID-P: "
+Language.h (include):	#define MSG_PID_I " PID-I: "
+Language.h (include):	#define MSG_PID_D " PID-D: "
+Language.h (include):	#define MSG_PID_C " PID-C: "
+Language.h (include):	#define MSG_PID_P "PID-P"
+Language.h (include):	#define MSG_PID_I "PID-I"
+Language.h (include):	#define MSG_PID_D "PID-D"
+Language.h (include):	#define MSG_PID_C "PID-C"
+Marlin_main.cpp (cpp):// M301 - Set PID parameters P I and D
+Marlin_main.cpp (cpp):// M303 - PID relay autotune S<temperature> sets the target temperature. (default target temperature = 150C)
+Marlin_main.cpp (cpp):// M304 - Set bed PID parameters P I and D
+Marlin_main.cpp (cpp):    case 303: 											// M303 PID autotune
+Temperature.cpp (cpp):funtion:	use PID to control the extruder's temperature
+Temperature.cpp (cpp):          SERIAL_ECHOLN("PID Autotune failed. Bad extruder number.");
+Temperature.cpp (cpp):  SERIAL_ECHOLN("PID Autotune start");
+Temperature.cpp (cpp):              SERIAL_PROTOCOLLNPGM(" Clasic PID ");
+Temperature.cpp (cpp):      SERIAL_PROTOCOLLNPGM("PID Autotune failed! Temperature too high");
+Temperature.cpp (cpp):      SERIAL_PROTOCOLLNPGM("PID Autotune failed! timeout");
+Temperature.cpp (cpp):      SERIAL_PROTOCOLLNPGM("PID Autotune finished! Put the Kp, Ki and Kd constants into Configuration.h");
+Temperature.cpp (cpp):function:	update the PID
+Temperature.cpp (cpp):          //K1 defined in Configuration.h in the PID settings
+Temperature.cpp (cpp):  #else /* PID off */
+Temperature.cpp (cpp):		  //K1 defined in Configuration.h in the PID settings
+Temperature.cpp (cpp):// Apply the scale factors to the PID values
+Ultralcd.cpp (cpp):// Callback for after editing PID i value
+Ultralcd.cpp (cpp):// grab the pid i value out of the temp variable; scale it; then update the PID driver
+Ultralcd.cpp (cpp):// Callback for after editing PID d value
+Ultralcd.cpp (cpp):// grab the pid d value out of the temp variable; scale it; then update the PID driver
+---- PID_autotune Matches (4 in 3 files) ----
+Marlin_main.cpp (cpp):      PID_autotune(temp, e, c);
+Temperature.cpp (cpp):name:		PID_autotune()
+Temperature.cpp (cpp):void PID_autotune(float temp, int extruder, int ncycles)
+Temperature.h (include):void PID_autotune(float temp, int extruder, int ncycles);

@@ -6,7 +6,7 @@
 int target_temperature[EXTRUDERS] = { 0 };
 
 int target_temperature_bed = 0;
-float current_temperature_bed = 0.0;
+float current_temperature_bed = 25.0;
 int current_temperature_raw[EXTRUDERS] = { 0 };
 int current_temperature_bed_raw = 0;
 unsigned char soft_pwm_bed;
@@ -31,7 +31,7 @@ static volatile int temp_meas_ready = false;
   	#endif
 #endif
 
-float current_temperature[EXTRUDERS] = { 0.0 };
+float current_temperature[EXTRUDERS] = { 30.0 };
 static unsigned char soft_pwm[EXTRUDERS];
 
 #if EXTRUDERS > 3
@@ -162,7 +162,9 @@ Description:
 			null
 ****************************************************************************/
 static float analog2temp(int raw, uint8_t e)
-{return 100;}
+{
+  return ((raw * ((5.0 * 100.0) / 1024.0) / OVERSAMPLENR) * TEMP_SENSOR_AD595_GAIN) + TEMP_SENSOR_AD595_OFFSET;
+}
 
 /****************************************************************************
 name:		analog2tempBed
@@ -273,9 +275,10 @@ void manage_heater()
 	volatile float pid_input;
 	float pid_output;
 	int e;
-	
-	if(temp_meas_ready != true)   //better readability
-		return; 
+
+//comment for debug 20170412	
+//	if(temp_meas_ready != true)   //better readability
+//		return; 
 
 	updateTemperaturesFromRawValues();
 
@@ -346,6 +349,15 @@ function:	update the temperatrue from the rawvalues
 static void updateTemperaturesFromRawValues()
 {
 	uint8_t e;
+#if 1
+	uint16_t Status;
+	uint16_t DataValue;
+	ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+	Status = ADC_GetSoftwareStartConvStatus(ADC1);
+	DataValue = ADC_GetConversionValue(ADC1);
+	current_temperature_raw[0] = DataValue;
+#endif
+
     for(e=0;e<EXTRUDERS;e++)
     {
         current_temperature[e] = analog2temp(current_temperature_raw[e], e);

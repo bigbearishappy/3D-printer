@@ -33,7 +33,7 @@ void ADC_Configuration(void)
   	ADC_InitStructure.ADC_NbrOfChannel = 1;
   	ADC_Init(ADC1, &ADC_InitStructure);
 
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_1, 1, ADC_SampleTime_55Cycles5);		//configuration the PA1 to measure the hotend
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_3, 1, ADC_SampleTime_55Cycles5);		//configuration the PA1 to measure the hotend
 	ADC_RegularChannelConfig(ADC1, ADC_Channel_2, 2, ADC_SampleTime_55Cycles5);		//configuration the PA2 to measure the bed
 	ADC_Cmd(ADC1, ENABLE);
 

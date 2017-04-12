@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>ADC</TargetName>
+      <TargetName>BBear_Petty</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <TargetOption>
@@ -29,7 +29,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>SFD\ST\STM32F10xx\STM32F10xxB.sfr</SFDFile>
+          <SFDFile></SFDFile>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
@@ -44,10 +44,10 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Output\</OutputDirectory>
-          <OutputName>ADC</OutputName>
+          <OutputName>BBear_Petty</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>0</CreateHexFile>
+          <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\List\</ListingPath>
@@ -208,13 +208,13 @@
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <RoSelD>3</RoSelD>
             <RwSelD>3</RwSelD>
             <CodeSel>0</CodeSel>
-            <OptFeed>0</OptFeed>
+            <OptFeed>1</OptFeed>
             <NoZi1>0</NoZi1>
             <NoZi2>0</NoZi2>
             <NoZi3>0</NoZi3>
@@ -344,9 +344,9 @@
             <uThumb>0</uThumb>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>DEBUG</Define>
               <Undefine></Undefine>
-              <IncludePath>.\Libraries\CMSIS\CM3\CoreSupport;.\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x;.\Libraries\STM32F10x_StdPeriph_Driver\inc;.\source_code</IncludePath>
+              <IncludePath>.\Libraries\CMSIS\CM3\CoreSupport;.\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x;.\Libraries\STM32F10x_StdPeriph_Driver\inc;.\source_code\Marlin;.\source_code\configuration;.\source_code\language;.\source_code\motion_control\source_code;.\source_code\pin;.\source_code\servo;.\source_code\temperature\source_code;.\source_code\ULTRA_LCD;.\source_code\BSP</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -387,19 +387,59 @@
           <GroupName>APP</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
+              <FileName>Marlin_main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\source_code\main.c</FilePath>
+              <FilePath>.\source_code\Marlin\Marlin_main.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Temperature</GroupName>
+          <Files>
+            <File>
+              <FileName>temperature.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\temperature\source_code\temperature.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Motion_control</GroupName>
+          <Files>
+            <File>
+              <FileName>motion_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\motion_control\source_code\motion_control.c</FilePath>
             </File>
             <File>
-              <FileName>ADC.c</FileName>
+              <FileName>Planner.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\source_code\ADC.c</FilePath>
+              <FilePath>.\source_code\motion_control\source_code\Planner.c</FilePath>
             </File>
             <File>
-              <FileName>system_stm32f10x.c</FileName>
+              <FileName>Stepper.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\source_code\system_stm32f10x.c</FilePath>
+              <FilePath>.\source_code\motion_control\source_code\Stepper.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Ultralcd</GroupName>
+          <Files>
+            <File>
+              <FileName>Ultralcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\ULTRA_LCD\Ultralcd.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Configuration</GroupName>
+          <Files>
+            <File>
+              <FileName>ConfigurationStore.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\configuration\ConfigurationStore.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -407,9 +447,34 @@
           <GroupName>BSP</GroupName>
           <Files>
             <File>
+              <FileName>USART.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\BSP\USART.c</FilePath>
+            </File>
+            <File>
               <FileName>BSP.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\source_code\BSP.c</FilePath>
+              <FilePath>.\source_code\BSP\BSP.c</FilePath>
+            </File>
+            <File>
+              <FileName>queue_loop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\BSP\queue_loop.c</FilePath>
+            </File>
+            <File>
+              <FileName>TIM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\BSP\TIM.c</FilePath>
+            </File>
+            <File>
+              <FileName>ADC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\temperature\source_code\ADC.c</FilePath>
+            </File>
+            <File>
+              <FileName>pin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\source_code\pin\pin.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -427,39 +492,9 @@
               <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f10x_bkp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_bkp.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_can.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_can.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_cec.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_cec.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_crc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_dac.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_dac.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f10x_dbgmcu.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_dbgmcu.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_dma.c</FilePath>
             </File>
             <File>
               <FileName>stm32f10x_exti.c</FileName>
@@ -472,49 +507,14 @@
               <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_flash.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f10x_fsmc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_fsmc.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f10x_gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f10x_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_iwdg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_iwdg.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_pwr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_pwr.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f10x_rcc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rtc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_sdio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_sdio.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_spi.c</FilePath>
             </File>
             <File>
               <FileName>stm32f10x_tim.c</FileName>
@@ -525,11 +525,6 @@
               <FileName>stm32f10x_usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f10x_wwdg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_wwdg.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -552,9 +547,9 @@
           <GroupName>Readme</GroupName>
           <Files>
             <File>
-              <FileName>readme.txt</FileName>
+              <FileName>Readme.txt</FileName>
               <FileType>5</FileType>
-              <FilePath>.\doc\readme.txt</FilePath>
+              <FilePath>.\doc\Readme.txt</FilePath>
             </File>
           </Files>
         </Group>

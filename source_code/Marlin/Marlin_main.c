@@ -233,6 +233,7 @@ void system_init(void)
 	NVIC_Configuration();
 	TIM_Configuration();
 	USART_Configuration();
+	ADC_Configuration();
 
 	printf("%d\n",BAUDRATE);
 	//printf("start\n");
