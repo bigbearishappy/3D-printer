@@ -41,3 +41,74 @@ void TIM2_IRQHandler(void)
 		TIM_ClearITPendingBit(TIM2, TIM_FLAG_Update);
 	} 
 }
+
+/******************************************************************************
+Name£ºPWM_Configuration 
+Function:	
+		  	configuration the hotend's pwm
+Parameters£º
+		   	void
+Returns£º
+			void 
+Description:
+			null
+******************************************************************************/
+void PWM_Configuration(void)
+{
+	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+	TIM_OCInitTypeDef  TIM_OCInitStructure; 
+	  
+ 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);//3
+	/* Time base configuration */
+	TIM_TimeBaseStructure.TIM_Period = 1000; 
+	TIM_TimeBaseStructure.TIM_Prescaler =0; 
+	TIM_TimeBaseStructure.TIM_ClockDivision = 0; 
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  
+	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure); 
+	
+	/* Output Compare Active Mode configuration: Channel1 */
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2; 
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable; 
+	TIM_OCInitStructure.TIM_Pulse = 0; 
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low; 
+
+	TIM_OC1Init(TIM4, &TIM_OCInitStructure); 
+	TIM_OC2Init(TIM4, &TIM_OCInitStructure);
+	TIM_OC3Init(TIM4, &TIM_OCInitStructure);
+	TIM_OC4Init(TIM4, &TIM_OCInitStructure);
+
+	TIM_OC1PreloadConfig(TIM4, TIM_OCPreload_Enable);  
+	TIM_OC2PreloadConfig(TIM4, TIM_OCPreload_Enable);
+	TIM_OC3PreloadConfig(TIM4, TIM_OCPreload_Enable);
+	TIM_OC4PreloadConfig(TIM4, TIM_OCPreload_Enable);
+	
+	TIM_ARRPreloadConfig(TIM4, ENABLE); 
+	
+	/* TIM4 enable counter */
+	TIM_Cmd(TIM4, ENABLE);  
+}
+
+/******************************************************************************
+Name£ºPWM_Control 
+Function:	
+		  	pwm control of motor
+Parameters£º
+		   	[in]	-	hotend1:pwm value of hotend1
+						hotend2:pwm value of hotend2
+						bed:	pwm value of bed
+Returns£º
+			void 
+Description:
+			GPIO defination:
+			PB6			hotend1
+			PB7			hotend2
+			PB8			bed
+			PB9			not used
+******************************************************************************/
+void PWM_Control(int32_t hotend1, int32_t hotend2, int32_t bed)
+{
+		TIM_SetCompare1(TIM4,hotend1);
+		TIM_SetCompare2(TIM4,hotend2);
+		TIM_SetCompare3(TIM4,bed);
+		//TIM_SetCompare4(TIM4,0);
+}
