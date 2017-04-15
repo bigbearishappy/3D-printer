@@ -368,7 +368,6 @@ int getHeaterPower(int heater) {
   return soft_pwm[heater];
 }
 
-
 float scalePID_i(float i)
 {
 	return i * PID_dT;

@@ -390,3 +390,13 @@ void checkHitEndstops()
 	}
 }
 
+// "The Stepper Driver Interrupt" - This timer interrupt is the workhorse.
+// It pops blocks from the block_buffer and executes them by pulsing the stepper pins appropriately.
+void TIM3_IRQHandler(void)
+{
+	if(TIM_GetITStatus(TIM3, TIM_IT_Update) == SET)
+	{
+		//ISR code
+		TIM_ClearITPendingBit(TIM3, TIM_FLAG_Update);
+	} 
+}
