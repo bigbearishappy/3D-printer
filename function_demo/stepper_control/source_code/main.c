@@ -9,6 +9,7 @@ Date:		2016-3-8
 #include"BSP.h"
 
 void GPIOA_Configuration(void);
+void GPIOB_Configuration(void);
 
 /************************************************************************************************ 
 Name£ºmain 
@@ -25,13 +26,16 @@ int main()
 {
 	RCC_Configuration();
 	GPIOA_Configuration();
+	GPIOB_Configuration();
 	USART_Configuration();
 	while(1)
 	{
 		delayms(50);
-		GPIO_SetBits(GPIOA, GPIO_Pin_1);
+		GPIO_SetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_7);
+		GPIO_SetBits(GPIOB, GPIO_Pin_5);
 		delayms(50);
-		GPIO_ResetBits(GPIOA, GPIO_Pin_1);
+		GPIO_ResetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_7);
+		GPIO_ResetBits(GPIOB, GPIO_Pin_5);
 	}
 
 }
@@ -42,10 +46,24 @@ void GPIOA_Configuration()
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 
-	GPIO_InitTypeStruct.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
+	GPIO_InitTypeStruct.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7;
 	GPIO_InitTypeStruct.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitTypeStruct.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOA, &GPIO_InitTypeStruct);
 
-	GPIO_SetBits(GPIOA, GPIO_Pin_0);
+	GPIO_SetBits(GPIOA, GPIO_Pin_5);
+}
+
+void GPIOB_Configuration()
+{
+	GPIO_InitTypeDef GPIO_InitTypeStruct;
+
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+
+	GPIO_InitTypeStruct.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_5 | GPIO_Pin_6;
+	GPIO_InitTypeStruct.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitTypeStruct.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOB, &GPIO_InitTypeStruct);
+
+	GPIO_SetBits(GPIOB, GPIO_Pin_0 | GPIO_Pin_6);
 }
