@@ -72,12 +72,12 @@
 #endif
 
 // The pullups are needed if you directly connect a mechanical endswitch between the signal and ground pins.
-//const bool X_MIN_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
-//const bool Y_MIN_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
-//const bool Z_MIN_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
-//const bool X_MAX_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
-//const bool Y_MAX_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
-//const bool Z_MAX_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
+// bool X_MIN_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
+// bool Y_MIN_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
+// bool Z_MIN_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
+// bool X_MAX_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
+// bool Y_MAX_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
+// bool Z_MAX_ENDSTOP_INVERTING = TRUE; // set to true to invert the logic of the endstop.
 
 //By default pololu step drivers require an active high signal. However, some high power drivers require an active low signal as step.
 #define INVERT_X_STEP_PIN false
@@ -170,5 +170,12 @@
 #define DISABLE_Y false
 #define DISABLE_Z false
 #define DISABLE_E false // For all extruders
+
+#define INVERT_X_DIR false    // for Mendel set to false, for Orca set to true
+#define INVERT_Y_DIR true    // for Mendel set to true, for Orca set to false
+#define INVERT_Z_DIR true     // for Mendel set to false, for Orca set to true
+#define INVERT_E0_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
+#define INVERT_E1_DIR false    // for direct drive extruder v9 set to true, for geared extruder set to false
+#define INVERT_E2_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
 
 #endif

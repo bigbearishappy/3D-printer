@@ -1,6 +1,12 @@
 #ifndef stepper_h
 #define stepper_h
 
+#include "planner.h"
+
+#define WRITE_E_STEP(v) WRITE(E0_STEP_PIN, v)
+#define NORM_E_DIR() WRITE(E0_DIR_PIN, !INVERT_E0_DIR)
+#define REV_E_DIR() WRITE(E0_DIR_PIN, INVERT_E0_DIR)
+
 void st_init(void);
 void digipot_init(void);
 void microstep_init(void);

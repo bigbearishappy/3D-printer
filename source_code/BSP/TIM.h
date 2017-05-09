@@ -5,6 +5,7 @@
 extern uint32_t tim_millis;
 
 void TIM_Configuration(void);
+void TIM3_Configuration(void);
 
 void PWM_Configuration(void);
 void PWM_Control(int32_t hotend1, int32_t hotend2, int32_t bed);

@@ -1,7 +1,7 @@
 #ifndef planner_h
 #define planner_h
 
-#include"Marlin.h"
+#include "Marlin.h"
 
 #define max(a,b)	a>b?a:b
 #define min(a,b)	a>b?b:a
@@ -71,6 +71,17 @@ typedef struct {
     extern float autotemp_min;
     extern float autotemp_factor;
 #endif
+
+extern block_t block_buffer[BLOCK_BUFFER_SIZE];            // A ring buffer for motion instfructions
+extern volatile unsigned char block_buffer_head;           // Index of the next block to be pushed
+extern volatile unsigned char block_buffer_tail; 
+
+// Gets the current block. Returns NULL if buffer empty
+block_t *plan_get_current_block(void); 
+
+// Called when the current block is no longer needed. Discards the block and makes the memory
+// availible for new blocks.    
+void plan_discard_current_block(void);
 
 void plan_init(void);
 static int8_t prev_block_index(int8_t block_index);

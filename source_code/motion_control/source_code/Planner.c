@@ -1,8 +1,8 @@
-#include"Marlin.h"
-#include"planner.h"
+#include "Marlin.h"
+#include "planner.h"
 #include "stepper.h"
-#include"temperature.h"
-#include<string.h>
+#include "temperature.h"
+#include <string.h>
 #include "language.h"
 
 float axis_steps_per_unit[4];
@@ -827,6 +827,24 @@ void getHighESpeed()
   	}
 }
 #endif
+
+block_t *plan_get_current_block() 
+{
+	block_t *block;
+  if (block_buffer_head == block_buffer_tail) { 
+    return(NULL); 
+  }
+  block = &block_buffer[block_buffer_tail];
+  block->busy = true;
+  return(block);
+}
+
+void plan_discard_current_block()
+{
+  if (block_buffer_head != block_buffer_tail) {
+    block_buffer_tail = (block_buffer_tail + 1) & (BLOCK_BUFFER_SIZE - 1);  
+  }
+}
 
 
 

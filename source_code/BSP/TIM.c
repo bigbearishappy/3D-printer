@@ -134,7 +134,7 @@ void TIM3_Configuration(void)
   	TIM_TimeBaseStructure.TIM_Period = 2 - 1;					//0.001s      
   	TIM_TimeBaseStructure.TIM_Prescaler = 36000 - 1;      
   	TIM_TimeBaseStructure.TIM_ClockDivision = 0x0; 
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
   	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
  
   	TIM_ClearFlag(TIM3, TIM_FLAG_Update);
