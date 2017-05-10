@@ -1,13 +1,14 @@
 #ifndef MARLIN_H
 #define MARLIN_H
 
-#include"stm32f10x.h"
-#include"Configuration.h"
-#include"Pin.h"
-#include<stdio.h>
-#include"string.h"					//add at 20160516
-#include"stdlib.h"					//add at 20160516
-#include<math.h>
+#include "stm32f10x.h"
+#include "Configuration.h"
+#include "Pin.h"
+#include <stdio.h>
+#include "string.h"					//add at 20160516
+#include "stdlib.h"					//add at 20160516
+#include <math.h>
+#include "ADC.h"
 
 #define true	1
 #define false	0
@@ -17,6 +18,8 @@
 #define constrain(amt,low,high)	amt-low<0?low:amt;amt-high>0?high:amt;
 
 #define READ(x)	GPIO_ReadInputDataBit(GPIOB,x)
+
+#define  FORCE_INLINE __attribute__((always_inline))inline
 
 //临界断面开始
 #ifndef CRITICAL_SECTION_START
