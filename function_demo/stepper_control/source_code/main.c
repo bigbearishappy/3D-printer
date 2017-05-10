@@ -30,10 +30,10 @@ int main()
 	USART_Configuration();
 	while(1)
 	{
-		delayms(50);
+		delayms(60);
 		GPIO_SetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_7);
 		GPIO_SetBits(GPIOB, GPIO_Pin_5);
-		delayms(50);
+		delayms(60);
 		GPIO_ResetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_7);
 		GPIO_ResetBits(GPIOB, GPIO_Pin_5);
 	}
