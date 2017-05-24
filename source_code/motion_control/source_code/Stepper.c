@@ -541,7 +541,7 @@ void TIM3_IRQHandler(void)
 		}
 		else {
 		    //OCR1A=2000; // 1kHz.
-				TIM_SetAutoreload(TIM3, 2000);
+				TIM_SetAutoreload(TIM3, 1000);
 				TIM_SetCounter(TIM3, 0);
 				TIM_Cmd(TIM3, ENABLE);
 			}

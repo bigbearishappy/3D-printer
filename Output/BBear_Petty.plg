@@ -4,50 +4,19 @@
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
 E:\«∂»Î Ω\Githome\3d-printer\BBear_Petty.uvproj
-Project File Date:  05/10/2017
+Project File Date:  05/11/2017
 
 <h2>Output:</h2>
 Build target 'BBear_Petty'
 compiling Marlin_main.c...
-source_code\Marlin\Marlin_main.c(316): warning:  #177-D: variable "i" was declared but never referenced
-source_code\Marlin\Marlin_main.c(822): warning:  #111-D: statement is unreachable
 compiling temperature.c...
-source_code\temperature\source_code\temperature.c(157): warning:  #188-D: enumerated type mixed with another type
-source_code\temperature\source_code\temperature.c(209): warning:  #188-D: enumerated type mixed with another type
-source_code\temperature\source_code\temperature.c(223): warning:  #188-D: enumerated type mixed with another type
-source_code\temperature\source_code\temperature.c(229): warning:  #174-D: expression has no effect
-source_code\temperature\source_code\temperature.c(237): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(238): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(242): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(243): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(248): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(249): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(250): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(293): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(451): warning:  #174-D: expression has no effect
-source_code\temperature\source_code\temperature.c(513): warning:  #550-D: variable "Status" was set but never used
 compiling motion_control.c...
 compiling Planner.c...
 compiling Stepper.c...
-source_code\motion_control\source_code\Stepper.c(46): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(47): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(48): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(49): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(50): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(51): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(631): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(652): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(672): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(686): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(708): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(729): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(41): warning:  #550-D: variable "OCR1A_nominal" was set but never used
 compiling Ultralcd.c...
 compiling ConfigurationStore.c...
 compiling USART.c...
 compiling queue_loop.c...
-source_code\BSP\queue_loop.c(37): warning:  #68-D: integer conversion resulted in a change of sign
-source_code\BSP\queue_loop.c(52): warning:  #68-D: integer conversion resulted in a change of sign
 compiling TIM.c...
 compiling ADC.c...
 compiling BSP.c...
@@ -64,52 +33,21 @@ compiling stm32f10x_usart.c...
 compiling core_cm3.c...
 assembling startup_stm32f10x_md.s...
 linking...
-Program Size: Code=40388 RO-data=804 RW-data=396 ZI-data=7156  
+Program Size: Code=40428 RO-data=804 RW-data=396 ZI-data=7156  
 FromELF: creating hex file...
-".\Output\BBear_Petty.axf" - 0 Error(s), 31 Warning(s).
+".\Output\BBear_Petty.axf" - 0 Error(s), 0 Warning(s).
  
 *** Rebuilding with Cross-Module Feedback:
 Rebuild target 'BBear_Petty'
 compiling Marlin_main.c...
-source_code\Marlin\Marlin_main.c(316): warning:  #177-D: variable "i" was declared but never referenced
-source_code\Marlin\Marlin_main.c(822): warning:  #111-D: statement is unreachable
 compiling temperature.c...
-source_code\temperature\source_code\temperature.c(157): warning:  #188-D: enumerated type mixed with another type
-source_code\temperature\source_code\temperature.c(209): warning:  #188-D: enumerated type mixed with another type
-source_code\temperature\source_code\temperature.c(223): warning:  #188-D: enumerated type mixed with another type
-source_code\temperature\source_code\temperature.c(229): warning:  #174-D: expression has no effect
-source_code\temperature\source_code\temperature.c(237): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(238): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(242): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(243): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(248): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(249): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(250): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(293): warning:  #181-D: argument is incompatible with corresponding format string conversion
-source_code\temperature\source_code\temperature.c(451): warning:  #174-D: expression has no effect
-source_code\temperature\source_code\temperature.c(513): warning:  #550-D: variable "Status" was set but never used
 compiling motion_control.c...
 compiling Planner.c...
 compiling Stepper.c...
-source_code\motion_control\source_code\Stepper.c(46): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(47): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(48): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(49): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(50): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(51): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(631): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(652): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(672): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(686): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(708): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(729): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(41): warning:  #550-D: variable "OCR1A_nominal" was set but never used
 compiling Ultralcd.c...
 compiling ConfigurationStore.c...
 compiling USART.c...
 compiling queue_loop.c...
-source_code\BSP\queue_loop.c(37): warning:  #68-D: integer conversion resulted in a change of sign
-source_code\BSP\queue_loop.c(52): warning:  #68-D: integer conversion resulted in a change of sign
 compiling TIM.c...
 compiling ADC.c...
 compiling BSP.c...
@@ -126,226 +64,10 @@ compiling stm32f10x_usart.c...
 compiling core_cm3.c...
 assembling startup_stm32f10x_md.s...
 linking...
-Program Size: Code=34168 RO-data=800 RW-data=396 ZI-data=7156  
-FromELF: creating hex file...
-".\Output\BBear_Petty.axf" - 0 Error(s), 31 Warning(s).
-Build target 'BBear_Petty'
-linking...
-Program Size: Code=34168 RO-data=800 RW-data=396 ZI-data=7156  
-FromELF: creating hex file...
-".\Output\BBear_Petty.axf" - 0 Error(s), 0 Warning(s).
-Build target 'BBear_Petty'
-compiling Stepper.c...
-source_code\motion_control\source_code\Stepper.c(46): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(47): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(48): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(49): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(50): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(51): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(631): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(652): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(672): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(686): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(708): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(729): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(41): warning:  #550-D: variable "OCR1A_nominal" was set but never used
-linking...
-.\Output\BBear_Petty.axf: Error: L6200E: Symbol i multiply defined (by stepper.o and marlin_main.o).
-Target not created
-Build target 'BBear_Petty'
-compiling Stepper.c...
-source_code\motion_control\source_code\Stepper.c(46): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(47): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(48): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(49): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(50): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(51): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(631): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(652): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(672): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(686): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(708): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(729): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(753): error:  #20: identifier "i" is undefined
-source_code\motion_control\source_code\Stepper.c(41): warning:  #550-D: variable "OCR1A_nominal" was set but never used
-Target not created
-Build target 'BBear_Petty'
-compiling Stepper.c...
-source_code\motion_control\source_code\Stepper.c(46): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(47): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(48): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(49): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(50): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(51): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(945): error: At end of source:  #67: expected a "}"
-source_code\motion_control\source_code\Stepper.c(512): warning:  #177-D: variable "timer" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(513): warning:  #177-D: variable "step_rate" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(514): warning:  #177-D: variable "i" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(945): error: At end of source:  #67: expected a "}"
-source_code\motion_control\source_code\Stepper.c(22): warning:  #177-D: variable "out_bits" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(37): warning:  #550-D: variable "acceleration_time" was set but never used
-source_code\motion_control\source_code\Stepper.c(37): warning:  #550-D: variable "deceleration_time" was set but never used
-source_code\motion_control\source_code\Stepper.c(41): warning:  #550-D: variable "OCR1A_nominal" was set but never used
-source_code\motion_control\source_code\Stepper.c(42): warning:  #550-D: variable "step_loops_nominal" was set but never used
-source_code\motion_control\source_code\Stepper.c(46): warning:  #177-D: variable "old_x_min_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(47): warning:  #177-D: variable "old_x_max_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(48): warning:  #177-D: variable "old_y_min_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(49): warning:  #177-D: variable "old_y_max_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(50): warning:  #177-D: variable "old_z_min_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(51): warning:  #177-D: variable "old_z_max_endstop" was declared but never referenced
-Target not created
-Build target 'BBear_Petty'
-compiling Stepper.c...
-source_code\motion_control\source_code\Stepper.c(46): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(47): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(48): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(49): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(50): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(51): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(512): warning:  #177-D: variable "timer" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(513): warning:  #177-D: variable "step_rate" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(514): warning:  #177-D: variable "i" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(945): error: At end of source:  #67: expected a "}"
-source_code\motion_control\source_code\Stepper.c(22): warning:  #177-D: variable "out_bits" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(37): warning:  #550-D: variable "acceleration_time" was set but never used
-source_code\motion_control\source_code\Stepper.c(37): warning:  #550-D: variable "deceleration_time" was set but never used
-source_code\motion_control\source_code\Stepper.c(41): warning:  #550-D: variable "OCR1A_nominal" was set but never used
-source_code\motion_control\source_code\Stepper.c(42): warning:  #550-D: variable "step_loops_nominal" was set but never used
-source_code\motion_control\source_code\Stepper.c(46): warning:  #177-D: variable "old_x_min_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(47): warning:  #177-D: variable "old_x_max_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(48): warning:  #177-D: variable "old_y_min_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(49): warning:  #177-D: variable "old_y_max_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(50): warning:  #177-D: variable "old_z_min_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(51): warning:  #177-D: variable "old_z_max_endstop" was declared but never referenced
-Target not created
-Build target 'BBear_Petty'
-compiling Stepper.c...
-source_code\motion_control\source_code\Stepper.c(46): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(47): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(48): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(49): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(50): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(51): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(512): warning:  #177-D: variable "timer" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(513): warning:  #177-D: variable "step_rate" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(514): warning:  #177-D: variable "i" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(22): warning:  #177-D: variable "out_bits" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(37): warning:  #550-D: variable "acceleration_time" was set but never used
-source_code\motion_control\source_code\Stepper.c(37): warning:  #550-D: variable "deceleration_time" was set but never used
-source_code\motion_control\source_code\Stepper.c(41): warning:  #550-D: variable "OCR1A_nominal" was set but never used
-source_code\motion_control\source_code\Stepper.c(42): warning:  #550-D: variable "step_loops_nominal" was set but never used
-source_code\motion_control\source_code\Stepper.c(46): warning:  #177-D: variable "old_x_min_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(47): warning:  #177-D: variable "old_x_max_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(48): warning:  #177-D: variable "old_y_min_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(49): warning:  #177-D: variable "old_y_max_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(50): warning:  #177-D: variable "old_z_min_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(51): warning:  #177-D: variable "old_z_max_endstop" was declared but never referenced
-linking...
-Program Size: Code=32652 RO-data=804 RW-data=396 ZI-data=7156  
-FromELF: creating hex file...
-".\Output\BBear_Petty.axf" - 0 Error(s), 20 Warning(s).
-Build target 'BBear_Petty'
-compiling Stepper.c...
-source_code\motion_control\source_code\Stepper.c(46): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(47): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(48): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(49): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(50): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(51): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(512): warning:  #177-D: variable "timer" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(513): warning:  #177-D: variable "step_rate" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(514): warning:  #177-D: variable "i" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(22): warning:  #177-D: variable "out_bits" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(37): warning:  #550-D: variable "acceleration_time" was set but never used
-source_code\motion_control\source_code\Stepper.c(37): warning:  #550-D: variable "deceleration_time" was set but never used
-source_code\motion_control\source_code\Stepper.c(41): warning:  #550-D: variable "OCR1A_nominal" was set but never used
-source_code\motion_control\source_code\Stepper.c(42): warning:  #550-D: variable "step_loops_nominal" was set but never used
-source_code\motion_control\source_code\Stepper.c(46): warning:  #177-D: variable "old_x_min_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(47): warning:  #177-D: variable "old_x_max_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(48): warning:  #177-D: variable "old_y_min_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(49): warning:  #177-D: variable "old_y_max_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(50): warning:  #177-D: variable "old_z_min_endstop" was declared but never referenced
-source_code\motion_control\source_code\Stepper.c(51): warning:  #177-D: variable "old_z_max_endstop" was declared but never referenced
-linking...
-Program Size: Code=32572 RO-data=804 RW-data=396 ZI-data=7156  
-FromELF: creating hex file...
-".\Output\BBear_Petty.axf" - 0 Error(s), 20 Warning(s).
-Build target 'BBear_Petty'
-compiling Stepper.c...
-source_code\motion_control\source_code\Stepper.c(46): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(47): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(48): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(49): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(50): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(51): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(631): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(652): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(672): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(686): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(708): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(729): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(943): error:  #79: expected a type specifier
-source_code\motion_control\source_code\Stepper.c(943): error:  #79: expected a type specifier
-source_code\motion_control\source_code\Stepper.c(943): warning:  #77-D: this declaration has no storage class or type specifier
-source_code\motion_control\source_code\Stepper.c(943): error:  #147: declaration is incompatible with "void TIM_ClearITPendingBit(TIM_TypeDef *, uint16_t)" (declared at line 1118 of ".\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h")
-source_code\motion_control\source_code\Stepper.c(944): error:  #169: expected a declaration
-source_code\motion_control\source_code\Stepper.c(41): warning:  #550-D: variable "OCR1A_nominal" was set but never used
-Target not created
-Build target 'BBear_Petty'
-compiling Stepper.c...
-source_code\motion_control\source_code\Stepper.c(46): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(47): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(48): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(49): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(50): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(51): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(631): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(652): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(672): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(686): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(708): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(729): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(41): warning:  #550-D: variable "OCR1A_nominal" was set but never used
-linking...
-Program Size: Code=34208 RO-data=800 RW-data=396 ZI-data=7156  
-FromELF: creating hex file...
-".\Output\BBear_Petty.axf" - 0 Error(s), 13 Warning(s).
-Build target 'BBear_Petty'
-linking...
 Program Size: Code=34208 RO-data=800 RW-data=396 ZI-data=7156  
 FromELF: creating hex file...
 ".\Output\BBear_Petty.axf" - 0 Error(s), 0 Warning(s).
 Build target 'BBear_Petty'
-linking...
-Program Size: Code=34208 RO-data=800 RW-data=396 ZI-data=7156  
-FromELF: creating hex file...
-".\Output\BBear_Petty.axf" - 0 Error(s), 0 Warning(s).
-Build target 'BBear_Petty'
-compiling Stepper.c...
-source_code\motion_control\source_code\Stepper.c(46): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(47): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(48): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(49): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(50): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(51): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(629): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(650): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(670): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(684): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(706): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(727): warning:  #188-D: enumerated type mixed with another type
-source_code\motion_control\source_code\Stepper.c(41): warning:  #550-D: variable "OCR1A_nominal" was set but never used
-linking...
-Program Size: Code=34208 RO-data=800 RW-data=396 ZI-data=7156  
-FromELF: creating hex file...
-".\Output\BBear_Petty.axf" - 0 Error(s), 13 Warning(s).
-Build target 'BBear_Petty'
-linking...
-Program Size: Code=34208 RO-data=800 RW-data=396 ZI-data=7156  
-FromELF: creating hex file...
-".\Output\BBear_Petty.axf" - 0 Error(s), 0 Warning(s).
-Build target 'BBear_Petty'
-compiling TIM.c...
 linking...
 Program Size: Code=34208 RO-data=800 RW-data=396 ZI-data=7156  
 FromELF: creating hex file...

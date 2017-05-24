@@ -221,10 +221,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>2</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>505</TopLine>
-      <CurrentLine>514</CurrentLine>
+      <TopLine>457</TopLine>
+      <CurrentLine>457</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\source_code\Marlin\Marlin_main.c</PathWithFileName>
       <FilenameWithoutPath>Marlin_main.c</FilenameWithoutPath>
@@ -291,10 +291,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>3</ColumnNumber>
+      <ColumnNumber>42</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>550</TopLine>
-      <CurrentLine>572</CurrentLine>
+      <TopLine>475</TopLine>
+      <CurrentLine>475</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\source_code\motion_control\source_code\Stepper.c</PathWithFileName>
       <FilenameWithoutPath>Stepper.c</FilenameWithoutPath>
@@ -382,10 +382,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>41</ColumnNumber>
+      <ColumnNumber>64</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>115</TopLine>
-      <CurrentLine>135</CurrentLine>
+      <CurrentLine>134</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\source_code\BSP\TIM.c</PathWithFileName>
       <FilenameWithoutPath>TIM.c</FilenameWithoutPath>
