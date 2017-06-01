@@ -10,6 +10,8 @@ Date:		2016-3-8
 
 void GPIOA_Configuration(void);
 void GPIOB_Configuration(void);
+void TIM3_Configuration(void);
+int getsteptime(int stepcnt);
 
 /************************************************************************************************ 
 Name£ºmain 
@@ -28,14 +30,14 @@ int main()
 	GPIOA_Configuration();
 	GPIOB_Configuration();
 	USART_Configuration();
+	TIM3_Configuration();
 	while(1)
 	{
+/*		delayms(60);
+		GPIO_SetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7);
 		delayms(60);
-		GPIO_SetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_7);
-		GPIO_SetBits(GPIOB, GPIO_Pin_5);
-		delayms(60);
-		GPIO_ResetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_7);
-		GPIO_ResetBits(GPIOB, GPIO_Pin_5);
+		GPIO_ResetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7);
+*/
 	}
 
 }
@@ -51,7 +53,7 @@ void GPIOA_Configuration()
 	GPIO_InitTypeStruct.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOA, &GPIO_InitTypeStruct);
 
-	GPIO_SetBits(GPIOA, GPIO_Pin_5);
+	//GPIO_SetBits(GPIOA, GPIO_Pin_5);
 }
 
 void GPIOB_Configuration()
@@ -65,5 +67,66 @@ void GPIOB_Configuration()
 	GPIO_InitTypeStruct.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOB, &GPIO_InitTypeStruct);
 
-	GPIO_SetBits(GPIOB, GPIO_Pin_0 | GPIO_Pin_6);
+	GPIO_SetBits(GPIOB, GPIO_Pin_0 | GPIO_Pin_5 | GPIO_Pin_6);
+}
+
+void TIM3_Configuration(void)
+{
+	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+	NVIC_InitTypeDef NVIC_InitStructure;
+	TIM_TypeDef *TIM;
+	uchar IRQ;
+	uchar pri;
+
+	TIM = TIM3;
+	IRQ = TIM3_IRQn;
+	pri = HEAT_TIMER_PRI;
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+	
+	//Timer configuration
+	TIM_TimeBaseStructure.TIM_Period = 0;
+	TIM_TimeBaseStructure.TIM_Prescaler = 36-1;
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+	TIM_TimeBaseInit(TIM, &TIM_TimeBaseStructure);
+
+	NVIC_InitStructure.NVIC_IRQChannel = IRQ;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = pri;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
+	TIM_ClearFlag(TIM, TIM_FLAG_Update);
+	TIM_ITConfig(TIM, TIM_IT_Update, ENABLE);
+	TIM_Cmd(TIM, DISABLE);
+}
+
+int getsteptime(int stepcnt)
+{
+	if(stepcnt < sizeof(steptab1)/sizeof(steptab1[0]))
+		return steptab1[stepcnt]
+	else
+		return steptab1[(sizeof(steptab1)/sizeof(steptab1[0])) - 1];
+}
+
+int steptime = 0;
+int stepcnt = 0;
+void  TIM3_IRQHandler(void)
+{
+	if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
+	{
+		TIM_Cmd(TIM3, DISABLE);
+		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+		steptime = getsteptime(stepcnt);
+		stepcnt++;
+		
+		GPIO_SetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7);
+		delayms(5);
+		GPIO_ResetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7);
+		
+		TIM_SetAutoreload(TIM3, steptime);
+		TIM_SetCounter(TIM3, 0);
+		TIM_Cmd(TIM3, ENABLE);
+	}
 }
