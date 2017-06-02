@@ -23,19 +23,19 @@
     #define X_DIR_PIN          	0x0020//GPIO_Pin_5
     #define X_ENABLE_PIN      	0x0008//GPIO_Pin_3
     #define X_MIN_PIN           0x0400//GPIO_Pin_10
-    #define X_MAX_PIN           2
+    #define X_MAX_PIN           -1///2
 
     #define Y_STEP_PIN         0x0080//GPIO_Pin_7
     #define Y_DIR_PIN          0x0001//GPIO_Pin_0
     #define Y_ENABLE_PIN       0x0040//GPIO_Pin_6
     #define Y_MIN_PIN          0x0800//GPIO_Pin_11
-    #define Y_MAX_PIN          15
+    #define Y_MAX_PIN          -1///15
 
     #define Z_STEP_PIN         0x0020//GPIO_Pin_5
     #define Z_DIR_PIN          0x0040//GPIO_Pin_6
     #define Z_ENABLE_PIN       0x0002//GPIO_Pin_1
     #define Z_MIN_PIN          0x1000//GPIO_Pin_12
-    #define Z_MAX_PIN          19
+    #define Z_MAX_PIN          -1///19
 
     #define Y2_STEP_PIN        -1
     #define Y2_DIR_PIN         -1
@@ -73,7 +73,7 @@
 	#define MOTOR_CURRENT_PWM_Z_PIN 45
 	#define MOTOR_CURRENT_PWM_E_PIN 46
 
-	#define PS_ON_PIN          12
+	#define PS_ON_PIN          -1//12
 	#define SUICIDE_PIN        54  //PIN that has to be turned on right after start, to keep power flowing.
 	#define KILL_PIN           -1
 

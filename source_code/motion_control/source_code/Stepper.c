@@ -564,12 +564,12 @@ void TIM3_IRQHandler(void)
 		        //WRITE(X2_DIR_PIN, INVERT_X_DIR);
 				GPIO_SetBits(GPIOB, GPIO_Pin_2);
 		      else
-				GPIO_SetBits(GPIOB, GPIO_Pin_2);
+				GPIO_ResetBits(GPIOB, GPIO_Pin_0);
 		        //WRITE(X_DIR_PIN, INVERT_X_DIR);
 		    }
 		  #else
 		    ////WRITE(X_DIR_PIN, INVERT_X_DIR);
-			GPIO_SetBits(GPIOB, GPIO_Pin_2);
+			GPIO_ResetBits(GPIOB, GPIO_Pin_0);
 		  #endif        
 		  count_direction[X_AXIS]=-1;
 		}
@@ -587,7 +587,7 @@ void TIM3_IRQHandler(void)
 		    }
 		  #else
 		    ////WRITE(X_DIR_PIN, !INVERT_X_DIR);
-					GPIO_SetBits(GPIOB, GPIO_Pin_2);
+			GPIO_SetBits(GPIOB, GPIO_Pin_0);
 		  #endif        
 		  count_direction[X_AXIS]=1;
 		}
@@ -603,6 +603,7 @@ void TIM3_IRQHandler(void)
 		}
 		else{
 		  ////WRITE(Y_DIR_PIN, !INVERT_Y_DIR);
+		  GPIO_SetBits(GPIOB, GPIO_Pin_5);
 		  
 		  #ifdef Y_DUAL_STEPPER_DRIVERS
 		    WRITE(Y2_DIR_PIN, (INVERT_Y_DIR == INVERT_Y2_VS_Y_DIR));
@@ -694,6 +695,7 @@ void TIM3_IRQHandler(void)
 		
 		if ((out_bits & (1<<Z_AXIS)) != 0) {   // -direction
 		  ////WRITE(Z_DIR_PIN,INVERT_Z_DIR);
+		  GPIO_ResetBits(GPIOB, GPIO_Pin_6);
 		  
 		  #ifdef Z_DUAL_STEPPER_DRIVERS
 		    WRITE(Z2_DIR_PIN,INVERT_Z_DIR);
@@ -715,6 +717,7 @@ void TIM3_IRQHandler(void)
 		}
 		else { // +direction
 		  ////WRITE(Z_DIR_PIN,!INVERT_Z_DIR);
+		  GPIO_SetBits(GPIOB, GPIO_Pin_6);
 		
 		  #ifdef Z_DUAL_STEPPER_DRIVERS
 		    WRITE(Z2_DIR_PIN,!INVERT_Z_DIR);
@@ -781,8 +784,8 @@ void TIM3_IRQHandler(void)
 		          WRITE(X_STEP_PIN, !INVERT_X_STEP_PIN);
 		      }
 		    #else
-		      //WRITE(X_STEP_PIN, !INVERT_X_STEP_PIN);
-						GPIO_SetBits(GPIOB, GPIO_Pin_2);
+		      ////WRITE(X_STEP_PIN, !INVERT_X_STEP_PIN);
+				GPIO_SetBits(GPIOA, GPIO_Pin_4);
 		    #endif        
 		      counter_x -= current_block->step_event_count;
 		      count_position[X_AXIS]+=count_direction[X_AXIS];   
@@ -799,24 +802,23 @@ void TIM3_IRQHandler(void)
 		      }
 		    #else
 		      //WRITE(X_STEP_PIN, INVERT_X_STEP_PIN);
-						GPIO_SetBits(GPIOB, GPIO_Pin_2);
+				GPIO_ResetBits(GPIOA, GPIO_Pin_4);
 		    #endif
 		    }
 		
 		    counter_y += current_block->steps_y;
 		    if (counter_y > 0) {
-						GPIO_SetBits(GPIOB, GPIO_Pin_2);
 		      ////WRITE(Y_STEP_PIN, !INVERT_Y_STEP_PIN);
+		      GPIO_SetBits(GPIOA, GPIO_Pin_5);
 			  
 			  #ifdef Y_DUAL_STEPPER_DRIVERS
-				////WRITE(Y2_STEP_PIN, !INVERT_Y_STEP_PIN);
-						GPIO_SetBits(GPIOB, GPIO_Pin_2);
+				WRITE(Y2_STEP_PIN, !INVERT_Y_STEP_PIN);
 			  #endif
 			  
 		      counter_y -= current_block->step_event_count;
 		      count_position[Y_AXIS]+=count_direction[Y_AXIS];
 		      ////WRITE(Y_STEP_PIN, INVERT_Y_STEP_PIN);
-						GPIO_SetBits(GPIOB, GPIO_Pin_2);
+				  GPIO_ResetBits(GPIOA, GPIO_Pin_5);
 			  
 			  #ifdef Y_DUAL_STEPPER_DRIVERS
 				WRITE(Y2_STEP_PIN, INVERT_Y_STEP_PIN);
@@ -826,7 +828,7 @@ void TIM3_IRQHandler(void)
 		  counter_z += current_block->steps_z;
 		  if (counter_z > 0) {
 		    //WRITE(Z_STEP_PIN, !INVERT_Z_STEP_PIN);
-					GPIO_SetBits(GPIOB, GPIO_Pin_2);
+			  GPIO_SetBits(GPIOA, GPIO_Pin_7);
 		    
 		    #ifdef Z_DUAL_STEPPER_DRIVERS
 		      WRITE(Z2_STEP_PIN, !INVERT_Z_STEP_PIN);
@@ -835,7 +837,7 @@ void TIM3_IRQHandler(void)
 		    counter_z -= current_block->step_event_count;
 		    count_position[Z_AXIS]+=count_direction[Z_AXIS];
 		    ////WRITE(Z_STEP_PIN, INVERT_Z_STEP_PIN);
-					GPIO_SetBits(GPIOB, GPIO_Pin_2);
+				GPIO_ResetBits(GPIOA, GPIO_Pin_7);
 		    
 		    #ifdef Z_DUAL_STEPPER_DRIVERS
 		      WRITE(Z2_STEP_PIN, INVERT_Z_STEP_PIN);
@@ -871,9 +873,9 @@ void TIM3_IRQHandler(void)
 		  timer = calc_timer(acc_step_rate);
 		  //OCR1A = timer;
 				
-					TIM_SetAutoreload(TIM3, 2000);
-					TIM_SetCounter(TIM3, 0);
-					TIM_Cmd(TIM3, ENABLE);
+		TIM_SetAutoreload(TIM3, timer);
+		TIM_SetCounter(TIM3, 0);
+		TIM_Cmd(TIM3, ENABLE);
 				
 		  acceleration_time += timer;
 		  #ifdef ADVANCE
@@ -905,9 +907,9 @@ void TIM3_IRQHandler(void)
 		  timer = calc_timer(step_rate);
 		  //OCR1A = timer;
 				
-				TIM_SetAutoreload(TIM3, 2000);
-				TIM_SetCounter(TIM3, 0);
-				TIM_Cmd(TIM3, ENABLE);
+		TIM_SetAutoreload(TIM3, timer);
+		TIM_SetCounter(TIM3, 0);
+		TIM_Cmd(TIM3, ENABLE);
 				
 		  deceleration_time += timer;
 		  #ifdef ADVANCE
@@ -923,9 +925,9 @@ void TIM3_IRQHandler(void)
 		else {
 		  //OCR1A = OCR1A_nominal;
 				
-					TIM_SetAutoreload(TIM3, 2000);
-					TIM_SetCounter(TIM3, 0);
-					TIM_Cmd(TIM3, ENABLE);
+		TIM_SetAutoreload(TIM3, 2000);
+		TIM_SetCounter(TIM3, 0);
+		TIM_Cmd(TIM3, ENABLE);
 				
 		  // ensure we're running at the correct step rate, even if we just came off an acceleration
 		  step_loops = step_loops_nominal;

@@ -112,6 +112,7 @@ int getsteptime(int stepcnt)
 
 int steptime = 0;
 int stepcnt = 0;
+int i = 0;
 void  TIM3_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
@@ -122,7 +123,7 @@ void  TIM3_IRQHandler(void)
 		stepcnt++;
 		
 		GPIO_SetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7);
-		delayms(5);
+		for(i = 0; i < 50; i++);
 		GPIO_ResetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7);
 		
 		TIM_SetAutoreload(TIM3, steptime);
