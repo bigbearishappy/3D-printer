@@ -13,6 +13,10 @@ void GPIOB_Configuration(void);
 void TIM3_Configuration(void);
 int getsteptime(int stepcnt);
 
+int i = 0;
+int steptime = 0;
+int stepcnt = 0;
+
 /************************************************************************************************ 
 Name£ºmain 
 Function:	
@@ -30,14 +34,20 @@ int main()
 	GPIOA_Configuration();
 	GPIOB_Configuration();
 	USART_Configuration();
-	TIM3_Configuration();
+	//TIM3_Configuration();
 	while(1)
 	{
-/*		delayms(60);
+		//delayms(5);
 		GPIO_SetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7);
-		delayms(60);
+		delayms(10);
 		GPIO_ResetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7);
-*/
+//		steptime = getsteptime(stepcnt);
+//		stepcnt++;
+//		if(stepcnt > 570)
+//			stepcnt = 0;
+//		delayms(steptime);
+		delayms(500);
+
 	}
 
 }
@@ -75,12 +85,12 @@ void TIM3_Configuration(void)
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
 	TIM_TypeDef *TIM;
-	uchar IRQ;
-	uchar pri;
+	unsigned char IRQ;
+	unsigned char pri;
 
 	TIM = TIM3;
 	IRQ = TIM3_IRQn;
-	pri = HEAT_TIMER_PRI;
+	pri = 10;
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 	
 	//Timer configuration
@@ -99,20 +109,18 @@ void TIM3_Configuration(void)
 
 	TIM_ClearFlag(TIM, TIM_FLAG_Update);
 	TIM_ITConfig(TIM, TIM_IT_Update, ENABLE);
-	TIM_Cmd(TIM, DISABLE);
+	//TIM_Cmd(TIM, DISABLE);
+	TIM_Cmd(TIM, ENABLE);
 }
 
 int getsteptime(int stepcnt)
 {
-	if(stepcnt < sizeof(steptab1)/sizeof(steptab1[0]))
-		return steptab1[stepcnt]
+	if(stepcnt < tablen)
+		return steptab1[stepcnt]*6;
 	else
-		return steptab1[(sizeof(steptab1)/sizeof(steptab1[0])) - 1];
+		return steptab1[tablen - 1]*6;
 }
 
-int steptime = 0;
-int stepcnt = 0;
-int i = 0;
 void  TIM3_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
@@ -123,10 +131,10 @@ void  TIM3_IRQHandler(void)
 		stepcnt++;
 		
 		GPIO_SetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7);
-		for(i = 0; i < 50; i++);
+		for(i = 0; i < 10; i++);
 		GPIO_ResetBits(GPIOA, GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7);
 		
-		TIM_SetAutoreload(TIM3, steptime);
+		TIM_SetAutoreload(TIM3, steptime/10);
 		TIM_SetCounter(TIM3, 0);
 		TIM_Cmd(TIM3, ENABLE);
 	}

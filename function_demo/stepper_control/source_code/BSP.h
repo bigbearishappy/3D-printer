@@ -5,6 +5,9 @@
 
 #define WRITE(GPIO_Pin, status)	status = 1?GPIO_SetBits(GPIOA,GPIO_Pin):GPIO_ResetBits(GPIOA,GPIO_Pin)
 
+extern short steptab1[];
+extern unsigned int tablen;
+
 void RCC_Configuration(void);
 void GPIO_Configuration(void);
 void USART_Configuration(void);
