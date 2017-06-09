@@ -179,6 +179,21 @@ int target_direction;
 static unsigned long stepper_inactive_time = DEFAULT_STEPPER_DEACTIVE_TIME*1000l;
 
 int8_t i = 0;
+
+#define XYZ_CONSTS_FROM_CONFIG(type, array, CONFIG) \
+static const PROGMEM type array##_P[3] =        \
+    { X_##CONFIG, Y_##CONFIG, Z_##CONFIG };     \
+static inline type array(int axis)          \
+    { return pgm_read_any(&array##_P[axis]); }
+
+XYZ_CONSTS_FROM_CONFIG(float, base_min_pos,    MIN_POS);
+XYZ_CONSTS_FROM_CONFIG(float, base_max_pos,    MAX_POS);
+XYZ_CONSTS_FROM_CONFIG(float, base_home_pos,   HOME_POS);
+XYZ_CONSTS_FROM_CONFIG(float, max_length,      MAX_LENGTH);
+XYZ_CONSTS_FROM_CONFIG(float, home_retract_mm, HOME_RETRACT_MM);
+XYZ_CONSTS_FROM_CONFIG(signed char, home_dir,  HOME_DIR);
+
+
 #endif
 
 /****************************************************************************
@@ -457,6 +472,95 @@ void ClearToSend(void)
 #endif
 
 /****************************************************************************
+name:		homeaxis
+function:	
+			make the specify axis to move home
+Parameters:
+			[in]	-	X or Y or Z axis
+Returns:
+			[out]	-	void
+Description:
+			null
+****************************************************************************/
+static void homeaxis(int axis) {
+#define HOMEAXIS_DO(LETTER) \
+  ((LETTER##_MIN_PIN > -1 && LETTER##_HOME_DIR==-1) || (LETTER##_MAX_PIN > -1 && LETTER##_HOME_DIR==1))
+
+  if (axis==X_AXIS ? HOMEAXIS_DO(X) : axis==Y_AXIS ? HOMEAXIS_DO(Y) : axis==Z_AXIS ? HOMEAXIS_DO(Z) : 0) {//if axis == X_AXIS,HOMEAXIS_DO(X).if axis == Y_AXIS,HOMEAXIS_DO(Y).if axis == Z_AXIS,HOMEAXIS_DO(Z).
+    int axis_home_dir = home_dir(axis);
+#ifdef DUAL_X_CARRIAGE
+    if (axis == X_AXIS)
+      axis_home_dir = x_home_dir(active_extruder);
+#endif
+
+    current_position[axis] = 0;
+    plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
+
+
+    // Engage Servo endstop if enabled
+    #ifdef SERVO_ENDSTOPS
+      #if defined (ENABLE_AUTO_BED_LEVELING) && (PROBE_SERVO_DEACTIVATION_DELAY > 0)
+        if (axis==Z_AXIS) {
+          engage_z_probe();
+        }
+	    else
+      #endif
+      if (servo_endstops[axis] > -1) {
+        servos[servo_endstops[axis]].write(servo_endstop_angles[axis * 2]);
+      }
+    #endif
+
+    destination[axis] = 1.5 * max_length(axis) * axis_home_dir;
+    feedrate = homing_feedrate[axis];
+    plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
+    st_synchronize();
+
+    current_position[axis] = 0;
+    plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
+    destination[axis] = -home_retract_mm(axis) * axis_home_dir;
+    plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
+    st_synchronize();
+
+    destination[axis] = 2 * home_retract_mm(axis) * axis_home_dir;
+#ifdef DELTA
+    feedrate = homing_feedrate[axis]/10;
+#else
+    feedrate = homing_feedrate[axis]/2 ;
+#endif
+    plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
+    st_synchronize();
+#ifdef DELTA
+    // retrace by the amount specified in endstop_adj
+    if (endstop_adj[axis] * axis_home_dir < 0) {
+      plan_set_position(current_position[X_AXIS], current_position[Y_AXIS], current_position[Z_AXIS], current_position[E_AXIS]);
+      destination[axis] = endstop_adj[axis];
+      plan_buffer_line(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS], destination[E_AXIS], feedrate/60, active_extruder);
+      st_synchronize();
+    }
+#endif
+    axis_is_at_home(axis);
+    destination[axis] = current_position[axis];
+    feedrate = 0.0;
+    endstops_hit_on_purpose();
+    axis_known_position[axis] = true;
+
+    // Retract Servo endstop if enabled
+    #ifdef SERVO_ENDSTOPS
+      if (servo_endstops[axis] > -1) {
+        servos[servo_endstops[axis]].write(servo_endstop_angles[axis * 2 + 1]);
+      }
+    #endif
+#if defined (ENABLE_AUTO_BED_LEVELING) && (PROBE_SERVO_DEACTIVATION_DELAY > 0)
+    if (axis==Z_AXIS) retract_z_probe();
+#endif
+
+  }
+}
+
+#define HOMEAXIS(LETTER) homeaxis(LETTER##_AXIS)
+
+
+/****************************************************************************
 name:		process_command
 function:	
 			deal with the g_code from the usart
@@ -558,16 +662,16 @@ void process_command(void)
 
       		#if Z_HOME_DIR > 0                      // If homing away from BED do Z first
       		if((home_all_axis) || (code_seen(axis_codes[Z_AXIS]))) {
-        	//HOMEAXIS(Z);
+        		HOMEAXIS(Z);
       		}
 			#endif									//end if Z_HOME_DIR
 
       		if((home_all_axis) || (code_seen(axis_codes[X_AXIS])))
       		{
-        		//HOMEAXIS(X);
+        		HOMEAXIS(X);
       		}
       		if((home_all_axis) || (code_seen(axis_codes[Y_AXIS]))) {
-        		//HOMEAXIS(Y);
+        		HOMEAXIS(Y);
       		}
       		if(code_seen(axis_codes[X_AXIS]))
       		{
