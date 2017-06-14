@@ -1,4 +1,3 @@
----- speed_lookuptable_slow Matches (3 in 2 files) ----
-Speed_lookuptable.h (include):const uint16_t speed_lookuptable_slow[256][2] PROGMEM = {\
-Speed_lookuptable.h (include):const uint16_t speed_lookuptable_slow[256][2] PROGMEM = {
-Stepper.cpp (cpp):    unsigned short table_address = (unsigned short)&speed_lookuptable_slow[0][0];
+---- max_length Matches (2 in 1 files) ----
+Marlin_main.cpp (cpp):XYZ_CONSTS_FROM_CONFIG(float, max_length,      MAX_LENGTH);
+Marlin_main.cpp (cpp):    destination[axis] = 1.5 * max_length(axis) * axis_home_dir;
